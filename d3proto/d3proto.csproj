@@ -46,8 +46,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="protobuf-net">
-      <HintPath>..\protobuf-net.dll</HintPath>
+    <Reference Include="Google.ProtocolBuffers, Version=2.3.0.277, Culture=neutral, PublicKeyToken=17b3b1f090c3ea48, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tools\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,60 +59,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
-    <Compile Include="AttributeSerializer.cs" />
-    <Compile Include="GameMessage.cs" />
-    <Compile Include="GBHandle.cs" />
-    <Compile Include="google\protobuf\descriptor.cs" />
-    <Compile Include="Hero.cs" />
-    <Compile Include="Hireling.cs" />
-    <Compile Include="ItemCrafting.cs" />
-    <Compile Include="Items.cs" />
-    <Compile Include="lib\config\process_config.cs" />
-    <Compile Include="lib\profanity\profanity.cs" />
-    <Compile Include="lib\protocol\attribute.cs" />
-    <Compile Include="lib\protocol\content_handle.cs" />
-    <Compile Include="lib\protocol\descriptor.cs" />
-    <Compile Include="lib\protocol\entity.cs" />
-    <Compile Include="lib\protocol\exchange.cs" />
-    <Compile Include="lib\protocol\exchange_object_provider.cs" />
-    <Compile Include="lib\protocol\invitation.cs" />
-    <Compile Include="lib\protocol\resource.cs" />
-    <Compile Include="lib\rpc\connection.cs" />
-    <Compile Include="lib\rpc\rpc.cs" />
-    <Compile Include="OnlineService.cs" />
-    <Compile Include="PartyMessage.cs" />
+    <Compile Include="bnet\protocol\attribute\Attribute.cs" />
+    <Compile Include="bnet\protocol\authentication\Authentication.cs" />
+    <Compile Include="bnet\protocol\channel\Channel.cs" />
+    <Compile Include="bnet\protocol\channel\ChannelTypes.cs" />
+    <Compile Include="bnet\protocol\channel_invitation\ChannelInvitation.cs" />
+    <Compile Include="bnet\protocol\channel_invitation\ChannelInvitationTypes.cs" />
+    <Compile Include="bnet\protocol\chat\Chat.cs" />
+    <Compile Include="bnet\protocol\chat\ChatTypes.cs" />
+    <Compile Include="bnet\protocol\config\ProcessConfig.cs" />
+    <Compile Include="bnet\protocol\connection\Connection.cs" />
+    <Compile Include="bnet\protocol\ContentHandle.cs" />
+    <Compile Include="bnet\protocol\Descriptor.cs" />
+    <Compile Include="bnet\protocol\Entity.cs" />
+    <Compile Include="bnet\protocol\exchange\Exchange.cs" />
+    <Compile Include="bnet\protocol\exchange\ExchangeTypes.cs" />
+    <Compile Include="bnet\protocol\exchange_object_provider\ExchangeObjectProvider.cs" />
+    <Compile Include="bnet\protocol\followers\Followers.cs" />
+    <Compile Include="bnet\protocol\friends\Friends.cs" />
+    <Compile Include="bnet\protocol\friends\FriendsTypes.cs" />
+    <Compile Include="bnet\protocol\game_master\GameFactory.cs" />
+    <Compile Include="bnet\protocol\game_master\GameMaster.cs" />
+    <Compile Include="bnet\protocol\game_master\GameMasterTypes.cs" />
+    <Compile Include="bnet\protocol\game_utilities\GameUtilities.cs" />
+    <Compile Include="bnet\protocol\invitation\Invitation.cs" />
+    <Compile Include="bnet\protocol\notification\Notification.cs" />
+    <Compile Include="bnet\protocol\party\Party.cs" />
+    <Compile Include="bnet\protocol\presence\Presence.cs" />
+    <Compile Include="bnet\protocol\presence\PresenceTypes.cs" />
+    <Compile Include="bnet\protocol\profanity\Profanity.cs" />
+    <Compile Include="bnet\protocol\Resource.cs" />
+    <Compile Include="bnet\protocol\Rpc.cs" />
+    <Compile Include="bnet\protocol\search\Search.cs" />
+    <Compile Include="bnet\protocol\search\SearchTypes.cs" />
+    <Compile Include="bnet\protocol\server_pool\ServerPool.cs" />
+    <Compile Include="bnet\protocol\storage\Storage.cs" />
+    <Compile Include="bnet\protocol\toon\external\ToonExternal.cs" />
+    <Compile Include="bnet\protocol\toon\Toon.cs" />
+    <Compile Include="bnet\protocol\user_manager\UserManager.cs" />
+    <Compile Include="D3\Account\Account.cs" />
+    <Compile Include="D3\AttributeSerializer\AttributeSerializer.cs" />
+    <Compile Include="D3\Client\Settings.cs" />
+    <Compile Include="D3\GameBalance\GBHandle.cs" />
+    <Compile Include="D3\GameMessage\GameMessage.cs" />
+    <Compile Include="D3\Hero\Hero.cs" />
+    <Compile Include="D3\Hireling\Hireling.cs" />
+    <Compile Include="D3\ItemCrafting\ItemCrafting.cs" />
+    <Compile Include="D3\Items\Items.cs" />
+    <Compile Include="D3\OnlineService\OnlineService.cs" />
+    <Compile Include="D3\PartyMessage\PartyMessage.cs" />
+    <Compile Include="D3\Quests\Quest.cs" />
+    <Compile Include="D3\Stats\Stats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quest.cs" />
-    <Compile Include="service\authentication\authentication.cs" />
-    <Compile Include="service\channel\channel_types.cs" />
-    <Compile Include="service\channel\definition\channel.cs" />
-    <Compile Include="service\channel_invitation\channel_invitation_types.cs" />
-    <Compile Include="service\channel_invitation\definition\channel_invitation.cs" />
-    <Compile Include="service\chat\definition\chat.cs" />
-    <Compile Include="service\chat\definition\chat_types.cs" />
-    <Compile Include="service\exchange\exchange.cs" />
-    <Compile Include="service\exchange\exchange_types.cs" />
-    <Compile Include="service\followers\definition\followers.cs" />
-    <Compile Include="service\friends\definition\friends.cs" />
-    <Compile Include="service\friends\friends_types.cs" />
-    <Compile Include="service\game_master\game_factory.cs" />
-    <Compile Include="service\game_master\game_master.cs" />
-    <Compile Include="service\game_master\game_master_types.cs" />
-    <Compile Include="service\game_utilities\game_utilities.cs" />
-    <Compile Include="service\notification\notification.cs" />
-    <Compile Include="service\party\definition\party.cs" />
-    <Compile Include="service\presence\presence.cs" />
-    <Compile Include="service\presence\presence_types.cs" />
-    <Compile Include="service\search\search.cs" />
-    <Compile Include="service\search\search_types.cs" />
-    <Compile Include="service\server_pool\server_pool.cs" />
-    <Compile Include="service\storage\storage.cs" />
-    <Compile Include="service\toon\toon.cs" />
-    <Compile Include="service\toon\toon_external.cs" />
-    <Compile Include="service\user_manager\user_manager.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Stats.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
