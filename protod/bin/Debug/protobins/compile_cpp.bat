@@ -1,0 +1,57 @@
+@echo off
+
+protoc Account.proto --cpp_out=cpp/
+protoc AttributeSerializer.proto --cpp_out=cpp/
+protoc GameMessage.proto --cpp_out=cpp/
+protoc GBHandle.proto --cpp_out=cpp/
+protoc Hero.proto --cpp_out=cpp/
+protoc Hireling.proto --cpp_out=cpp/
+protoc ItemCrafting.proto --cpp_out=cpp/
+protoc Items.proto --cpp_out=cpp/
+protoc OnlineService.proto --cpp_out=cpp/
+protoc PartyMessage.proto --cpp_out=cpp/
+protoc Quest.proto --cpp_out=cpp/
+protoc Settings.proto --cpp_out=cpp/
+protoc Stats.proto --cpp_out=cpp/
+protoc google/protobuf/descriptor.proto --cpp_out=cpp/
+protoc lib/config/process_config.proto --cpp_out=cpp/
+protoc lib/profanity/profanity.proto --cpp_out=cpp/
+protoc lib/protocol/attribute.proto --cpp_out=cpp/
+protoc lib/protocol/content_handle.proto --cpp_out=cpp/
+protoc lib/protocol/descriptor.proto --cpp_out=cpp/
+protoc lib/protocol/entity.proto --cpp_out=cpp/
+protoc lib/protocol/exchange.proto --cpp_out=cpp/
+protoc lib/protocol/exchange_object_provider.proto --cpp_out=cpp/
+protoc lib/protocol/invitation.proto --cpp_out=cpp/
+protoc lib/protocol/resource.proto --cpp_out=cpp/
+protoc lib/rpc/connection.proto --cpp_out=cpp/
+protoc lib/rpc/rpc.proto --cpp_out=cpp/
+protoc service/authentication/authentication.proto --cpp_out=cpp/
+protoc service/chat/definition/chat.proto --cpp_out=cpp/
+protoc service/chat/definition/chat_types.proto --cpp_out=cpp/
+protoc service/followers/definition/followers.proto --cpp_out=cpp/
+protoc service/party/definition/party.proto --cpp_out=cpp/
+protoc service/channel/definition/channel.proto --cpp_out=cpp/
+protoc service/channel/channel_types.proto --cpp_out=cpp/
+protoc service/channel_invitation/definition/channel_invitation.proto --cpp_out=cpp/
+protoc service/channel_invitation/channel_invitation_types.proto --cpp_out=cpp/
+protoc service/exchange/exchange.proto --cpp_out=cpp/
+protoc service/exchange/exchange_types.proto --cpp_out=cpp/
+protoc service/friends/definition/friends.proto --cpp_out=cpp/
+protoc service/friends/friends_types.proto --cpp_out=cpp/
+protoc service/game_master/game_factory.proto --cpp_out=cpp/
+protoc service/game_master/game_master.proto --cpp_out=cpp/
+protoc service/game_master/game_master_types.proto --cpp_out=cpp/
+protoc service/game_utilities/game_utilities.proto --cpp_out=cpp/
+protoc service/notification/notification.proto --cpp_out=cpp/
+protoc service/presence/presence.proto --cpp_out=cpp/
+protoc service/presence/presence_types.proto --cpp_out=cpp/
+protoc service/search/search.proto --cpp_out=cpp/
+protoc service/search/search_types.proto --cpp_out=cpp/
+protoc service/server_pool/server_pool.proto --cpp_out=cpp/
+protoc service/storage/storage.proto --cpp_out=cpp/
+protoc service/toon/toon.proto --cpp_out=cpp/
+protoc service/toon/toon_external.proto --cpp_out=cpp/
+protoc service/user_manager/user_manager.proto --cpp_out=cpp/
+
+pause

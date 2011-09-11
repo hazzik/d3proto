@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d3emu", "d3emu\d3emu.csproj", "{7F964EC0-3ADE-4CEB-8022-E331542D3B40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d3proto", "d3proto\d3proto.csproj", "{B0053AAF-64CB-44DA-A7E4-E2B2E3F79E92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "protod", "protod\protod.csproj", "{BB4C14A2-C4F7-48BA-BFCD-096963A9E12E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F964EC0-3ADE-4CEB-8022-E331542D3B40}.Debug|x86.ActiveCfg = Debug|x86
+		{7F964EC0-3ADE-4CEB-8022-E331542D3B40}.Debug|x86.Build.0 = Debug|x86
+		{7F964EC0-3ADE-4CEB-8022-E331542D3B40}.Release|x86.ActiveCfg = Release|x86
+		{7F964EC0-3ADE-4CEB-8022-E331542D3B40}.Release|x86.Build.0 = Release|x86
+		{B0053AAF-64CB-44DA-A7E4-E2B2E3F79E92}.Debug|x86.ActiveCfg = Debug|x86
+		{B0053AAF-64CB-44DA-A7E4-E2B2E3F79E92}.Debug|x86.Build.0 = Debug|x86
+		{B0053AAF-64CB-44DA-A7E4-E2B2E3F79E92}.Release|x86.ActiveCfg = Release|x86
+		{B0053AAF-64CB-44DA-A7E4-E2B2E3F79E92}.Release|x86.Build.0 = Release|x86
+		{BB4C14A2-C4F7-48BA-BFCD-096963A9E12E}.Debug|x86.ActiveCfg = Debug|x86
+		{BB4C14A2-C4F7-48BA-BFCD-096963A9E12E}.Debug|x86.Build.0 = Debug|x86
+		{BB4C14A2-C4F7-48BA-BFCD-096963A9E12E}.Release|x86.ActiveCfg = Release|x86
+		{BB4C14A2-C4F7-48BA-BFCD-096963A9E12E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
