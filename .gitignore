@@ -10,9 +10,18 @@
 # Normal rules
 #
 
+*.proto
+*.proto.txt
+
+d3proto.suo
+
 d3emu/bin/
 d3emu/obj/
 d3proto/bin/
 d3proto/obj/
 protod/bin/
 protod/obj/
+
+tools/protod.exe
+tools/protod.pdb
+tools/protod.vshost.exe

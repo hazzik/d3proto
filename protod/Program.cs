@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
-using Label = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Label;
-using Type = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Type;
-using FileProto = Google.ProtocolBuffers.DescriptorProtos.FileDescriptorProto;
+using EnumValue = Google.ProtocolBuffers.Descriptors.EnumValueDescriptor;
 using FieldProto = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto;
 using FieldType = Google.ProtocolBuffers.Descriptors.FieldType;
-using EnumValue = Google.ProtocolBuffers.Descriptors.EnumValueDescriptor;
+using FileProto = Google.ProtocolBuffers.DescriptorProtos.FileDescriptorProto;
+using Label = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Label;
+using Type = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Type;
 
 namespace d3emu
 {
@@ -50,13 +51,15 @@ namespace d3emu
         {
             Console.WriteLine("protobin decompiler v0.2");
 
-            var files = Directory.GetFiles("protobins", "*.protobin", SearchOption.AllDirectories);
+            var files = Directory.GetFiles("..\\protobins", "*.protobin", SearchOption.AllDirectories);
 
             foreach (var file in files)
                 Protos.Add(FileProto.ParseFrom(File.ReadAllBytes(file)));
 
             foreach (var p in Protos)
                 ParseProtoBin(p);
+
+            Process.Start("xcopy", "..\\protobins\\*.proto ..\\tools /e /i /h /y");
 
             Console.WriteLine("Done! {0} files decompiled.", files.Length);
 
@@ -84,12 +87,12 @@ namespace d3emu
         {
             var dp = proto;
 
-            using (var w = new StreamWriter("protobins\\" + dp.Name + ".txt"))
+            using (var w = new StreamWriter("..\\protobins\\" + dp.Name + ".txt"))
             {
                 dp.PrintTo(w);
             }
 
-            using (var w = new StreamWriter("protobins\\" + dp.Name))
+            using (var w = new StreamWriter("..\\protobins\\" + dp.Name))
             {
                 foreach (var d in dp.DependencyList)
                 {
