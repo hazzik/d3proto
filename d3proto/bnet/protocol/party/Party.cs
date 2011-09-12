@@ -34,7 +34,7 @@ namespace bnet.protocol.party {
           "Y29sLmNoYW5uZWwuSm9pbkNoYW5uZWxSZXNwb25zZSIEgLUYAhJzCg5HZXRD" + 
           "aGFubmVsSW5mbxIsLmJuZXQucHJvdG9jb2wuY2hhbm5lbC5HZXRDaGFubmVs" + 
           "SW5mb1JlcXVlc3QaLS5ibmV0LnByb3RvY29sLmNoYW5uZWwuR2V0Q2hhbm5l" + 
-          "bEluZm9SZXNwb25zZSIEgLUYAw==");
+          "bEluZm9SZXNwb25zZSIEgLUYA0IDgAEA");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         pb::ExtensionRegistry registry = pb::ExtensionRegistry.CreateInstance();

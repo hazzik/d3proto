@@ -130,7 +130,7 @@ namespace bnet.protocol.friends {
           "b24aGi5ibmV0LnByb3RvY29sLk5PX1JFU1BPTlNFIgSAtRgEEnUKG05vdGlm" + 
           "eVNlbnRJbnZpdGF0aW9uUmVtb3ZlZBI0LmJuZXQucHJvdG9jb2wuZnJpZW5k" + 
           "cy5JbnZpdGF0aW9uUmVtb3ZlZE5vdGlmaWNhdGlvbhoaLmJuZXQucHJvdG9j" + 
-          "b2wuTk9fUkVTUE9OU0UiBIC1GAU=");
+          "b2wuTk9fUkVTUE9OU0UiBIC1GAVCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_friends_SubscribeToFriendsRequest__Descriptor = Descriptor.MessageTypes[0];

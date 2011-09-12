@@ -123,7 +123,7 @@ namespace bnet.protocol.user_manager {
           "Ym5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYARJzChhOb3RpZnlQbGF5" + 
           "ZXJCbG9ja1JlbW92ZWQSNS5ibmV0LnByb3RvY29sLnVzZXJfbWFuYWdlci5C" + 
           "bG9ja2VkUGxheWVyTm90aWZpY2F0aW9uGhouYm5ldC5wcm90b2NvbC5OT19S" + 
-          "RVNQT05TRSIEgLUYAg==");
+          "RVNQT05TRSIEgLUYAkIDgAEA");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_user_manager_PlayerReport__Descriptor = Descriptor.MessageTypes[0];

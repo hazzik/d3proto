@@ -74,7 +74,7 @@ namespace bnet.protocol.connection {
           "LmJuZXQucHJvdG9jb2wuY29ubmVjdGlvbi5FbmNyeXB0UmVxdWVzdBoVLmJu" + 
           "ZXQucHJvdG9jb2wuTm9EYXRhIgSAtRgGEmIKEVJlcXVlc3REaXNjb25uZWN0" + 
           "EisuYm5ldC5wcm90b2NvbC5jb25uZWN0aW9uLkRpc2Nvbm5lY3RSZXF1ZXN0" + 
-          "GhouYm5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYBw==");
+          "GhouYm5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYB0IDgAEA");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_connection_ConnectRequest__Descriptor = Descriptor.MessageTypes[0];

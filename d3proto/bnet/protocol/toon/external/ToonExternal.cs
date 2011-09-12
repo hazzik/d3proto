@@ -61,7 +61,7 @@ namespace bnet.protocol.toon.external {
           "YWwuQ3JlYXRlVG9vblJlc3BvbnNlIgSAtRgDEnMKCkRlbGV0ZVRvb24SLi5i" + 
           "bmV0LnByb3RvY29sLnRvb24uZXh0ZXJuYWwuRGVsZXRlVG9vblJlcXVlc3Qa" + 
           "Ly5ibmV0LnByb3RvY29sLnRvb24uZXh0ZXJuYWwuRGVsZXRlVG9vblJlc3Bv" + 
-          "bnNlIgSAtRgE");
+          "bnNlIgSAtRgEQgOAAQA=");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_toon_external_ToonListRequest__Descriptor = Descriptor.MessageTypes[0];

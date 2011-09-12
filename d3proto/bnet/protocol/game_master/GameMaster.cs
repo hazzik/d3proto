@@ -176,7 +176,7 @@ namespace bnet.protocol.game_master {
             "dGlvbhoaLmJuZXQucHJvdG9jb2wuTk9fUkVTUE9OU0UiBIC1GAEyfgoVR2Ft" + 
             "ZUZhY3RvcnlTdWJzY3JpYmVyEmUKD05vdGlmeUdhbWVGb3VuZBIwLmJuZXQu" + 
             "cHJvdG9jb2wuZ2FtZV9tYXN0ZXIuR2FtZUZvdW5kTm90aWZpY2F0aW9uGhou" + 
-            "Ym5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYAQ==");
+            "Ym5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYAUIDgAEA");
         pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
           descriptor = root;
           internal__static_bnet_protocol_game_master_JoinGameRequest__Descriptor = Descriptor.MessageTypes[0];

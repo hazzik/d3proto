@@ -35,7 +35,7 @@ namespace bnet.protocol.chat {
           "ZWwuQ3JlYXRlQ2hhbm5lbFJlc3BvbnNlIgSAtRgCEmoKC0pvaW5DaGFubmVs" + 
           "EikuYm5ldC5wcm90b2NvbC5jaGFubmVsLkpvaW5DaGFubmVsUmVxdWVzdBoq" + 
           "LmJuZXQucHJvdG9jb2wuY2hhbm5lbC5Kb2luQ2hhbm5lbFJlc3BvbnNlIgSA" + 
-          "tRgD");
+          "tRgDQgOAAQA=");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         pb::ExtensionRegistry registry = pb::ExtensionRegistry.CreateInstance();

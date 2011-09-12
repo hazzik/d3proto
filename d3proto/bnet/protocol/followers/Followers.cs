@@ -84,7 +84,7 @@ namespace bnet.protocol.followers {
           "ZXJzLlVwZGF0ZUZvbGxvd2VyU3RhdGVSZXNwb25zZSIEgLUYCDJ7Cg9Gb2xs" + 
           "b3dlcnNOb3RpZnkSaAoVTm90aWZ5Rm9sbG93ZXJSZW1vdmVkEi0uYm5ldC5w" + 
           "cm90b2NvbC5mb2xsb3dlcnMuRm9sbG93ZXJOb3RpZmljYXRpb24aGi5ibmV0" + 
-          "LnByb3RvY29sLk5PX1JFU1BPTlNFIgSAtRgB");
+          "LnByb3RvY29sLk5PX1JFU1BPTlNFIgSAtRgBQgOAAQA=");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_followers_FollowedUser__Descriptor = Descriptor.MessageTypes[0];

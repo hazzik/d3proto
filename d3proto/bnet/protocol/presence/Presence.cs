@@ -55,7 +55,7 @@ namespace bnet.protocol.presence {
           "cGRhdGUSJS5ibmV0LnByb3RvY29sLnByZXNlbmNlLlVwZGF0ZVJlcXVlc3Qa" + 
           "FS5ibmV0LnByb3RvY29sLk5vRGF0YSIEgLUYAxJaCgVRdWVyeRIkLmJuZXQu" + 
           "cHJvdG9jb2wucHJlc2VuY2UuUXVlcnlSZXF1ZXN0GiUuYm5ldC5wcm90b2Nv" + 
-          "bC5wcmVzZW5jZS5RdWVyeVJlc3BvbnNlIgSAtRgE");
+          "bC5wcmVzZW5jZS5RdWVyeVJlc3BvbnNlIgSAtRgEQgOAAQA=");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_presence_SubscribeRequest__Descriptor = Descriptor.MessageTypes[0];

@@ -126,7 +126,8 @@ namespace bnet.protocol.storage {
           "bC5zdG9yYWdlLk9wZW5UYWJsZVJlcXVlc3QaKC5ibmV0LnByb3RvY29sLnN0" + 
           "b3JhZ2UuT3BlblRhYmxlUmVzcG9uc2UiBIC1GAISZwoKT3BlbkNvbHVtbhIo" + 
           "LmJuZXQucHJvdG9jb2wuc3RvcmFnZS5PcGVuQ29sdW1uUmVxdWVzdBopLmJu" + 
-          "ZXQucHJvdG9jb2wuc3RvcmFnZS5PcGVuQ29sdW1uUmVzcG9uc2UiBIC1GAM=");
+          "ZXQucHJvdG9jb2wuc3RvcmFnZS5PcGVuQ29sdW1uUmVzcG9uc2UiBIC1GANC" + 
+          "A4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_storage_TableId__Descriptor = Descriptor.MessageTypes[0];

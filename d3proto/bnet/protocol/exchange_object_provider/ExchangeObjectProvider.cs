@@ -59,7 +59,7 @@ namespace bnet.protocol.exchange_object_provider {
           "eGNoYW5nZS5CbG9iRnJvbRITCgtkZXNjcmlwdGlvbhgCIAIoCRIOCgZhbW91" + 
           "bnQYAyABKAQiYwoZR2V0UGF5bWVudE1ldGhvZHNSZXNwb25zZRJGCgdtZXRo" + 
           "b2RzGAEgAygLMjUuYm5ldC5wcm90b2NvbC5leGNoYW5nZV9vYmplY3RfcHJv" + 
-          "dmlkZXIuUGF5bWVudE1ldGhvZA==");
+          "dmlkZXIuUGF5bWVudE1ldGhvZEIDgAEA");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_exchange_object_provider_ReportAuthorizeRequest__Descriptor = Descriptor.MessageTypes[0];

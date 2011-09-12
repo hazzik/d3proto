@@ -46,7 +46,7 @@ namespace bnet.protocol.server_pool {
           "b3RvY29sLnNlcnZlcl9wb29sLlNlcnZlckluZm8yhAEKEVNlcnZlclBvb2xT" + 
           "ZXJ2aWNlEm8KDEdldFBvb2xTdGF0ZRIrLmJuZXQucHJvdG9jb2wuc2VydmVy" + 
           "X3Bvb2wuUG9vbFN0YXRlUmVxdWVzdBosLmJuZXQucHJvdG9jb2wuc2VydmVy" + 
-          "X3Bvb2wuUG9vbFN0YXRlUmVzcG9uc2UiBIC1GAE=");
+          "X3Bvb2wuUG9vbFN0YXRlUmVzcG9uc2UiBIC1GAFCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_server_pool_GetLoadRequest__Descriptor = Descriptor.MessageTypes[0];

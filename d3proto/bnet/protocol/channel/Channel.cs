@@ -138,7 +138,7 @@ namespace bnet.protocol.channel {
             "bmVsU3RhdGVOb3RpZmljYXRpb24aGi5ibmV0LnByb3RvY29sLk5PX1JFU1BP" + 
             "TlNFIgSAtRgGEnEKF05vdGlmeVVwZGF0ZU1lbWJlclN0YXRlEjQuYm5ldC5w" + 
             "cm90b2NvbC5jaGFubmVsLlVwZGF0ZU1lbWJlclN0YXRlTm90aWZpY2F0aW9u" + 
-            "GhouYm5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYBw==");
+            "GhouYm5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYB0IDgAEA");
         pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
           descriptor = root;
           internal__static_bnet_protocol_channel_AddMemberRequest__Descriptor = Descriptor.MessageTypes[0];

@@ -32,7 +32,7 @@ namespace bnet.protocol.toon {
           "IkgKClRvb25IYW5kbGUSCgoCaWQYASACKAYSDwoHcHJvZ3JhbRgCIAIoBxIO" + 
           "CgZyZWdpb24YAyACKA0SDQoFcmVhbG0YBCACKA0iHQoIVG9vbk5hbWUSEQoJ" + 
           "ZnVsbF9uYW1lGAEgAigJIjYKCFRvb25JbmZvEioKBG5hbWUYASACKAsyHC5i" + 
-          "bmV0LnByb3RvY29sLnRvb24uVG9vbk5hbWU=");
+          "bmV0LnByb3RvY29sLnRvb24uVG9vbk5hbWVCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_toon_ToonHandle__Descriptor = Descriptor.MessageTypes[0];

@@ -77,7 +77,7 @@ namespace bnet.protocol.authentication {
           "Y29sLmF1dGhlbnRpY2F0aW9uLkxvZ29uUmVzcG9uc2UiC4C1GAGVtRgAABZE" + 
           "EmAKDU1vZHVsZU1lc3NhZ2USMi5ibmV0LnByb3RvY29sLmF1dGhlbnRpY2F0" + 
           "aW9uLk1vZHVsZU1lc3NhZ2VSZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5Ob0Rh" + 
-          "dGEiBIC1GAI=");
+          "dGEiBIC1GAJCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_authentication_ModuleLoadRequest__Descriptor = Descriptor.MessageTypes[0];

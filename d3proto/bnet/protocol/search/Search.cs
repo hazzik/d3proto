@@ -49,7 +49,7 @@ namespace bnet.protocol.search {
           "LlNldE9iamVjdFJlcXVlc3QaGi5ibmV0LnByb3RvY29sLk5PX1JFU1BPTlNF" + 
           "IgSAtRgCEl0KDVJlbW92ZU9iamVjdHMSKi5ibmV0LnByb3RvY29sLnNlYXJj" + 
           "aC5SZW1vdmVPYmplY3RzUmVxdWVzdBoaLmJuZXQucHJvdG9jb2wuTk9fUkVT" + 
-          "UE9OU0UiBIC1GAM=");
+          "UE9OU0UiBIC1GANCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_search_FindMatchesRequest__Descriptor = Descriptor.MessageTypes[0];

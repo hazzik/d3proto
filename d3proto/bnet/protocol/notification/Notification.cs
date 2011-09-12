@@ -61,7 +61,7 @@ namespace bnet.protocol.notification {
             "aWVudFJlc3BvbnNlIgSAtRgEMnwKFE5vdGlmaWNhdGlvbkxpc3RlbmVyEmQK" + 
             "Fk9uTm90aWZpY2F0aW9uUmVjZWl2ZWQSKC5ibmV0LnByb3RvY29sLm5vdGlm" + 
             "aWNhdGlvbi5Ob3RpZmljYXRpb24aGi5ibmV0LnByb3RvY29sLk5PX1JFU1BP" + 
-            "TlNFIgSAtRgB");
+            "TlNFIgSAtRgBQgOAAQA=");
         pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
           descriptor = root;
           internal__static_bnet_protocol_notification_Notification__Descriptor = Descriptor.MessageTypes[0];

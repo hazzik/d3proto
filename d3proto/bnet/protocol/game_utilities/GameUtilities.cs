@@ -121,7 +121,7 @@ namespace bnet.protocol.game_utilities {
             "ZXN0Gi8uYm5ldC5wcm90b2NvbC5nYW1lX3V0aWxpdGllcy5WYXJpYWJsZXNS" + 
             "ZXNwb25zZSIEgLUYCBJiCgdHZXRMb2FkEikuYm5ldC5wcm90b2NvbC5zZXJ2" + 
             "ZXJfcG9vbC5HZXRMb2FkUmVxdWVzdBomLmJuZXQucHJvdG9jb2wuc2VydmVy" + 
-            "X3Bvb2wuU2VydmVyU3RhdGUiBIC1GAk=");
+            "X3Bvb2wuU2VydmVyU3RhdGUiBIC1GAlCA4ABAA==");
         pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
           descriptor = root;
           internal__static_bnet_protocol_game_utilities_ClientRequest__Descriptor = Descriptor.MessageTypes[0];

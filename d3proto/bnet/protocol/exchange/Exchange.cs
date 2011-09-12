@@ -36,7 +36,7 @@ namespace bnet.protocol.exchange {
           "KAwSEgoKZXh0cmFfZGF0YRgDIAEoDCI8CgpCbG9iT2ZUeXBlEgwKBHR5cGUY" + 
           "ASACKAkSDAoEZGF0YRgCIAEoDBISCgpleHRyYV9kYXRhGAMgASgMIjwKDkJs" + 
           "b2JGcm9tT2ZUeXBlEg4KBnNvdXJjZRgBIAIoBxIMCgR0eXBlGAIgAigJEgwK" + 
-          "BGRhdGEYAyACKAw=");
+          "BGRhdGEYAyACKAxCA4ABAA==");
       pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
         descriptor = root;
         internal__static_bnet_protocol_exchange_PartitionId__Descriptor = Descriptor.MessageTypes[0];

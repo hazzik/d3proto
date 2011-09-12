@@ -4,6 +4,8 @@ using System.IO;
 
 using Label = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Label;
 using Type = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Type;
+using FileProto = Google.ProtocolBuffers.DescriptorProtos.FileDescriptorProto;
+using FieldProto = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto;
 
 namespace d3emu
 {
@@ -40,63 +42,52 @@ namespace d3emu
             { Type.TYPE_SINT64, "sint64" }
         };
 
-        class Ext
-        {
-            public string Name;
-            public int Number;
-            public Type Type;
-
-            public Ext(string e, int n, Type t)
-            {
-                Name = e;
-                Number = n;
-                Type = t;
-            }
-        }
-
-        static List<Ext> Extensions = new List<Ext>();
+        static List<FileProto> Protos = new List<FileProto>();
 
         static void Main(string[] args)
         {
-            Console.WriteLine("protobin decompiler v0.1");
+            Console.WriteLine("protobin decompiler v0.2");
 
             var files = Directory.GetFiles("protobins", "*.protobin", SearchOption.AllDirectories);
 
-            // called twice for a reason, don't touch
             foreach (var file in files)
-                ParseProtoBin(file);
+                Protos.Add(FileProto.ParseFrom(File.ReadAllBytes(file)));
 
-            foreach (var file in files)
-                ParseProtoBin(file);
+            foreach (var p in Protos)
+                ParseProtoBin(p);
 
             Console.WriteLine("Done! {0} files decompiled.", files.Length);
 
             Console.ReadKey();
         }
 
-        static Ext GetExtByNumber(int num)
+        static FieldProto GetExtFieldDescriptorById(int num)
         {
-            foreach (var e in Extensions)
-                if (e.Number == num)
-                    return e;
+            foreach (var p in Protos)
+            {
+                if (p.ExtensionCount == 0)
+                    continue;
+
+                foreach (var e in p.ExtensionList)
+                {
+                    if (e.Number == num)
+                        return e;
+                }
+            }
 
             return null;
         }
 
-        private static void ParseProtoBin(string file)
+        private static void ParseProtoBin(FileProto proto)
         {
-            var stream = new FileStream(file, FileMode.Open);
+            var dp = proto;
 
-            var dp = Google.ProtocolBuffers.DescriptorProtos.FileDescriptorProto.ParseFrom(stream);
-
-            using (var w = new StreamWriter(file + ".txt"))
+            using (var w = new StreamWriter("protobins\\" + dp.Name + ".txt"))
             {
                 dp.PrintTo(w);
             }
 
-            var fn = file.Substring(0, file.Length - 3);
-
-            using (var w = new StreamWriter(fn))
+            using (var w = new StreamWriter("protobins\\" + dp.Name))
             {
                 foreach (var d in dp.DependencyList)
                 {
@@ -112,14 +103,14 @@ namespace d3emu
                     w.WriteLine();
                 }
 
-                //if (dp.HasOptions)
-                //{
-                //    if (dp.Options.HasCcGenericServices)
-                //    {
-                //        w.WriteLine("option cc_generic_services = {0};", dp.Options.CcGenericServices.ToString().ToLower());
-                //        w.WriteLine();
-                //    }
-                //}
+                if (dp.HasOptions)
+                {
+                    if (dp.Options.HasCcGenericServices)
+                    {
+                        w.WriteLine("option cc_generic_services = {0};", dp.Options.CcGenericServices.ToString().ToLower());
+                        w.WriteLine();
+                    }
+                }
 
                 foreach (var m in dp.MessageTypeList)
                 {
@@ -207,8 +198,6 @@ namespace d3emu
 
                     foreach (var ext in m.ExtensionList)
                     {
-                        Extensions.Add(new Ext(ext.Name, ext.Number, ext.Type));
-
                         w.WriteLine("    extend {0}", ext.Extendee);
                         w.WriteLine("    {");
                         {
@@ -231,7 +220,7 @@ namespace d3emu
 
                     foreach (var m in s.MethodList)
                     {
-                        w.Write("    rpc {0}({1}) returns ({2})", m.Name, m.InputType, m.OutputType);
+                        w.Write("    rpc {0}({1}) returns({2})", m.Name, m.InputType, m.OutputType);
 
                         if (m.HasOptions)
                         {
@@ -240,25 +229,22 @@ namespace d3emu
 
                             foreach (var o in m.Options.UnknownFields.FieldDictionary)
                             {
-                                var ext = GetExtByNumber(o.Key);
-
-                                if (ext == null)
-                                    continue;
+                                var fdp = GetExtFieldDescriptorById(o.Key);
 
                                 if (o.Value.VarintList.Count > 0)
                                 {
-                                    w.WriteLine("        option ({0}) = {1};", ext.Name, o.Value.VarintList[0]);
+                                    w.WriteLine("        option ({0}) = {1};", fdp.Name, o.Value.VarintList[0]);
                                 }
                                 else if (o.Value.Fixed32List.Count > 0)
                                 {
-                                    if (ext.Type == Type.TYPE_FLOAT)
+                                    if (fdp.Type == Type.TYPE_FLOAT)
                                     {
                                         var value = BitConverter.ToSingle(BitConverter.GetBytes(o.Value.Fixed32List[0]), 0);
-                                        w.WriteLine("        option ({0}) = {1};", ext.Name, value);
+                                        w.WriteLine("        option ({0}) = {1};", fdp.Name, value);
                                     }
                                     else
                                     {
-                                        w.WriteLine("        option ({0}) = {1};", ext.Name, o.Value.Fixed32List[0]);
+                                        w.WriteLine("        option ({0}) = {1};", fdp.Name, o.Value.Fixed32List[0]);
                                     }
                                 }
                                 else
@@ -268,8 +254,6 @@ namespace d3emu
                         }
                         else
                             w.WriteLine(";");
-
-                        //w.WriteLine("    rpc {0}({1}) returns ({2});", m.Name, m.InputType, m.OutputType);
                     }
 
                     w.WriteLine("}");
@@ -290,8 +274,6 @@ namespace d3emu
 
                 foreach (var ext in dp.ExtensionList)
                 {
-                    Extensions.Add(new Ext(ext.Name, ext.Number, ext.Type));
-
                     w.WriteLine("extend {0}", ext.Extendee);
                     w.WriteLine("{");
                     {
@@ -304,8 +286,6 @@ namespace d3emu
                     w.WriteLine();
                 }
             }
-
-            stream.Close();
         }
     }
 }
