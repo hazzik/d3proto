@@ -6,6 +6,8 @@ using Label = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types
 using Type = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.Type;
 using FileProto = Google.ProtocolBuffers.DescriptorProtos.FileDescriptorProto;
 using FieldProto = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto;
+using FieldType = Google.ProtocolBuffers.Descriptors.FieldType;
+using EnumValue = Google.ProtocolBuffers.Descriptors.EnumValueDescriptor;
 
 namespace d3emu
 {
@@ -105,11 +107,17 @@ namespace d3emu
 
                 if (dp.HasOptions)
                 {
-                    if (dp.Options.HasCcGenericServices)
+                    foreach (var o in dp.Options.AllFields)
                     {
-                        w.WriteLine("option cc_generic_services = {0};", dp.Options.CcGenericServices.ToString().ToLower());
-                        w.WriteLine();
+                        if (o.Key.FieldType == FieldType.Enum)
+                            w.WriteLine("option {0} = {1};", o.Key.Name, ((EnumValue)o.Value).Name);
+                        else if (o.Key.FieldType == FieldType.String)
+                            w.WriteLine("option {0} = \"{1}\";", o.Key.Name, o.Value);
+                        else
+                            w.WriteLine("option {0} = {1};", o.Key.Name, o.Value.ToString().ToLower());
                     }
+
+                    w.WriteLine();
                 }
 
                 foreach (var m in dp.MessageTypeList)
