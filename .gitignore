@@ -25,3 +25,4 @@ protod/obj/
 tools/protod.exe
 tools/protod.pdb
 tools/protod.vshost.exe
+tools/protod.vshost.exe.manifest

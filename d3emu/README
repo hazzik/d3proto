@@ -1,0 +1,3 @@
+0. Nothing working yet.
+1. Start server.
+2. Start game with command line: "Diablo III.exe" -launch -w -auroraaddress 127.0.0.1:6666
