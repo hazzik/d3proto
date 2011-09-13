@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using bnet.protocol;
 using bnet.protocol.authentication;
 using bnet.protocol.connection;
+using System.Text;
 //using BattleNet.Server;
 
 namespace d3emu
@@ -204,11 +205,36 @@ namespace d3emu
 
             // response.ModuleHandle.Region: US
             // response.ModuleHandle.Usage: auth
-            // response.ModuleHandle.Hash: ... (SHA256 of module file)
+            // response.ModuleHandle.Hash: 8f52906a2c85b416a595702251570f96d3522f39237603115f2f1ab24962043c (SHA256 of auth module file)
             // response.message: ... (SRP parameters?)
+            // message format:
+            // size for command 1 is 321 bytes
+            //     byte command;
+            //     if (command == 0 || command == 1)
+            //     {
+            //         if (command == 0)
+            //             byte accountSalt[32];
+            //         byte passwordSalt[32];
+            //         byte serverChallenge[128];
+            //         byte secondaryChallenge[128];
+            //     }
+            //     else if (command == 2)
+            //     {
+            //         // empty?
+            //     }
+            //     else if (command == 3)
+            //     {
+            //         byte M2[32];
+            //         byte data2[128]; // for veryfing secondaryChallenge
+            //     }
             var response = ModuleLoadRequest.CreateBuilder().MergeFrom(hexBytes).Build();
 
-            Console.WriteLine(response.ToString());
+            Console.WriteLine("Region: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(response.ModuleHandle.Region).Reverse().ToArray()));
+            Console.WriteLine("Usage: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(response.ModuleHandle.Usage).Reverse().ToArray()));
+            Console.WriteLine("Hash: {0:X8}", response.ModuleHandle.Hash.ToByteArray().ToHexString());
+            Console.WriteLine("Message: {0:X8}", response.Message.ToByteArray().ToHexString());
+
+            var msgSize = response.Message.ToByteArray().Length;
 
             var header = new byte[] { 0x03, 0x01, 0x00, 0x00, 0x02, 0xF2, 0x02 }; // response.SerializedSize doesn't work in this case
 
@@ -244,7 +270,7 @@ namespace d3emu
             Send(s, header);
         }
     }
-    
+
     public static class Extenstions
     {
         public static uint ToUnixTime(this DateTime time)
@@ -273,6 +299,41 @@ namespace d3emu
                 res[i] = Convert.ToByte(temp, 16);
             }
             return res;
+        }
+
+        public static string ToHexDump(this byte[] byteArray)
+        {
+            var retStr = String.Empty;
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                if (i > 0 && ((i % 16) == 0))
+                    retStr += Environment.NewLine;
+                retStr += byteArray[i].ToString("X2") + " ";
+            }
+            retStr += Environment.NewLine;
+            return retStr;
+        }
+
+        public static string ToHexString(this byte[] byteArray)
+        {
+            string retStr = "";
+            foreach (byte b in byteArray)
+                retStr += b.ToString("x2");
+            return retStr;
+        }
+
+        public static bool CompareTo(this byte[] byteArray, byte[] second)
+        {
+            if (byteArray.Length != second.Length)
+                return false;
+
+            for (var i = 0; i < byteArray.Length; ++i)
+            {
+                if (second[i] != byteArray[i])
+                    return false;
+            }
+
+            return true;
         }
     }
 }
