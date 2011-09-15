@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Linq;
+using System.Numerics;
+using System.Net.Sockets;
+using Google.ProtocolBuffers;
 
 namespace d3emu
 {
-    public static class Extenstions
+    public static class Extensions
     {
         public static uint ToUnixTime(this DateTime time)
         {
@@ -65,6 +69,37 @@ namespace d3emu
             }
 
             return true;
+        }
+
+        public static BigInteger BigIntFromArray(byte[] src)
+        {
+            return new BigInteger(new byte[0]
+                .Concat(src)
+                .Concat(new byte[] { 0 })
+                .ToArray());
+        }
+
+        public static bool IsConnected(this Socket socket)
+        {
+            try
+            {
+                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+        }
+
+        public static short ReadInt16(this CodedInputStream s)
+        {
+            return BitConverter.ToInt16(s.ReadRawBytes(2), 0);
+        }
+
+        public static M ReadMessage<M, B>(this CodedInputStream s, IBuilderLite builder) where M : IMessage<M, B> where B : IBuilder<M, B>
+        {
+            s.ReadMessage(builder, ExtensionRegistry.Empty);
+            return (M)((B)builder).Build();
         }
     }
 }

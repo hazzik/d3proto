@@ -2,24 +2,30 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using bnet.protocol;
 using bnet.protocol.authentication;
 using bnet.protocol.connection;
-using System.Text;
-//using BattleNet.Server;
+using Google.ProtocolBuffers;
 
 namespace d3emu
 {
     class Program
     {
+        //private static TcpListener m_server;
+
         private static Socket m_socket;
-        //private static int _previousChannel;
+
+        private static byte m_service1;
+        private static byte m_service2;
+
+        private const byte PrevService = 0xFE;
 
         static void Main(string[] args)
         {
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            m_socket.Bind(new IPEndPoint(IPAddress.Loopback, 6666));
+            m_socket.Bind(new IPEndPoint(IPAddress.Any, 6666));
 
             m_socket.Listen(10);
 
@@ -28,30 +34,39 @@ namespace d3emu
 
         static void Accept()
         {
-            //_previousChannel = 0;
-
             Console.WriteLine("Accept");
 
             var s = m_socket.Accept();
-
-            var buffer = new byte[1024];
 
             while (true)
             {
                 try
                 {
-                    var len = s.Receive(buffer);
+                    if (!s.IsConnected())
+                        break;
 
-                    if (len > 0)
+                    if (s.Available > 0)
                     {
-                        Console.WriteLine("Received data: length = {0}", len);
+                        var buffer = new byte[s.Available];
 
-                        var newBuf = new byte[len];
-                        Array.Copy(buffer, newBuf, newBuf.Length);
+                        var len = s.Receive(buffer);
 
-                        PrintHex(newBuf);
+                        if (len > 0)
+                        {
+                            Console.WriteLine("Received data: length = {0}", len);
 
-                        Handle(s, newBuf);
+                            var newBuf = new byte[len];
+                            Array.Copy(buffer, newBuf, newBuf.Length);
+
+                            PrintHex(newBuf);
+
+                            Handle(s, newBuf);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Disconnected!");
+                            break;
+                        }
                     }
                 }
                 catch
@@ -89,88 +104,45 @@ namespace d3emu
         // first 6 bytes of the packet _probably_ bitstream protocol similar to wow/sc2?
         static void Handle(Socket s, byte[] buf)
         {
-            //var reader = new BitReader(buf.Take(5).ToArray());
+            // Read header
+            var input = CodedInputStream.CreateInstance(buf);
+            var service = input.ReadRawByte();
+            var method = input.ReadInt32();
+            var reqId = input.ReadInt16();
+            var unk = (long)0;
 
-            //while (reader.ReadPos < reader.NumBits)
-            //{
-            //    int packetId = reader.ReadInt32(6);
-            //    bool hasChannel = reader.ReadBoolean();
+            if (service != PrevService)
+                unk = input.ReadInt64();
 
-            //    int channelId;
-
-            //    if (hasChannel) // If we have a channel specified
-            //        channelId = _previousChannel = reader.ReadInt32(4);
-            //    else
-            //        channelId = _previousChannel;
-
-            //    switch (channelId)
-            //    {
-            //        case 0: // App
-            //            Console.WriteLine("PacketID: {0} hasChannel: {1} ChannelID: {2} App", packetId, hasChannel, channelId);
-            //            // handle data
-            //            if (packetId == 1)
-            //            {
-            //                var unk1 = reader.ReadInt32();
-            //                //HandleConnectRequest(s, buf);
-            //            }
-            //            if (packetId == 2)
-            //            {
-            //                var index = reader.ReadByte();
-            //                var unk1 = reader.ReadByte(); // 0
-            //                var unk2 = reader.ReadByte(); // 0
-            //                //HandleBindRequest(s, buf);
-            //            }
-            //            if (packetId == 31)
-            //            {
-            //                var unk1 = reader.ReadInt32();
-            //                //HandleLogonRequest(s, buf);
-            //            }
-            //            break;
-            //        case 1: // Crep
-            //            Console.WriteLine("PacketID: {0} hasChannel: {1} ChannelID: {2} Crep", packetId, hasChannel, channelId);
-            //            // handle data
-            //            break;
-            //        case 2: // Wow
-            //            Console.WriteLine("PacketID: {0} hasChannel: {1} ChannelID: {2} Wow", packetId, hasChannel, channelId);
-            //            // handle data
-            //            break;
-            //        case 3: // sc2?
-            //        case 4: // d3?
-            //        default:
-            //            Console.WriteLine("Unknown channel: PacketID: {0} hasChannel: {1} ChannelID: {2}", packetId, hasChannel, channelId);
-            //            break;
-            //    }
-            //}
-
-            if (buf[0] == 0x00 && buf[1] == 0x01)
+            if (service == 0 && method == 1)
             {
-                HandleConnectRequest(s, buf);
+                HandleConnectRequest(s, input);
             }
-            else if (buf[1] == 0x02)
+            else if (service == 0 && method == 2)
             {
-                if (buf[2] == 0x01 || buf[2] == 0x02)
-                {
-                    HandleBindRequest(s, buf);
-                }
+                HandleBindRequest(s, input, reqId);
             }
-            else if (buf[1] == 0x01)
+            else if (service == m_service2 && method == 1)
             {
-                HandleLogonRequest(s, buf);
+                HandleLogonRequest(s, input);
+            }
+            else if (service == m_service2 && method == 2) // ?
+            {
+                HandleEncryptRequest(s, input);   // may be EncryptRequest
+            }
+            else if (service == PrevService)
+            {
+                Console.WriteLine("Response to previous service");
             }
             else
             {
-                // may be EncryptRequest
-                HandleEncryptRequest(s, buf);
                 Console.WriteLine("Unknown crap");
             }
         }
 
-        private static void HandleConnectRequest(Socket s, byte[] buf)
+        private static void HandleConnectRequest(Socket s, CodedInputStream input)
         {
-            var newRequest = ConnectRequest.CreateBuilder();
-            newRequest.MergeFrom(buf.Skip(6).ToArray());
-
-            var request = newRequest.Build();
+            var request = input.ReadMessage<ConnectRequest, ConnectRequest.Builder>(ConnectRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString()); // empty
 
@@ -180,20 +152,19 @@ namespace d3emu
 
             Console.WriteLine(response.ToString());
 
+            // TODO: use CodedOutputStream
             var header = new byte[] { 0xfe, 0x00, 0x00, 0x00, (byte)response.SerializedSize };
 
             Send(s, header.Append(response.ToByteArray()));
         }
 
-        private static void HandleLogonRequest(Socket s, byte[] buf)
+        private static void HandleLogonRequest(Socket s, CodedInputStream input)
         {
-            var newRequest = LogonRequest.CreateBuilder();
-            newRequest.MergeFrom(buf.Skip(6).ToArray());
-
-            var request = newRequest.Build();
+            var request = input.ReadMessage<LogonRequest, LogonRequest.Builder>(LogonRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString());
 
+            // this probably should not be here
             //var response = LogonResponse.CreateBuilder()
             //    .SetAccount(EntityId.CreateBuilder().SetHigh(12345).SetLow(67890))
             //    .SetGameAccount(EntityId.CreateBuilder().SetHigh(67890).SetLow(12345)).Build();
@@ -206,9 +177,8 @@ namespace d3emu
             // response.ModuleHandle.Region: US
             // response.ModuleHandle.Usage: auth
             // response.ModuleHandle.Hash: 8f52906a2c85b416a595702251570f96d3522f39237603115f2f1ab24962043c (SHA256 of auth module file)
-            // response.message: ... (SRP parameters)
-            // message format:
-            // size for command 1 is 321 bytes
+            // response.Message: ... (SRP parameters)
+            // response.Message structure:
             //     byte command;
             //     if (command == 0 || command == 1)
             //     {
@@ -236,23 +206,25 @@ namespace d3emu
             Console.WriteLine("Hash: {0:X8}", response.ModuleHandle.Hash.ToByteArray().ToHexString());
             Console.WriteLine("Message: {0:X8}", response.Message.ToByteArray().ToHexString());
 
-            var msgSize = response.Message.ToByteArray().Length;
-
+            // TODO: use CodedOutputStream
             var header = new byte[] { 0x03, 0x01, 0x00, 0x00, 0x02, 0xF2, 0x02 }; // response.SerializedSize doesn't work in this case
 
             Send(s, header.Append(response.ToByteArray()));
         }
 
-        private static void HandleBindRequest(Socket s, byte[] buf)
+        private static void HandleBindRequest(Socket s, CodedInputStream input, int reqId)
         {
-            var newRequest = BindRequest.CreateBuilder();
-            newRequest.MergeFrom(buf.Skip(6).ToArray());
-
-            var request = newRequest.Build();
+            var request = input.ReadMessage<BindRequest, BindRequest.Builder>(BindRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString());
 
             var newResponse = BindResponse.CreateBuilder();
+
+            if (reqId == 1)
+                m_service1 = (byte)request.ExportedServiceList[0].Id;
+            else if (reqId == 2)
+                m_service2 = (byte)request.ExportedServiceList[0].Id;
+
             foreach (var e in request.ExportedServiceList)
                 newResponse.AddImportedServiceId(e.Id);
 
@@ -260,13 +232,15 @@ namespace d3emu
 
             Console.WriteLine(response.ToString());
 
-            var header = new byte[] { 0xfe, 0x00, buf[2], 0x00, (byte)response.SerializedSize };
+            // TODO: use CodedOutputStream
+            var header = new byte[] { 0xfe, 0x00, (byte)reqId, 0x00, (byte)response.SerializedSize };
 
             Send(s, header.Append(response.ToByteArray()));
         }
 
-        private static void HandleEncryptRequest(Socket s, byte[] buf)
+        private static void HandleEncryptRequest(Socket s, CodedInputStream input)
         {
+            // TODO: use CodedOutputStream
             var header = new byte[] { 0xFE, 0x03, 0x03, 0x00, 0x00 }; // wrong password response?
 
             Send(s, header);

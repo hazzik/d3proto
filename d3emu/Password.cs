@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Numerics;
 
 namespace d3emu
 {
@@ -328,24 +329,27 @@ namespace d3emu
 
             var g = new byte[] { 0x04 };
 
-            var m_N = new BigInt(N);
-            var m_Unknown = new BigInt(Unknown);
-            var m_g = new BigInt(g);
-            var m_UNKN = new BigInt(data2);
-            var m_B = new BigInt(secondChallenge);
+            var m_N = Extensions.BigIntFromArray(N);
+            var m_Unknown = Extensions.BigIntFromArray(Unknown);
+            var m_g = Extensions.BigIntFromArray(g);
+            var m_UNKN = Extensions.BigIntFromArray(data2);
+            var m_B = Extensions.BigIntFromArray(secondChallenge);
 
             // check secondChallenge
             var m_Ndiv2 = m_N / 2;
-            if (m_B.ModPow(m_Ndiv2, m_N) != 1)
+            if (BigInteger.ModPow(m_B, m_Ndiv2, m_N) != 1) // if (m_B.ModPow(m_Ndiv2, m_N) != 1)
                 return false;
 
             var hmac = new HMACSHA512(accountNameBytes);
             var HMAC = hmac.ComputeHash(seed);
 
-            var m_HMAC = new BigInt(HMAC);
+            var m_HMAC = Extensions.BigIntFromArray(HMAC);
 
-            var m_g2 = m_g.ModPow(m_UNKN, m_N);
-            var m_Unknown2 = m_Unknown.ModPow(m_HMAC, m_N);
+            //var m_g2 = m_g.ModPow(m_UNKN, m_N);
+            var m_g2 = BigInteger.ModPow(m_g, m_UNKN, m_N);
+
+            //var m_Unknown2 = m_Unknown.ModPow(m_HMAC, m_N);
+            var m_Unknown2 = BigInteger.ModPow(m_Unknown, m_HMAC, m_N);
 
             var m_clientB = (m_g2 * m_Unknown2) % m_N;
 
@@ -408,15 +412,15 @@ namespace d3emu
         // .text:389614F0 SRP6__CalculateM1
         private void SRP6_CalcM1(byte[] U, byte[] p, byte[] s, byte[] B, out byte[] A, out byte[] M1, out byte[] K)
         {
-            var bn_g = new BigInt(g);
+            var bn_g = Extensions.BigIntFromArray(g);
 
-            var bn_N = new BigInt(N);
+            var bn_N = Extensions.BigIntFromArray(N);
 
-            var bn_B = new BigInt(B);
+            var bn_B = Extensions.BigIntFromArray(B);
 
             var bn_k = Calc_k();
 
-            var bn_a = new BigInt(GetRandomBytes(128));
+            var bn_a = Extensions.BigIntFromArray(GetRandomBytes(128));
 
             Console.WriteLine("a: {0}{1}", Environment.NewLine, bn_a.ToByteArray().ToHexDump());
 
@@ -461,7 +465,7 @@ namespace d3emu
             return I;
         }
 
-        private static BigInt Calc_S(BigInt bn_g, BigInt bn_N, BigInt bn_B, BigInt bn_k, BigInt bn_a, BigInt bn_x, BigInt bn_u)
+        private static BigInteger Calc_S(BigInteger g, BigInteger N, BigInteger B, BigInteger k, BigInteger a, BigInteger x, BigInteger u)
         {
             // why the fuck it doesn't work?
             //var bn_v = bn_g.ModPow(bn_x, bn_N);
@@ -475,18 +479,21 @@ namespace d3emu
             //Console.WriteLine("S: {0}{1}", Environment.NewLine, bn_S.ToByteArray().ToHexDump());
             //return bn_S;
 
-            var S = (bn_B + (bn_N - ((bn_k * bn_g.ModPow(bn_x, bn_N)) % bn_N))).ModPow(bn_a + bn_u * bn_x, bn_N);
+            //var S = (B + (N - ((k * g.ModPow(x, N)) % N))).ModPow(a + u * x, N);
+            //return S;
+            var S = BigInteger.ModPow(B + (N - ((k * BigInteger.ModPow(g, x, N)) % N)), a + u * x, N);
             return S;
         }
 
-        private static BigInt Calc_A(BigInt bn_g, BigInt bn_N, BigInt bn_a)
+        private static BigInteger Calc_A(BigInteger g, BigInteger N, BigInteger a)
         {
-            var bn_A = bn_g.ModPow(bn_a, bn_N);
+            //var bn_A = g.ModPow(a, N);
+            var bn_A = BigInteger.ModPow(g, a, N);
             Console.WriteLine("A: {0}{1}", Environment.NewLine, bn_A.ToByteArray().ToHexDump());
             return bn_A;
         }
 
-        private static BigInt Calc_u(byte[] B, byte[] A)
+        private static BigInteger Calc_u(byte[] B, byte[] A)
         {
             var AB = new byte[0]
                 .Concat(A)
@@ -495,7 +502,7 @@ namespace d3emu
 
             var u = SHA256Managed.Create().ComputeHash(AB);
             Console.WriteLine("u: {0}{1}", Environment.NewLine, u.ToHexDump());
-            return new BigInt(u);
+            return Extensions.BigIntFromArray(u);
         }
 
         private byte[] Calc_K(byte[] S)
@@ -532,7 +539,7 @@ namespace d3emu
             return K;
         }
 
-        private static BigInt Calc_x(byte[] U, byte[] p, byte[] s)
+        private static BigInteger Calc_x(byte[] U, byte[] p, byte[] s)
         {
             var U_p_Bytes = new byte[0]
                 .Concat(U)
@@ -551,7 +558,7 @@ namespace d3emu
 
             var x = SHA256Managed.Create().ComputeHash(x_Bytes);
             Console.WriteLine("x: {0}{1}", Environment.NewLine, x.ToHexDump());
-            return new BigInt(x);
+            return Extensions.BigIntFromArray(x);
         }
 
         private byte[] Hash_g_and_N_and_xor_them()
@@ -567,7 +574,7 @@ namespace d3emu
             return hash_N;
         }
 
-        private BigInt Calc_k()
+        private BigInteger Calc_k()
         {
             var N_g_bytes = new byte[0]
                 .Concat(N)
@@ -576,7 +583,7 @@ namespace d3emu
 
             var k = SHA256Managed.Create().ComputeHash(N_g_bytes);
             Console.WriteLine("k: {0}{1}", Environment.NewLine, k.ToHexDump());
-            return new BigInt(k);
+            return Extensions.BigIntFromArray(k);
         }
     }
 }
