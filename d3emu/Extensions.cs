@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Numerics;
 using System.Net.Sockets;
+using System.Numerics;
 using Google.ProtocolBuffers;
 
 namespace d3emu
@@ -94,6 +94,20 @@ namespace d3emu
         public static short ReadInt16(this CodedInputStream s)
         {
             return BitConverter.ToInt16(s.ReadRawBytes(2), 0);
+        }
+
+        public static int ReadInt32(this CodedInputStream s)
+        {
+            int ret = 0;
+            s.ReadInt32(ref ret);
+            return ret;
+        }
+
+        public static long ReadInt64(this CodedInputStream s)
+        {
+            long ret = 0;
+            s.ReadInt64(ref ret);
+            return ret;
         }
 
         public static M ReadMessage<M, B>(this CodedInputStream s, IBuilderLite builder) where M : IMessage<M, B> where B : IBuilder<M, B>

@@ -23,6 +23,10 @@ namespace d3emu
 
         static void Main(string[] args)
         {
+            new Test();
+
+            Console.ReadKey();
+
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             m_socket.Bind(new IPEndPoint(IPAddress.Any, 6666));
@@ -101,7 +105,6 @@ namespace d3emu
             s.Send(data);
         }
 
-        // first 6 bytes of the packet _probably_ bitstream protocol similar to wow/sc2?
         static void Handle(Socket s, byte[] buf)
         {
             // Read header
