@@ -1,6 +1,6 @@
 @echo off
 
-protogen --proto_path=./ Account.proto --include_imports -ignore_google_protobuf=true -ignore_google_protobuf=true -cls_compliance=false -expand_namespace_directories=true -service_generator_type=GENERIC -output_directory=./csharp
+protogen --proto_path=./ Account.proto --include_imports -ignore_google_protobuf=true -cls_compliance=false -expand_namespace_directories=true -service_generator_type=GENERIC -output_directory=./csharp
 protogen --proto_path=./ AttributeSerializer.proto --include_imports -ignore_google_protobuf=true -cls_compliance=false -expand_namespace_directories=true -service_generator_type=GENERIC -output_directory=./csharp
 protogen --proto_path=./ GameMessage.proto --include_imports -ignore_google_protobuf=true -cls_compliance=false -expand_namespace_directories=true -service_generator_type=GENERIC -output_directory=./csharp
 protogen --proto_path=./ GBHandle.proto --include_imports -ignore_google_protobuf=true -cls_compliance=false -expand_namespace_directories=true -service_generator_type=GENERIC -output_directory=./csharp

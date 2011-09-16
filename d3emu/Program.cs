@@ -23,9 +23,10 @@ namespace d3emu
 
         static void Main(string[] args)
         {
+            //var s = Services.ServicesDict[0];
             //new Test();
 
-            Console.ReadKey();
+            //Console.ReadKey();
 
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 

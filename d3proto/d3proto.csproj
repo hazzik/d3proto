@@ -72,7 +72,10 @@
     <Compile Include="bnet\protocol\ContentHandle.cs" />
     <Compile Include="bnet\protocol\Descriptor.cs" />
     <Compile Include="bnet\protocol\Entity.cs" />
-    <Compile Include="bnet\protocol\exchange\Exchange.cs" />
+    <Compile Include="bnet\protocol\exchange\Exchange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="bnet\protocol\exchange\ExchangeService.cs" />
     <Compile Include="bnet\protocol\exchange\ExchangeTypes.cs" />
     <Compile Include="bnet\protocol\exchange_object_provider\ExchangeObjectProvider.cs" />
     <Compile Include="bnet\protocol\followers\Followers.cs" />
