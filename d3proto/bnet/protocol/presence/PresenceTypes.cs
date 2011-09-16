@@ -135,7 +135,7 @@ namespace bnet.protocol.presence {
     public const int FieldFieldNumber = 3;
     private bool hasField;
     private uint field_;
-    public bool HasField {
+    public new bool HasField {
       get { return hasField; }
     }
     public uint Field {
@@ -409,7 +409,7 @@ namespace bnet.protocol.presence {
         return this;
       }
       
-      public bool HasField {
+      public new bool HasField {
         get { return result.hasField; }
       }
       public uint Field {
@@ -824,7 +824,7 @@ namespace bnet.protocol.presence {
     public const int FieldFieldNumber = 1;
     private bool hasField;
     private global::bnet.protocol.presence.Field field_ = global::bnet.protocol.presence.Field.DefaultInstance;
-    public bool HasField {
+    public new bool HasField {
       get { return hasField; }
     }
     public global::bnet.protocol.presence.Field Field {
@@ -1048,7 +1048,7 @@ namespace bnet.protocol.presence {
       }
       
       
-      public bool HasField {
+      public new bool HasField {
        get { return result.hasField; }
       }
       public global::bnet.protocol.presence.Field Field {

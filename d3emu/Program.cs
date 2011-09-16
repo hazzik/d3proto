@@ -23,7 +23,7 @@ namespace d3emu
 
         static void Main(string[] args)
         {
-            new Test();
+            //new Test();
 
             Console.ReadKey();
 
@@ -107,33 +107,25 @@ namespace d3emu
 
         static void Handle(Socket s, byte[] buf)
         {
-            // Read header
-            var input = CodedInputStream.CreateInstance(buf);
-            var service = input.ReadRawByte();
-            var method = input.ReadInt32();
-            var reqId = input.ReadInt16();
-            var unk = (long)0;
+            var packet = new ClientPacket(buf);
 
-            if (service != PrevService)
-                unk = input.ReadInt64();
-
-            if (service == 0 && method == 1)
+            if (packet.Service == 0 && packet.Method == 1)
             {
-                HandleConnectRequest(s, input);
+                HandleConnectRequest(s, packet);
             }
-            else if (service == 0 && method == 2)
+            else if (packet.Service == 0 && packet.Method == 2)
             {
-                HandleBindRequest(s, input, reqId);
+                HandleBindRequest(s, packet);
             }
-            else if (service == m_service2 && method == 1)
+            else if (packet.Service == m_service2 && packet.Method == 1)
             {
-                HandleLogonRequest(s, input);
+                HandleLogonRequest(s, packet);
             }
-            else if (service == m_service2 && method == 2) // ?
+            else if (packet.Service == m_service2 && packet.Method == 2) // ?
             {
-                HandleEncryptRequest(s, input);   // may be EncryptRequest
+                HandleEncryptRequest(s, packet);   // may be EncryptRequest
             }
-            else if (service == PrevService)
+            else if (packet.Service == PrevService)
             {
                 Console.WriteLine("Response to previous service");
             }
@@ -143,7 +135,7 @@ namespace d3emu
             }
         }
 
-        private static void HandleConnectRequest(Socket s, CodedInputStream input)
+        private static void HandleConnectRequest(Socket s, ClientPacket input)
         {
             var request = input.ReadMessage<ConnectRequest, ConnectRequest.Builder>(ConnectRequest.CreateBuilder());
 
@@ -155,19 +147,43 @@ namespace d3emu
 
             Console.WriteLine(response.ToString());
 
-            // TODO: use CodedOutputStream
-            var header = new byte[] { 0xfe, 0x00, 0x00, 0x00, (byte)response.SerializedSize };
+            var data = new ServerPacket(PrevService, 0, 0, 0).WriteMessage(response);
 
-            Send(s, header.Append(response.ToByteArray()));
+            Send(s, data);
         }
 
-        private static void HandleLogonRequest(Socket s, CodedInputStream input)
+        private static void HandleBindRequest(Socket s, ClientPacket input)
+        {
+            var request = input.ReadMessage<BindRequest, BindRequest.Builder>(BindRequest.CreateBuilder());
+
+            Console.WriteLine(request.ToString());
+
+            var newResponse = BindResponse.CreateBuilder();
+
+            if (input.RequestId == 1)
+                m_service1 = (byte)request.ExportedServiceList[0].Id;
+            else if (input.RequestId == 2)
+                m_service2 = (byte)request.ExportedServiceList[0].Id;
+
+            foreach (var e in request.ExportedServiceList)
+                newResponse.AddImportedServiceId(e.Id);
+
+            var response = newResponse.Build();
+
+            Console.WriteLine(response.ToString());
+
+            var data = new ServerPacket(PrevService, 0, input.RequestId, 0).WriteMessage(response);
+
+            Send(s, data);
+        }
+
+        private static void HandleLogonRequest(Socket s, ClientPacket input)
         {
             var request = input.ReadMessage<LogonRequest, LogonRequest.Builder>(LogonRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString());
 
-            // this probably should not be here
+            // this should not be here
             //var response = LogonResponse.CreateBuilder()
             //    .SetAccount(EntityId.CreateBuilder().SetHigh(12345).SetLow(67890))
             //    .SetGameAccount(EntityId.CreateBuilder().SetHigh(67890).SetLow(12345)).Build();
@@ -209,44 +225,16 @@ namespace d3emu
             Console.WriteLine("Hash: {0:X8}", response.ModuleHandle.Hash.ToByteArray().ToHexString());
             Console.WriteLine("Message: {0:X8}", response.Message.ToByteArray().ToHexString());
 
-            // TODO: use CodedOutputStream
-            var header = new byte[] { 0x03, 0x01, 0x00, 0x00, 0x02, 0xF2, 0x02 }; // response.SerializedSize doesn't work in this case
+            var data = new ServerPacket(3, 1, 0, 2).WriteMessage(response);
 
-            Send(s, header.Append(response.ToByteArray()));
+            Send(s, data);
         }
 
-        private static void HandleBindRequest(Socket s, CodedInputStream input, int reqId)
+        private static void HandleEncryptRequest(Socket s, ClientPacket input)
         {
-            var request = input.ReadMessage<BindRequest, BindRequest.Builder>(BindRequest.CreateBuilder());
+            var data = new ServerPacket(PrevService, 3, 3, 0).WriteMessage(NO_RESPONSE.CreateBuilder().Build());
 
-            Console.WriteLine(request.ToString());
-
-            var newResponse = BindResponse.CreateBuilder();
-
-            if (reqId == 1)
-                m_service1 = (byte)request.ExportedServiceList[0].Id;
-            else if (reqId == 2)
-                m_service2 = (byte)request.ExportedServiceList[0].Id;
-
-            foreach (var e in request.ExportedServiceList)
-                newResponse.AddImportedServiceId(e.Id);
-
-            var response = newResponse.Build();
-
-            Console.WriteLine(response.ToString());
-
-            // TODO: use CodedOutputStream
-            var header = new byte[] { 0xfe, 0x00, (byte)reqId, 0x00, (byte)response.SerializedSize };
-
-            Send(s, header.Append(response.ToByteArray()));
-        }
-
-        private static void HandleEncryptRequest(Socket s, CodedInputStream input)
-        {
-            // TODO: use CodedOutputStream
-            var header = new byte[] { 0xFE, 0x03, 0x03, 0x00, 0x00 }; // wrong password response?
-
-            Send(s, header);
+            Send(s, data);
         }
     }
 }

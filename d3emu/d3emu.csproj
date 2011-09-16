@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientPacket.cs" />
+    <Compile Include="ServerPacket.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Password.cs" />
     <Compile Include="Program.cs" />

@@ -1295,7 +1295,7 @@ namespace bnet.protocol.storage {
     public const int FieldFieldNumber = 2;
     private bool hasField;
     private global::bnet.protocol.Path field_ = global::bnet.protocol.Path.DefaultInstance;
-    public bool HasField {
+    public new bool HasField {
       get { return hasField; }
     }
     public global::bnet.protocol.Path Field {
@@ -1527,7 +1527,7 @@ namespace bnet.protocol.storage {
         return this;
       }
       
-      public bool HasField {
+      public new bool HasField {
        get { return result.hasField; }
       }
       public global::bnet.protocol.Path Field {

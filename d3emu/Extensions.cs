@@ -115,5 +115,10 @@ namespace d3emu
             s.ReadMessage(builder, ExtensionRegistry.Empty);
             return (M)((B)builder).Build();
         }
+
+        public static void WriteInt16(this CodedOutputStream s, short value)
+        {
+            s.WriteRawBytes(BitConverter.GetBytes(value));
+        }
     }
 }
