@@ -110,13 +110,7 @@ namespace d3emu
             return ret;
         }
 
-        public static M ReadMessage<M, B>(this CodedInputStream s, IBuilderLite builder) where M : IMessage<M, B> where B : IBuilder<M, B>
-        {
-            s.ReadMessage(builder, ExtensionRegistry.Empty);
-            return (M)((B)builder).Build();
-        }
-
-        public static void WriteInt16(this CodedOutputStream s, short value)
+        public static void WriteInt16NoTag(this CodedOutputStream s, short value)
         {
             s.WriteRawBytes(BitConverter.GetBytes(value));
         }

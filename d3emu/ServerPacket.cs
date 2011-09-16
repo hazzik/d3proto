@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using Google.ProtocolBuffers;
-using System.IO;
 
 namespace d3emu
 {
@@ -20,7 +16,7 @@ namespace d3emu
             // Write header
             m_stream.WriteRawByte(service);
             m_stream.WriteInt32NoTag(method);
-            m_stream.WriteInt16(requestId);
+            m_stream.WriteInt16NoTag(requestId);
 
             if (service != 0xFE)
                 m_stream.WriteInt64NoTag(unk1);

@@ -6,7 +6,6 @@ using System.Text;
 using bnet.protocol;
 using bnet.protocol.authentication;
 using bnet.protocol.connection;
-using Google.ProtocolBuffers;
 
 namespace d3emu
 {
@@ -21,6 +20,11 @@ namespace d3emu
 
         private const byte PrevService = 0xFE;
 
+        /// <summary>
+        /// FNV hash implementation
+        /// </summary>
+        /// <param name="name">Service name</param>
+        /// <returns>Service hash</returns>
         static uint GetServiceHash(string name)
         {
             var bytes = Encoding.ASCII.GetBytes(name);
@@ -36,12 +40,10 @@ namespace d3emu
 
         static void Main(string[] args)
         {
-            var hash = GetServiceHash("bnet.protocol.authentication.AuthenticationClient");
-
-            //var s = Services.ServicesDict[0];
-            //new Test();
-
-            //Console.ReadKey();
+            //var hash1 = GetServiceHash("bnet.protocol.authentication.AuthenticationClient");
+            //var hash2 = GetServiceHash("bnet.protocol.connection.ConnectionService");
+            //var hash3 = GetServiceHash("bnet.protocol.game_master.GameMasterSubscriber");
+            //var hash4 = GetServiceHash("bnet.protocol.server_pool.ServerPoolService");
 
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -153,7 +155,7 @@ namespace d3emu
 
         private static void HandleConnectRequest(Socket s, ClientPacket input)
         {
-            var request = input.ReadMessage<ConnectRequest, ConnectRequest.Builder>(ConnectRequest.CreateBuilder());
+            var request = input.ReadMessage(ConnectRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString()); // empty
 
@@ -170,7 +172,7 @@ namespace d3emu
 
         private static void HandleBindRequest(Socket s, ClientPacket input)
         {
-            var request = input.ReadMessage<BindRequest, BindRequest.Builder>(BindRequest.CreateBuilder());
+            var request = input.ReadMessage(BindRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString());
 
@@ -195,11 +197,11 @@ namespace d3emu
 
         private static void HandleLogonRequest(Socket s, ClientPacket input)
         {
-            var request = input.ReadMessage<LogonRequest, LogonRequest.Builder>(LogonRequest.CreateBuilder());
+            var request = input.ReadMessage(LogonRequest.CreateBuilder());
 
             Console.WriteLine(request.ToString());
 
-            // this should not be here
+            //// this should not be here
             //var response = LogonResponse.CreateBuilder()
             //    .SetAccount(EntityId.CreateBuilder().SetHigh(12345).SetLow(67890))
             //    .SetGameAccount(EntityId.CreateBuilder().SetHigh(67890).SetLow(12345)).Build();

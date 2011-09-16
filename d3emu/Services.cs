@@ -13,6 +13,7 @@ using bnet.protocol.notification;
 using bnet.protocol.party;
 using bnet.protocol.presence;
 using bnet.protocol.search;
+using bnet.protocol.server_pool;
 using bnet.protocol.storage;
 using bnet.protocol.toon.external;
 using bnet.protocol.user_manager;
@@ -40,7 +41,7 @@ namespace d3emu
             { 0xa3ddb1bd, FriendsService.Descriptor },
             { 0x6f259a13, FriendsNotify.Descriptor },
             { 0x810cb195, GameMaster.Descriptor },
-            // GameMasterSubscriber ???
+            { 0x5772ab33, GameMasterSubscriber.Descriptor },
             { 0xc6f9ccc5, GameFactorySubscriber.Descriptor },
             { 0x3fc1274d, GameUtilities.Descriptor },
             { 0x0cbe3c43, NotificationService.Descriptor },
@@ -48,11 +49,11 @@ namespace d3emu
             { 0xf4e7fa35, PartyService.Descriptor },
             { 0xfa0796ff, PresenceService.Descriptor },
             { 0x0a24a291, SearchService.Descriptor },
-            // ServerPoolService ???
+            { 0x67960c70, ServerPoolService.Descriptor },
             { 0xda6e4bb9, StorageService.Descriptor },
             { 0x4124c31b, ToonServiceExternal.Descriptor },
             { 0x3e19268a, UserManagerService.Descriptor },
-            { 0xbc872c22, UserManagerNotify.Descriptor },
+            { 0xbc872c22, UserManagerNotify.Descriptor }
         };
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Google.ProtocolBuffers;
 
 namespace d3emu
@@ -52,16 +49,16 @@ namespace d3emu
                 m_unk1 = m_stream.ReadInt64();
         }
 
-        public M ReadMessage<M, B>(IBuilderLite builder)
-            where M : IMessage<M, B>
-            where B : IBuilder<M, B>
+        public TMessage ReadMessage<TMessage, TBuilder>(IBuilder<TMessage, TBuilder> builder)
+            where TMessage : IMessage<TMessage, TBuilder>
+            where TBuilder : IBuilder<TMessage, TBuilder>
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
 
             if (!m_stream.IsAtEnd)
                 throw new Exception("Packet under read!");
 
-            return (M)((B)builder).Build();
+            return builder.Build();
         }
     }
 }
