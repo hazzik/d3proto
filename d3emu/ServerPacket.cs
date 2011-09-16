@@ -5,8 +5,8 @@ namespace d3emu
 {
     class ServerPacket
     {
-        private CodedOutputStream m_stream;
-        private MemoryStream m_memStream;
+        private readonly CodedOutputStream m_stream;
+        private readonly MemoryStream m_memStream;
 
         public ServerPacket(byte service, int method, short requestId, long unk1)
         {

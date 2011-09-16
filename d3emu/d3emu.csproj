@@ -47,6 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
+    <Compile Include="ServicesImpl\AuthenticationServerImpl.cs" />
+    <Compile Include="ServicesImpl\ChannelImpl.cs" />
+    <Compile Include="ServicesImpl\ChannelInvitationNotifyImpl.cs" />
+    <Compile Include="ServicesImpl\ChannelInvitationServiceImpl.cs" />
+    <Compile Include="ServicesImpl\ChannelOwnerImpl.cs" />
+    <Compile Include="ServicesImpl\ChannelSubscriberImpl.cs" />
+    <Compile Include="ServicesImpl\ChatServiceImpl.cs" />
+    <Compile Include="ServicesImpl\ConnectionServiceImpl.cs" />
+    <Compile Include="ServicesImpl\AuthenticationClientImpl.cs" />
     <Compile Include="ClientPacket.cs" />
     <Compile Include="ServerPacket.cs" />
     <Compile Include="Extensions.cs" />
@@ -54,6 +64,26 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.cs" />
+    <Compile Include="ServicesImpl\ExchangeNotifyImpl.cs" />
+    <Compile Include="ServicesImpl\ExchangeServiceImpl.cs" />
+    <Compile Include="ServicesImpl\FollowersNotifyImpl.cs" />
+    <Compile Include="ServicesImpl\FollowersServiceImpl.cs" />
+    <Compile Include="ServicesImpl\FriendsNotifyImpl.cs" />
+    <Compile Include="ServicesImpl\FriendsServiceImpl.cs" />
+    <Compile Include="ServicesImpl\GameFactorySubscriberImpl.cs" />
+    <Compile Include="ServicesImpl\GameMasterImpl.cs" />
+    <Compile Include="ServicesImpl\GameMasterSubscriberImpl.cs" />
+    <Compile Include="ServicesImpl\GameUtilitiesImpl.cs" />
+    <Compile Include="ServicesImpl\NotificationListenerImpl.cs" />
+    <Compile Include="ServicesImpl\NotificationServiceImpl.cs" />
+    <Compile Include="ServicesImpl\PartyServiceImpl.cs" />
+    <Compile Include="ServicesImpl\PresenceServiceImpl.cs" />
+    <Compile Include="ServicesImpl\SearchServiceImpl.cs" />
+    <Compile Include="ServicesImpl\ServerPoolServiceImpl.cs" />
+    <Compile Include="ServicesImpl\StorageServiceImpl.cs" />
+    <Compile Include="ServicesImpl\ToonServiceExternalImpl.cs" />
+    <Compile Include="ServicesImpl\UserManagerNotifyImpl.cs" />
+    <Compile Include="ServicesImpl\UserManagerServiceImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\d3proto\d3proto.csproj">

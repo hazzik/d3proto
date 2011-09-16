@@ -13,16 +13,19 @@
 *.proto
 *.proto.txt
 
-d3proto.suo
+*.suo
+*.user
 
-d3emu/bin/
-d3emu/obj/
-d3proto/bin/
-d3proto/obj/
-protod/bin/
-protod/obj/
+_ReSharper.*/
+
+*/bin/
+*/obj/
 
 tools/protod.exe
 tools/protod.pdb
 tools/protod.vshost.exe
 tools/protod.vshost.exe.manifest
+
+_ReSharper.*/
+*.user
+*.suo

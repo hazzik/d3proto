@@ -51,10 +51,7 @@ namespace d3emu
 
         public static string ToHexString(this byte[] byteArray)
         {
-            string retStr = "";
-            foreach (byte b in byteArray)
-                retStr += b.ToString("x2");
-            return retStr;
+            return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
         }
 
         public static bool CompareTo(this byte[] byteArray, byte[] second)
@@ -62,13 +59,7 @@ namespace d3emu
             if (byteArray.Length != second.Length)
                 return false;
 
-            for (var i = 0; i < byteArray.Length; ++i)
-            {
-                if (second[i] != byteArray[i])
-                    return false;
-            }
-
-            return true;
+            return !byteArray.Where((t, i) => second[i] != t).Any();
         }
 
         public static BigInteger BigIntFromArray(byte[] src)

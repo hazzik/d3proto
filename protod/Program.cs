@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using Google.ProtocolBuffers;
 
 using EnumValue = Google.ProtocolBuffers.Descriptors.EnumValueDescriptor;
 using FieldProto = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto;
@@ -12,42 +14,42 @@ using Type = Google.ProtocolBuffers.DescriptorProtos.FieldDescriptorProto.Types.
 
 namespace d3emu
 {
-    class Program
+    internal class Program
     {
-        static readonly Dictionary<Label, string> Labels = new Dictionary<Label, string>
-        {
-            { default(Label), "unknown" },
-            { Label.LABEL_OPTIONAL, "optional" },
-            { Label.LABEL_REQUIRED, "required" },
-            { Label.LABEL_REPEATED, "repeated" }
-        };
+        private static readonly Dictionary<Label, string> Labels = new Dictionary<Label, string>
+                                                                       {
+                                                                           {default(Label), "unknown"},
+                                                                           {Label.LABEL_OPTIONAL, "optional"},
+                                                                           {Label.LABEL_REQUIRED, "required"},
+                                                                           {Label.LABEL_REPEATED, "repeated"}
+                                                                       };
 
-        static readonly Dictionary<Type, string> Types = new Dictionary<Type, string>
-        {
-            { default(Type), "unknown" },
-            { Type.TYPE_DOUBLE, "double" },
-            { Type.TYPE_FLOAT, "float" },
-            { Type.TYPE_INT64, "int64" },
-            { Type.TYPE_UINT64, "uint64" },
-            { Type.TYPE_INT32, "int32" },
-            { Type.TYPE_FIXED64, "fixed64" },
-            { Type.TYPE_FIXED32, "fixed32" },
-            { Type.TYPE_BOOL, "bool" },
-            { Type.TYPE_STRING, "string" },
-            { Type.TYPE_GROUP, "group" },
-            { Type.TYPE_MESSAGE, "message" },
-            { Type.TYPE_BYTES, "bytes" },
-            { Type.TYPE_UINT32, "uint32" },
-            { Type.TYPE_ENUM, "enum" },
-            { Type.TYPE_SFIXED32, "sfixed32" },
-            { Type.TYPE_SFIXED64, "sfixed64" },
-            { Type.TYPE_SINT32, "sint32" },
-            { Type.TYPE_SINT64, "sint64" }
-        };
+        private static readonly Dictionary<Type, string> Types = new Dictionary<Type, string>
+                                                                     {
+                                                                         {default(Type), "unknown"},
+                                                                         {Type.TYPE_DOUBLE, "double"},
+                                                                         {Type.TYPE_FLOAT, "float"},
+                                                                         {Type.TYPE_INT64, "int64"},
+                                                                         {Type.TYPE_UINT64, "uint64"},
+                                                                         {Type.TYPE_INT32, "int32"},
+                                                                         {Type.TYPE_FIXED64, "fixed64"},
+                                                                         {Type.TYPE_FIXED32, "fixed32"},
+                                                                         {Type.TYPE_BOOL, "bool"},
+                                                                         {Type.TYPE_STRING, "string"},
+                                                                         {Type.TYPE_GROUP, "group"},
+                                                                         {Type.TYPE_MESSAGE, "message"},
+                                                                         {Type.TYPE_BYTES, "bytes"},
+                                                                         {Type.TYPE_UINT32, "uint32"},
+                                                                         {Type.TYPE_ENUM, "enum"},
+                                                                         {Type.TYPE_SFIXED32, "sfixed32"},
+                                                                         {Type.TYPE_SFIXED64, "sfixed64"},
+                                                                         {Type.TYPE_SINT32, "sint32"},
+                                                                         {Type.TYPE_SINT64, "sint64"}
+                                                                     };
 
-        static List<FileProto> Protos = new List<FileProto>();
+        private static readonly List<FileProto> Protos = new List<FileProto>();
 
-        static void Main(string[] args)
+        private static void Main()
         {
             Console.WriteLine("protobin decompiler v0.2");
 
@@ -59,6 +61,8 @@ namespace d3emu
             foreach (var p in Protos)
                 ParseProtoBin(p);
 
+            GenerateServices();
+
             Process.Start("xcopy", "..\\protobins\\*.proto ..\\tools /e /i /h /y");
 
             Console.WriteLine("Done! {0} files decompiled.", files.Length);
@@ -66,32 +70,92 @@ namespace d3emu
             Console.ReadKey();
         }
 
-        static FieldProto GetExtFieldDescriptorById(int num)
+        private static void GenerateServices()
         {
-            foreach (var p in Protos)
+            using (var w = new StreamWriter(File.Open(@"..\d3emu\Services.cs", FileMode.Truncate, FileAccess.Write)))
             {
-                if (p.ExtensionCount == 0)
-                    continue;
+                w.WriteLine(@"using System.Collections.Generic;");
+                w.WriteLine();
+                w.WriteLine("namespace d3emu");
+                w.WriteLine("{");
+                w.WriteLine(Indent(1, "public class Services"));
+                w.WriteLine(Indent(1, "{"));
+                w.WriteLine(Indent(2, "public static readonly IDictionary<string, IDictionary<int, string>> Methods ="));
+                w.WriteLine(Indent(3, "new Dictionary<string, IDictionary<int, string>>"));
+                w.WriteLine(Indent(4, "{"));
 
-                foreach (var e in p.ExtensionList)
+                foreach (var s in Protos.SelectMany(dp => dp.ServiceList))
                 {
-                    if (e.Number == num)
-                        return e;
+                    w.WriteLine(Indent(5, "{"));
+                    w.WriteLine(Indent(6, "\"{0}\",", s.Name));
+                    w.WriteLine(Indent(6, "new Dictionary<int, string>"));
+                    w.WriteLine(Indent(7, "{"));
+                    foreach (var m in s.MethodList)
+                    {
+                        if (m.HasOptions)
+                        {
+                            foreach (var o in m.Options.UnknownFields.FieldDictionary)
+                            {
+                                var fdp = GetExtFieldDescriptorById(o.Key);
+                                var value = GetValue(fdp, o.Value);
+                                if (fdp.Name == "method_id")
+                                {
+                                    w.WriteLine(Indent(8, "{{{0}, \"{1}\"}},", value, m.Name));
+                                }
+                            }
+                        }
+                    }
+                    w.WriteLine(Indent(7, "}"));
+                    w.WriteLine(Indent(6, "},"));
                 }
+                w.WriteLine(Indent(4, "};"));
+                w.WriteLine(Indent(1, "}"));
+                w.WriteLine("}");
+                w.Flush();
             }
+        }
 
-            return null;
+        public static string Indent(int indent, string value)
+        {
+            return string.Format("{0}{1}", string.Join("", Enumerable.Repeat("\t", indent)), value);
+        }
+
+        public static string Indent(int indent, string format, params object[] values)
+        {
+            return Indent(indent, string.Format(format, values));
+        }
+
+        private static FieldProto GetExtFieldDescriptorById(int num)
+        {
+            return Protos.Where(p => p.ExtensionCount != 0)
+                .SelectMany(p => p.ExtensionList)
+                .FirstOrDefault(e => e.Number == num);
         }
 
         private static void ParseProtoBin(FileProto proto)
         {
             var dp = proto;
 
-            using (var w = new StreamWriter("..\\protobins\\" + dp.Name + ".txt"))
-            {
-                dp.PrintTo(w);
-            }
+            SaveTxt(dp);
 
+            SaveProto(dp);
+
+        }
+
+        private static object GetValue(FieldProto fdp, UnknownField unknownField)
+        {
+            if (unknownField.VarintList.Count > 0) return unknownField.VarintList[0];
+            if (unknownField.Fixed32List.Count > 0)
+            {
+                if (fdp.Type == Type.TYPE_FLOAT)
+                    return BitConverter.ToSingle(BitConverter.GetBytes(unknownField.Fixed32List[0]), 0);
+                return unknownField.Fixed32List[0];
+            }
+            throw new Exception();
+        }
+
+        private static void SaveProto(FileProto dp)
+        {
             using (var w = new StreamWriter("..\\protobins\\" + dp.Name))
             {
                 foreach (var d in dp.DependencyList)
@@ -113,7 +177,7 @@ namespace d3emu
                     foreach (var o in dp.Options.AllFields)
                     {
                         if (o.Key.FieldType == FieldType.Enum)
-                            w.WriteLine("option {0} = {1};", o.Key.Name, ((EnumValue)o.Value).Name);
+                            w.WriteLine("option {0} = {1};", o.Key.Name, ((EnumValue) o.Value).Name);
                         else if (o.Key.FieldType == FieldType.String)
                             w.WriteLine("option {0} = \"{1}\";", o.Key.Name, o.Value);
                         else
@@ -134,10 +198,7 @@ namespace d3emu
                         w.WriteLine("    {");
                         foreach (var ef in n.FieldList)
                         {
-                            if (ef.HasTypeName)
-                                w.WriteLine("        {0} {1} {2} = {3};", Labels[ef.Label], ef.TypeName, ef.Name, ef.Number);
-                            else
-                                w.WriteLine("        {0} {1} {2} = {3};", Labels[ef.Label], Types[ef.Type], ef.Name, ef.Number);
+                            w.WriteLine("        {0} {1} {2} = {3};", Labels[ef.Label], GetTypeName(ef), ef.Name, ef.Number);
                         }
                         w.WriteLine("    }");
                         w.WriteLine();
@@ -162,36 +223,17 @@ namespace d3emu
                     {
                         if (f.HasDefaultValue)
                         {
-                            if (f.Type == Type.TYPE_STRING) // string need to be in quotes
-                            {
-                                if (f.HasTypeName)
-                                    w.WriteLine("    {0} {1} {2} = {3} [default = \"{4}\"];", Labels[f.Label], f.TypeName, f.Name, f.Number, f.DefaultValue);
-                                else
-                                    w.WriteLine("    {0} {1} {2} = {3} [default = \"{4}\"];", Labels[f.Label], Types[f.Type], f.Name, f.Number, f.DefaultValue);
-                            }
-                            else
-                            {
-                                if (f.HasTypeName)
-                                    w.WriteLine("    {0} {1} {2} = {3} [default = {4}];", Labels[f.Label], f.TypeName, f.Name, f.Number, f.DefaultValue);
-                                else
-                                    w.WriteLine("    {0} {1} {2} = {3} [default = {4}];", Labels[f.Label], Types[f.Type], f.Name, f.Number, f.DefaultValue);
-                            }
+                            w.WriteLine("    {0} {1} {2} = {3} [default = {4}];", Labels[f.Label], GetTypeName(f), f.Name, f.Number, f.Type == Type.TYPE_STRING ? string.Format("\"{0}\"", f.DefaultValue) : f.DefaultValue);
                         }
                         else
                         {
                             if (f.HasOptions && f.Options.HasPacked)
                             {
-                                if (f.HasTypeName)
-                                    w.WriteLine("    {0} {1} {2} = {3} [packed={4}];", Labels[f.Label], f.TypeName, f.Name, f.Number, f.Options.Packed.ToString().ToLower());
-                                else
-                                    w.WriteLine("    {0} {1} {2} = {3} [packed={4}];", Labels[f.Label], Types[f.Type], f.Name, f.Number, f.Options.Packed.ToString().ToLower());
+                                w.WriteLine("    {0} {1} {2} = {3} [packed={4}];", Labels[f.Label], GetTypeName(f), f.Name, f.Number, f.Options.Packed.ToString().ToLower());
                             }
                             else
                             {
-                                if (f.HasTypeName)
-                                    w.WriteLine("    {0} {1} {2} = {3};", Labels[f.Label], f.TypeName, f.Name, f.Number);
-                                else
-                                    w.WriteLine("    {0} {1} {2} = {3};", Labels[f.Label], Types[f.Type], f.Name, f.Number);
+                                w.WriteLine("    {0} {1} {2} = {3};", Labels[f.Label], GetTypeName(f), f.Name, f.Number);
                             }
                         }
                     }
@@ -201,7 +243,8 @@ namespace d3emu
 
                     foreach (var er in m.ExtensionRangeList)
                     {
-                        w.WriteLine("    extensions {0} to {1};", er.Start, er.End == 0x20000000 ? "max" : er.End.ToString());
+                        w.WriteLine("    extensions {0} to {1};", er.Start,
+                                    er.End == 0x20000000 ? "max" : er.End.ToString());
                     }
 
                     //if (m.ExtensionRangeCount > 0)
@@ -212,10 +255,7 @@ namespace d3emu
                         w.WriteLine("    extend {0}", ext.Extendee);
                         w.WriteLine("    {");
                         {
-                            if (ext.HasTypeName)
-                                w.WriteLine("        {0} {1} {2} = {3};", Labels[ext.Label], ext.TypeName, ext.Name, ext.Number);
-                            else
-                                w.WriteLine("        {0} {1} {2} = {3};", Labels[ext.Label], Types[ext.Type], ext.Name, ext.Number);
+                            w.WriteLine("        {0} {1} {2} = {3};", Labels[ext.Label], GetTypeName(ext), ext.Name, ext.Number);
                         }
                         w.WriteLine("    }");
                     }
@@ -242,24 +282,7 @@ namespace d3emu
                             {
                                 var fdp = GetExtFieldDescriptorById(o.Key);
 
-                                if (o.Value.VarintList.Count > 0)
-                                {
-                                    w.WriteLine("        option ({0}) = {1};", fdp.Name, o.Value.VarintList[0]);
-                                }
-                                else if (o.Value.Fixed32List.Count > 0)
-                                {
-                                    if (fdp.Type == Type.TYPE_FLOAT)
-                                    {
-                                        var value = BitConverter.ToSingle(BitConverter.GetBytes(o.Value.Fixed32List[0]), 0);
-                                        w.WriteLine("        option ({0}) = {1};", fdp.Name, value);
-                                    }
-                                    else
-                                    {
-                                        w.WriteLine("        option ({0}) = {1};", fdp.Name, o.Value.Fixed32List[0]);
-                                    }
-                                }
-                                else
-                                    throw new Exception();
+                                w.WriteLine("        option ({0}) = {1};", fdp.Name, GetValue(fdp, o.Value));
                             }
                             w.WriteLine("    }");
                         }
@@ -288,14 +311,24 @@ namespace d3emu
                     w.WriteLine("extend {0}", ext.Extendee);
                     w.WriteLine("{");
                     {
-                        if (ext.HasTypeName)
-                            w.WriteLine("    {0} {1} {2} = {3};", Labels[ext.Label], ext.TypeName, ext.Name, ext.Number);
-                        else
-                            w.WriteLine("    {0} {1} {2} = {3};", Labels[ext.Label], Types[ext.Type], ext.Name, ext.Number);
+                        w.WriteLine("    {0} {1} {2} = {3};", Labels[ext.Label], GetTypeName(ext), ext.Name, ext.Number);
                     }
                     w.WriteLine("}");
                     w.WriteLine();
                 }
+            }
+        }
+
+        private static string GetTypeName(FieldProto ext)
+        {
+            return ext.HasTypeName ? ext.TypeName : Types[ext.Type];
+        }
+
+        private static void SaveTxt(FileProto dp)
+        {
+            using (var w = new StreamWriter("..\\protobins\\" + dp.Name + ".txt"))
+            {
+                dp.PrintTo(w);
             }
         }
     }
