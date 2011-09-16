@@ -6311,103 +6311,137 @@ namespace bnet.protocol.storage {
   #endregion
   
   #region Services
-  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.3.0.277")]
-  public partial interface IStorageService {
-    global::bnet.protocol.storage.ExecuteResponse Execute(global::bnet.protocol.storage.ExecuteRequest executeRequest);
-    global::bnet.protocol.storage.OpenTableResponse OpenTable(global::bnet.protocol.storage.OpenTableRequest openTableRequest);
-    global::bnet.protocol.storage.OpenColumnResponse OpenColumn(global::bnet.protocol.storage.OpenColumnRequest openColumnRequest);
-  }
-  
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.3.0.277")]
-  public partial class StorageService : IStorageService, pb::IRpcDispatch, global::System.IDisposable {
-    private readonly bool dispose;
-    private readonly pb::IRpcDispatch dispatch;
-    public StorageService(pb::IRpcDispatch dispatch) : this(dispatch, true) {
+  public abstract class StorageService : pb::IService {
+    public abstract void Execute(
+        pb::IRpcController controller,
+        global::bnet.protocol.storage.ExecuteRequest request,
+        global::System.Action<global::bnet.protocol.storage.ExecuteResponse> done);
+    public abstract void OpenTable(
+        pb::IRpcController controller,
+        global::bnet.protocol.storage.OpenTableRequest request,
+        global::System.Action<global::bnet.protocol.storage.OpenTableResponse> done);
+    public abstract void OpenColumn(
+        pb::IRpcController controller,
+        global::bnet.protocol.storage.OpenColumnRequest request,
+        global::System.Action<global::bnet.protocol.storage.OpenColumnResponse> done);
+    
+    public static pbd::ServiceDescriptor Descriptor {
+      get { return Storage.Descriptor.Services[0]; }
     }
-    public StorageService(pb::IRpcDispatch dispatch, bool dispose) {
-      if (null == (this.dispatch = dispatch)) throw new global::System.ArgumentNullException();
-      this.dispose = dispose && dispatch is global::System.IDisposable;
+    public pbd::ServiceDescriptor DescriptorForType {
+      get { return Descriptor; }
     }
     
-    public void Dispose() {
-      if (dispose) ((global::System.IDisposable)dispatch).Dispose();
+    public void CallMethod(
+        pbd::MethodDescriptor method,
+        pb::IRpcController controller,
+        pb::IMessage request,
+        global::System.Action<pb::IMessage> done) {
+      if (method.Service != Descriptor) {
+        throw new global::System.ArgumentException(
+            "Service.CallMethod() given method descriptor for wrong service type.");
+      }
+      switch(method.Index) {
+        case 0:
+          this.Execute(controller, (global::bnet.protocol.storage.ExecuteRequest) request,
+              pb::RpcUtil.SpecializeCallback<global::bnet.protocol.storage.ExecuteResponse>(
+              done));
+          return;
+        case 1:
+          this.OpenTable(controller, (global::bnet.protocol.storage.OpenTableRequest) request,
+              pb::RpcUtil.SpecializeCallback<global::bnet.protocol.storage.OpenTableResponse>(
+              done));
+          return;
+        case 2:
+          this.OpenColumn(controller, (global::bnet.protocol.storage.OpenColumnRequest) request,
+              pb::RpcUtil.SpecializeCallback<global::bnet.protocol.storage.OpenColumnResponse>(
+              done));
+          return;
+        default:
+          throw new global::System.InvalidOperationException("Can't get here.");
+      }
     }
     
-    TMessage pb::IRpcDispatch.CallMethod<TMessage, TBuilder>(string method, pb::IMessageLite request, pb::IBuilderLite<TMessage, TBuilder> response) {
-      return dispatch.CallMethod(method, request, response);
+    public pb::IMessage GetRequestPrototype(pbd::MethodDescriptor method) {
+      if (method.Service != Descriptor) {
+        throw new global::System.ArgumentException(
+            "Service.GetRequestPrototype() given method descriptor for wrong service type.");
+      }
+      switch(method.Index) {
+        case 0:
+          return global::bnet.protocol.storage.ExecuteRequest.DefaultInstance;
+        case 1:
+          return global::bnet.protocol.storage.OpenTableRequest.DefaultInstance;
+        case 2:
+          return global::bnet.protocol.storage.OpenColumnRequest.DefaultInstance;
+        default:
+          throw new global::System.InvalidOperationException("Can't get here.");
+      }
     }
     
-    public global::bnet.protocol.storage.ExecuteResponse Execute(global::bnet.protocol.storage.ExecuteRequest executeRequest) {
-       return dispatch.CallMethod("Execute", executeRequest, global::bnet.protocol.storage.ExecuteResponse.CreateBuilder());
+    public pb::IMessage GetResponsePrototype(pbd::MethodDescriptor method) {
+      if (method.Service != Descriptor) {
+        throw new global::System.ArgumentException(
+            "Service.GetResponsePrototype() given method descriptor for wrong service type.");
+      }
+      switch(method.Index) {
+        case 0:
+          return global::bnet.protocol.storage.ExecuteResponse.DefaultInstance;
+        case 1:
+          return global::bnet.protocol.storage.OpenTableResponse.DefaultInstance;
+        case 2:
+          return global::bnet.protocol.storage.OpenColumnResponse.DefaultInstance;
+        default:
+          throw new global::System.InvalidOperationException("Can't get here.");
+      }
     }
     
-    public global::bnet.protocol.storage.OpenTableResponse OpenTable(global::bnet.protocol.storage.OpenTableRequest openTableRequest) {
-       return dispatch.CallMethod("OpenTable", openTableRequest, global::bnet.protocol.storage.OpenTableResponse.CreateBuilder());
-    }
-    
-    public global::bnet.protocol.storage.OpenColumnResponse OpenColumn(global::bnet.protocol.storage.OpenColumnRequest openColumnRequest) {
-       return dispatch.CallMethod("OpenColumn", openColumnRequest, global::bnet.protocol.storage.OpenColumnResponse.CreateBuilder());
+    public static Stub CreateStub(pb::IRpcChannel channel) {
+      return new Stub(channel);
     }
     
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.3.0.277")]
-    public partial class Dispatch : pb::IRpcDispatch, global::System.IDisposable {
-      private readonly bool dispose;
-      private readonly IStorageService implementation;
-      public Dispatch(IStorageService implementation) : this(implementation, true) {
-      }
-      public Dispatch(IStorageService implementation, bool dispose) {
-        if (null == (this.implementation = implementation)) throw new global::System.ArgumentNullException();
-        this.dispose = dispose && implementation is global::System.IDisposable;
+    public class Stub : global::bnet.protocol.storage.StorageService {
+      internal Stub(pb::IRpcChannel channel) {
+        this.channel = channel;
       }
       
-      public void Dispose() {
-        if (dispose) ((global::System.IDisposable)implementation).Dispose();
+      private readonly pb::IRpcChannel channel;
+      
+      public pb::IRpcChannel Channel {
+        get { return channel; }
       }
       
-      public TMessage CallMethod<TMessage, TBuilder>(string methodName, pb::IMessageLite request, pb::IBuilderLite<TMessage, TBuilder> response)
-        where TMessage : pb::IMessageLite<TMessage, TBuilder>
-        where TBuilder : pb::IBuilderLite<TMessage, TBuilder> {
-        switch(methodName) {
-          case "Execute": return response.MergeFrom(implementation.Execute((global::bnet.protocol.storage.ExecuteRequest)request)).Build();
-          case "OpenTable": return response.MergeFrom(implementation.OpenTable((global::bnet.protocol.storage.OpenTableRequest)request)).Build();
-          case "OpenColumn": return response.MergeFrom(implementation.OpenColumn((global::bnet.protocol.storage.OpenColumnRequest)request)).Build();
-          default: throw new global::System.MissingMethodException(typeof(IStorageService).FullName, methodName);
-        }
-      }
-    }
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.3.0.277")]
-    public partial class ServerStub : pb::IRpcServerStub, global::System.IDisposable {
-      private readonly bool dispose;
-      private readonly pb::IRpcDispatch implementation;
-      public ServerStub(IStorageService implementation) : this(implementation, true) {
-      }
-      public ServerStub(IStorageService implementation, bool dispose) : this(new Dispatch(implementation, dispose), dispose) {
-      }
-      public ServerStub(pb::IRpcDispatch implementation) : this(implementation, true) {
-      }
-      public ServerStub(pb::IRpcDispatch implementation, bool dispose) {
-        if (null == (this.implementation = implementation)) throw new global::System.ArgumentNullException();
-        this.dispose = dispose && implementation is global::System.IDisposable;
+      public override void Execute(
+          pb::IRpcController controller,
+          global::bnet.protocol.storage.ExecuteRequest request,
+          global::System.Action<global::bnet.protocol.storage.ExecuteResponse> done) {
+        channel.CallMethod(Descriptor.Methods[0],
+            controller, request, global::bnet.protocol.storage.ExecuteResponse.DefaultInstance,
+            pb::RpcUtil.GeneralizeCallback<global::bnet.protocol.storage.ExecuteResponse, global::bnet.protocol.storage.ExecuteResponse.Builder>(done, global::bnet.protocol.storage.ExecuteResponse.DefaultInstance));
       }
       
-      public void Dispose() {
-        if (dispose) ((global::System.IDisposable)implementation).Dispose();
+      public override void OpenTable(
+          pb::IRpcController controller,
+          global::bnet.protocol.storage.OpenTableRequest request,
+          global::System.Action<global::bnet.protocol.storage.OpenTableResponse> done) {
+        channel.CallMethod(Descriptor.Methods[1],
+            controller, request, global::bnet.protocol.storage.OpenTableResponse.DefaultInstance,
+            pb::RpcUtil.GeneralizeCallback<global::bnet.protocol.storage.OpenTableResponse, global::bnet.protocol.storage.OpenTableResponse.Builder>(done, global::bnet.protocol.storage.OpenTableResponse.DefaultInstance));
       }
       
-      public pb::IMessageLite CallMethod(string methodName, pb::ICodedInputStream input, pb::ExtensionRegistry registry) {
-        switch(methodName) {
-          case "Execute": return implementation.CallMethod(methodName, global::bnet.protocol.storage.ExecuteRequest.ParseFrom(input, registry), global::bnet.protocol.storage.ExecuteResponse.CreateBuilder());
-          case "OpenTable": return implementation.CallMethod(methodName, global::bnet.protocol.storage.OpenTableRequest.ParseFrom(input, registry), global::bnet.protocol.storage.OpenTableResponse.CreateBuilder());
-          case "OpenColumn": return implementation.CallMethod(methodName, global::bnet.protocol.storage.OpenColumnRequest.ParseFrom(input, registry), global::bnet.protocol.storage.OpenColumnResponse.CreateBuilder());
-          default: throw new global::System.MissingMethodException(typeof(IStorageService).FullName, methodName);
-        }
+      public override void OpenColumn(
+          pb::IRpcController controller,
+          global::bnet.protocol.storage.OpenColumnRequest request,
+          global::System.Action<global::bnet.protocol.storage.OpenColumnResponse> done) {
+        channel.CallMethod(Descriptor.Methods[2],
+            controller, request, global::bnet.protocol.storage.OpenColumnResponse.DefaultInstance,
+            pb::RpcUtil.GeneralizeCallback<global::bnet.protocol.storage.OpenColumnResponse, global::bnet.protocol.storage.OpenColumnResponse.Builder>(done, global::bnet.protocol.storage.OpenColumnResponse.DefaultInstance));
       }
     }
   }
