@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
-using bnet.protocol.connection;
-using Google.ProtocolBuffers.Descriptors;
-using bnet.protocol.channel;
-using bnet.protocol.presence;
 using bnet.protocol.authentication;
-using bnet.protocol.notification;
+using bnet.protocol.channel;
 using bnet.protocol.channel_invitation;
-using bnet.protocol.toon.external;
-using bnet.protocol.followers;
-using bnet.protocol.user_manager;
-using bnet.protocol.friends;
-using bnet.protocol.party;
 using bnet.protocol.chat;
+using bnet.protocol.connection;
+using bnet.protocol.exchange;
+using bnet.protocol.followers;
+using bnet.protocol.friends;
 using bnet.protocol.game_master;
 using bnet.protocol.game_utilities;
-using bnet.protocol.storage;
+using bnet.protocol.notification;
+using bnet.protocol.party;
+using bnet.protocol.presence;
 using bnet.protocol.search;
-using bnet.protocol.exchange;
+using bnet.protocol.storage;
+using bnet.protocol.toon.external;
+using bnet.protocol.user_manager;
+using Google.ProtocolBuffers.Descriptors;
 
 namespace d3emu
 {

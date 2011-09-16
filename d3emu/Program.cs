@@ -21,8 +21,23 @@ namespace d3emu
 
         private const byte PrevService = 0xFE;
 
+        static uint GetServiceHash(string name)
+        {
+            var bytes = Encoding.ASCII.GetBytes(name);
+
+            uint result = 0x811C9DC5;
+
+            for (var i = 0; i < bytes.Length; ++i)
+            {
+                result = 0x1000193 * (bytes[i] ^ result);
+            }
+            return result;
+        }
+
         static void Main(string[] args)
         {
+            var hash = GetServiceHash("bnet.protocol.authentication.AuthenticationClient");
+
             //var s = Services.ServicesDict[0];
             //new Test();
 
