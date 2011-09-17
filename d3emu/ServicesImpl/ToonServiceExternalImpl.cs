@@ -1,8 +1,8 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol.toon.external;
+    using Google.ProtocolBuffers;
 
     public class ToonServiceExternalImpl : ToonServiceExternal
     {

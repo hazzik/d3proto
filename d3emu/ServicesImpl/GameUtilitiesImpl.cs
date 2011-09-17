@@ -1,10 +1,10 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.game_utilities;
     using bnet.protocol.server_pool;
+    using Google.ProtocolBuffers;
 
     public class GameUtilitiesImpl : GameUtilities
     {

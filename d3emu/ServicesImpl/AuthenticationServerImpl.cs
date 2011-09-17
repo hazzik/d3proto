@@ -3,9 +3,9 @@ namespace d3emu.ServicesImpl
     using System;
     using System.Linq;
     using System.Text;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.authentication;
+    using Google.ProtocolBuffers;
 
     public class AuthenticationServerImpl : AuthenticationServer
     {
@@ -65,9 +65,9 @@ namespace d3emu.ServicesImpl
             byte sId = 0;
             foreach (var service in client.exportedServices)
             {
-                if(service.Value.GetType() == typeof(AuthenticationClientImpl))
+                if (service.Value.GetType() == typeof(AuthenticationClientImpl))
                 {
-                    sId = (byte) service.Key;
+                    sId = (byte)service.Key;
                     //client.importedServices[254] = service.Value;
                 }
             }
@@ -75,10 +75,10 @@ namespace d3emu.ServicesImpl
 
             client.Send(data);
 
-//            done(new LogonResponse.Builder
-//                     {
-//                         //Account = 
-//                     }.Build());
+            //            done(new LogonResponse.Builder
+            //                     {
+            //                         //Account = 
+            //                     }.Build());
         }
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)

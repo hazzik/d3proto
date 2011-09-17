@@ -1,8 +1,8 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol.followers;
+    using Google.ProtocolBuffers;
 
     public class FollowersServiceImpl : FollowersService
     {

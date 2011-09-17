@@ -1,9 +1,9 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.search;
+    using Google.ProtocolBuffers;
 
     public class SearchServiceImpl : SearchService
     {

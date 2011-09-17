@@ -51,18 +51,6 @@ namespace d3emu
                 m_listenerId = m_stream.ReadRawVarint64();
         }
 
-        public TMessage ReadMessage<TMessage, TBuilder>(IBuilder<TMessage, TBuilder> builder)
-            where TMessage : IMessage<TMessage, TBuilder>
-            where TBuilder : IBuilder<TMessage, TBuilder>
-        {
-            m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
-
-            if (!m_stream.IsAtEnd)
-                throw new Exception("Packet under read!");
-
-            return builder.Build();
-        }
-
         public IMessage ReadMessage(IBuilder builder)
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);

@@ -1,9 +1,9 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol.channel;
     using bnet.protocol.chat;
+    using Google.ProtocolBuffers;
 
     public class ChatServiceImpl : ChatService
     {

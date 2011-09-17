@@ -1,9 +1,9 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.exchange;
+    using Google.ProtocolBuffers;
 
     public class ExchangeNotifyImpl : ExchangeNotify
     {

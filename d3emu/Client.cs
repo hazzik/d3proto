@@ -50,7 +50,7 @@ namespace d3emu
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
@@ -66,7 +66,7 @@ namespace d3emu
 
             if (packet.Method == 0)
             {
-                Console.WriteLine("NoData?");
+                Console.WriteLine("NoData response?");
                 return;
             }
 
@@ -74,11 +74,11 @@ namespace d3emu
 
             Action<IMessage> done =
                 response =>
-                    {
-                        byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
+                {
+                    byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
 
-                        Send(data);
-                    };
+                    Send(data);
+                };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
@@ -96,12 +96,12 @@ namespace d3emu
 
         public uint LoadImportedService(uint hash)
         {
-            var i = (uint)(importedServices.Count);
+            var i = (uint)importedServices.Count;
             importedServices[i] = Services.ServicesDict[hash](this);
             return i;
         }
 
-        public  void Send(byte[] data)
+        public void Send(byte[] data)
         {
             Console.WriteLine("Sending data: length = {0}", data.Length);
 

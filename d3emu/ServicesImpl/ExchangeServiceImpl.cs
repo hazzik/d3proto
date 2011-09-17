@@ -1,10 +1,10 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.exchange;
     using bnet.protocol.exchange_object_provider;
+    using Google.ProtocolBuffers;
 
     public class ExchangeServiceImpl : ExchangeService
     {

@@ -177,7 +177,7 @@ namespace d3emu
                     foreach (var o in dp.Options.AllFields)
                     {
                         if (o.Key.FieldType == FieldType.Enum)
-                            w.WriteLine("option {0} = {1};", o.Key.Name, ((EnumValue) o.Value).Name);
+                            w.WriteLine("option {0} = {1};", o.Key.Name, ((EnumValue)o.Value).Name);
                         else if (o.Key.FieldType == FieldType.String)
                             w.WriteLine("option {0} = \"{1}\";", o.Key.Name, o.Value);
                         else

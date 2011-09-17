@@ -1,10 +1,10 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.friends;
     using bnet.protocol.invitation;
+    using Google.ProtocolBuffers;
     using SendInvitationRequest = bnet.protocol.invitation.SendInvitationRequest;
 
     public class FriendsServiceImpl : FriendsService

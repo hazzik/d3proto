@@ -43,7 +43,7 @@ namespace d3emu
                   };
 
         public static readonly IDictionary<string, IDictionary<int, string>> Methods =
-			new Dictionary<string, IDictionary<int, string>>
+            new Dictionary<string, IDictionary<int, string>>
 				{
 					{
 						"ConnectionService",
@@ -372,6 +372,5 @@ namespace d3emu
 							}
 						},
 				};
-	}
-
+    }
 }
