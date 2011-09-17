@@ -40,7 +40,7 @@ namespace d3emu
                             var newBuf = new byte[len];
                             Array.Copy(buffer, newBuf, newBuf.Length);
 
-                            Program.PrintHex(newBuf);
+                            newBuf.PrintHex();
                             Handle(newBuf);
                         }
                         else
@@ -105,7 +105,7 @@ namespace d3emu
         {
             Console.WriteLine("Sending data: length = {0}", data.Length);
 
-            Program.PrintHex(data);
+            data.PrintHex();
 
             socket.Send(data);
         }

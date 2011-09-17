@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using bnet.protocol.exchange;
 
 namespace d3emu
 {
@@ -37,20 +36,6 @@ namespace d3emu
                 Console.WriteLine("Accept");
                 new Client(m_socket.Accept()).Run();
             }
-        }
-
-        public static void PrintHex(byte[] data)
-        {
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (i > 0 && (i % 16) == 0)
-                    Console.WriteLine();
-
-                Console.Write("{0:X2} ", data[i]);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine();
         }
     }
 }

@@ -13,16 +13,6 @@ namespace d3emu
             return (uint)((time.ToUniversalTime().Ticks - 621355968000000000L) / 10000000L);
         }
 
-        public static byte[] Append(this byte[] a, byte[] b)
-        {
-            var result = new byte[a.Length + b.Length];
-
-            a.CopyTo(result, 0);
-            b.CopyTo(result, a.Length);
-
-            return result;
-        }
-
         public static byte[] ToByteArray(this string str)
         {
             str = str.Replace(" ", String.Empty);
@@ -52,6 +42,20 @@ namespace d3emu
         public static string ToHexString(this byte[] byteArray)
         {
             return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+        }
+
+        public static void PrintHex(this byte[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (i > 0 && (i % 16) == 0)
+                    Console.WriteLine();
+
+                Console.Write("{0:X2} ", data[i]);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
         }
 
         public static bool CompareTo(this byte[] byteArray, byte[] second)
@@ -94,30 +98,9 @@ namespace d3emu
             return ret;
         }
 
-        public static ulong ReadInt64(this CodedInputStream s)
-        {
-            //ulong ret = 0;
-            //s.ReadInt64(ref ret);
-            //return ret;
-            return s.ReadRawVarint64();
-        }
-
         public static void WriteInt16NoTag(this CodedOutputStream s, short value)
         {
             s.WriteRawBytes(BitConverter.GetBytes(value));
         }
-
-        public static TMessage ReadMessage<TMessage, TBuilder>(this CodedInputStream m_stream, IBuilder<TMessage, TBuilder> builder)
-            where TMessage : IMessage<TMessage, TBuilder>
-            where TBuilder : IBuilder<TMessage, TBuilder>
-        {
-            m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
-
-            if (!m_stream.IsAtEnd)
-                throw new Exception("Packet under read!");
-
-            return builder.Build();
-        }
-
     }
 }

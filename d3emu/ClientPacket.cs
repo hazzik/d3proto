@@ -48,7 +48,7 @@ namespace d3emu
             Console.WriteLine("IN: service {0}, method {1:X}, requestId {2}, listenerId {3}", m_service, m_method, m_requestId, m_listenerId);
 
             if (m_service != 0xFE)
-                m_listenerId = m_stream.ReadInt64();
+                m_listenerId = m_stream.ReadRawVarint64();
         }
 
         public TMessage ReadMessage<TMessage, TBuilder>(IBuilder<TMessage, TBuilder> builder)
