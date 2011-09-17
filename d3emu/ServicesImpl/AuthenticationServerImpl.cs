@@ -9,6 +9,10 @@ namespace d3emu.ServicesImpl
 
     public class AuthenticationServerImpl : AuthenticationServer
     {
+        const uint Region = 0x00005553; // US
+        const uint Usage = 0x61757468; // auth
+        readonly byte[] ModuleHash = "8F52906A2C85B416A595702251570F96D3522F39237603115F2F1AB24962043C".ToByteArray(); // Password.dll
+
         private readonly Client client;
 
         public AuthenticationServerImpl(Client client)
@@ -20,20 +24,6 @@ namespace d3emu.ServicesImpl
         {
             Console.WriteLine(request.ToString());
 
-            //// this should not be here
-            //var response = LogonResponse.CreateBuilder()
-            //    .SetAccount(EntityId.CreateBuilder().SetHigh(12345).SetLow(67890))
-            //    .SetGameAccount(EntityId.CreateBuilder().SetHigh(67890).SetLow(12345)).Build();
-
-            // tell client to load authentication module (similar to wow/sc2)
-            var hexModule = "03 01 00 00 02 F2 02 0A 2C 0D 53 55 00 00 15 68 74 75 61 1A 20 8F 52 90 6A 2C 85 B4 16 A5 95 70 22 51 57 0F 96 D3 52 2F 39 23 76 03 11 5F 2F 1A B2 49 62 04 3C 12 C1 02 00 C0 9E 5B DF F5 92 DD C3 8E DC 46 AE B1 57 65 68 D0 7A 94 17 D5 9C F0 70 8F 00 39 7D A2 3B 5B 23 32 8C 88 CA 5B 89 72 22 DA 43 3A 32 D2 8D 71 0C 5C EF 2A 14 46 C3 4C 10 F3 36 EC 1B 53 A8 95 ED E9 EB 82 0C C7 94 72 2E 4D F3 F4 17 33 63 46 2A 96 73 59 B5 70 19 A3 14 32 D7 6D F5 33 2A 77 90 C3 3B CD 19 65 FE 13 1E 4C F2 07 9F D8 74 9A 57 BD 22 F6 1C DF 18 1E F5 1B 15 23 25 F7 50 DD 8D AA 4D E0 9B 34 83 BE 78 C1 45 66 8D 2C B3 34 39 29 CD 88 D1 82 15 13 CE 8C D4 61 71 0C DC 5D 6B 73 E2 1C 96 F5 F5 39 3F 23 75 96 A9 70 5A C0 C7 01 3B BE 0E 71 86 FE 8B F0 F1 24 66 0A E1 89 86 38 DA B1 EA 5E D4 03 EC F8 F2 26 6D AE 2A A0 74 40 60 32 9F 9E 54 1A 39 8C 3D 6B 8E E3 75 09 CC 46 F9 D0 97 74 F1 6C 70 EF F9 D3 78 91 BD 66 6F A8 0A 39 D1 14 79 43 63 60 99 E5 11 E6 34 11 58 83 89 F6 89 E0 40 C4 2E F9 31 AC E9 7F F6 01 11 05 92 D1 3C 7F F9 20 DE EF 5A F0 37 A4 96 47 E8 92 DD 28 D0 D4 91 9F E3 4B 90 99 DD A8 6B 2D BA 1A 9B 57 FE 42 EE 19 F3 6F 38 0D A2 04 80 9F 66";
-
-            var hexBytes = hexModule.ToByteArray().Skip(7).ToArray();
-
-            // response.ModuleHandle.Region: US
-            // response.ModuleHandle.Usage: auth
-            // response.ModuleHandle.Hash: 8f52906a2c85b416a595702251570f96d3522f39237603115f2f1ab24962043c (SHA256 of auth module file)
-            // response.Message: ... (SRP parameters)
             // response.Message structure:
             //     byte command;
             //     if (command == 0 || command == 1)
@@ -55,34 +45,58 @@ namespace d3emu.ServicesImpl
             //         byte M2[32];
             //         byte data2[128]; // for veryfing secondaryChallenge
             //     }
-            var response = ModuleLoadRequest.CreateBuilder().MergeFrom(hexBytes).Build();
+            //var response = ModuleLoadRequest.CreateBuilder().MergeFrom(hexBytes).Build();
+
+            var message = new byte[0]
+                .Concat(new byte[1] { 0 }) // command = 0
+                .Concat("28 E5 1C 5E 79 1C DD 57 6C 2F F1 53 22 19 C3 30 1E 63 F3 4E 98 62 E9 74 4E B6 E2 B7 83 BF 9D C9".ToByteArray()) // accountSalt
+                .Concat("A7 90 43 D3 49 47 29 8F A9 4E 3E 85 26 38 B7 5A 6D D0 1B 8C 91 88 83 59 E0 73 FE 28 68 43 E9 44".ToByteArray()) // passwordSalt
+                .Concat("9D E7 22 9B 02 03 36 E9 9E D5 10 B9 4E F3 69 0C 5C 32 AB 71 24 9E D8 5E 14 F0 97 D4 EF 44 FC 62 63 F1 57 E7 25 CD 86 1B 3B 82 26 6A 58 56 C4 FB 71 60 84 15 27 19 01 E1 58 15 2B 09 C8 A1 5F BA CA 4B A3 63 A4 C5 CB 46 B9 86 E8 62 7B 0D B4 92 8A 2C 60 9D FD 2D 99 CC BC FC 81 EB 40 32 03 D6 4F B8 12 C5 6D 56 19 B5 8B A3 F8 72 67 82 2A 3B 91 B8 1F 48 07 AE E4 EF 34 F4 2E C1 F7 01 6D 5B".ToByteArray()) // serverChallenge
+                .Concat("BF 7A 5F F0 3E 6F B6 7E 7C 4E 9A EE E4 16 4B 7A C7 3A F8 AE A8 B9 21 5D 13 D8 D9 67 93 58 20 A3 B4 08 19 4C F0 DF DB 9E 06 85 87 4C 9F BC BB C7 DD 39 0A 0A 1F F1 8F 3E 5B F4 85 EF 22 6B 19 52 9A D3 18 25 DE 17 7C C8 21 53 AF 81 69 12 45 C6 04 BE 22 F4 01 B3 08 02 FE E1 BD 79 56 FA A8 78 D8 06 90 8D 22 73 EE DD 12 9E 27 47 76 07 79 5C 81 29 04 2C 97 3C A4 70 D9 9E F4 97 85 F3 B9 56".ToByteArray()) // secondaryChallenge
+                .ToArray();
+
+            var response = ModuleLoadRequest.CreateBuilder()
+                .SetModuleHandle(ContentHandle.CreateBuilder()
+                    .SetRegion(Region)
+                    .SetUsage(Usage)
+                    .SetHash(ByteString.CopyFrom(ModuleHash)))
+                .SetMessage(ByteString.CopyFrom(message))
+                .Build();
 
             Console.WriteLine("Region: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(response.ModuleHandle.Region).Reverse().ToArray()));
             Console.WriteLine("Usage: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(response.ModuleHandle.Usage).Reverse().ToArray()));
             Console.WriteLine("Hash: {0:X8}", response.ModuleHandle.Hash.ToByteArray().ToHexString());
             Console.WriteLine("Message: {0:X8}", response.Message.ToByteArray().ToHexString());
 
-            byte sId = 0;
-            foreach (var service in client.exportedServices)
-            {
-                if (service.Value.GetType() == typeof(AuthenticationClientImpl))
-                {
-                    sId = (byte)service.Key;
-                    //client.importedServices[254] = service.Value;
-                }
-            }
+            // may be we should invoke AuthenticationClient.ModuleLoad?
+
+            var sId = client.GetServiceIdFor<AuthenticationClientImpl>();
+
             var data = new ServerPacket(sId, 1, 0, request.ListenerId).WriteMessage(response);
+
+            client.importedServices[254] = Services.ServicesDict[Services.AuthenticationClient](client);
 
             client.Send(data);
 
-            //            done(new LogonResponse.Builder
-            //                     {
-            //                         //Account = 
-            //                     }.Build());
+            //done(new LogonResponse.Builder
+            //         {
+            //             //Account = 
+            //         }.Build());
         }
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)
         {
+            Console.WriteLine(request.ToString());
+
+            var moduleId = request.ModuleId;
+            var message = request.Message.ToByteArray();
+
+            var command = message[0]; // comamnd 2 with data wtf
+
+            byte[] passwordSalt = message.Skip(1).Take(32).ToArray();
+            byte[] serverChallenge = message.Skip(1 + 32).Take(128).ToArray();
+            byte[] secondaryChallenge = message.Skip(1 + 32 + 128).Take(128).ToArray();
+
             done(new NoData.Builder().Build());
             //            var data = new ServerPacket(PrevService, 3, 3, 0).WriteMessage(NO_RESPONSE.CreateBuilder().Build());
             //

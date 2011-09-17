@@ -35,9 +35,9 @@ namespace d3emu
 
         private readonly CodedInputStream m_stream;
 
-        public ClientPacket(byte[] data)
+        public ClientPacket(CodedInputStream stream)
         {
-            m_stream = CodedInputStream.CreateInstance(data);
+            m_stream = stream;
 
             // Read header
             m_service = m_stream.ReadRawByte();
@@ -55,8 +55,8 @@ namespace d3emu
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
 
-            if (!m_stream.IsAtEnd)
-                throw new Exception("Packet under read!");
+            //if (!m_stream.IsAtEnd)
+            //    throw new Exception("Packet under read!");
 
             return builder.WeakBuild();
         }

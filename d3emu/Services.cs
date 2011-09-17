@@ -8,11 +8,13 @@ namespace d3emu
 
     public partial class Services
     {
+        public const uint AuthenticationClient = 0x71240e35;
+
         public static Dictionary<uint, System.Func<Client, IService>> ServicesDict
             = new Dictionary<uint, Func<Client, IService>>
                   {
                       {0x00000000, c => new ConnectionServiceImpl(c)},
-                      {0x71240e35, c => new AuthenticationClientImpl()},
+                      {AuthenticationClient, c => new AuthenticationClientImpl()},
                       {0x0decfc01, c => new AuthenticationServerImpl(c)},
                       {0xb732db32, c => new ChannelImpl()},
                       {0x060ca08d, c => new ChannelOwnerImpl()},

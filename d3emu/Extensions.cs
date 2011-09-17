@@ -41,7 +41,7 @@ namespace d3emu
 
         public static string ToHexString(this byte[] byteArray)
         {
-            return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
+            return byteArray.Aggregate("", (current, b) => current + b.ToString("X2"));
         }
 
         public static void PrintHex(this byte[] data)

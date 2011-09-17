@@ -3,6 +3,8 @@ namespace d3emu
     using System;
     using System.Collections.Generic;
     using System.Net.Sockets;
+    using bnet.protocol.authentication;
+    using d3emu.ServicesImpl;
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
 
@@ -11,6 +13,15 @@ namespace d3emu
         public readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
         public readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
+
+        public byte GetServiceIdFor<T>() where T: IService
+        {
+            foreach (var service in exportedServices)
+                if (service.Value.GetType() == typeof(T))
+                    return (byte)service.Key;
+
+            return 0xFF;
+        }
 
         public Client(Socket socket)
         {
@@ -41,7 +52,13 @@ namespace d3emu
                             Array.Copy(buffer, newBuf, newBuf.Length);
 
                             newBuf.PrintHex();
-                            Handle(newBuf);
+
+                            var stream = CodedInputStream.CreateInstance(newBuf);
+
+                            while (!stream.IsAtEnd)
+                            {
+                                Handle(stream);
+                            }
                         }
                         else
                         {
@@ -57,16 +74,21 @@ namespace d3emu
             }
         }
 
-        private void Handle(byte[] newBuf)
+        private void Handle(CodedInputStream stream)
         {
-            var packet = new ClientPacket(newBuf);
+            var packet = new ClientPacket(stream);
 
             IService service = importedServices[packet.Service];
             importedServices[254] = service;
 
+            // hack
             if (packet.Method == 0)
             {
-                Console.WriteLine("NoData response?");
+                if (importedServices[packet.Service].GetType() == typeof(AuthenticationClientImpl))
+                {
+                    var modResp = packet.ReadMessage(ModuleLoadResponse.CreateBuilder());
+                    Console.WriteLine(modResp.ToString());
+                }
                 return;
             }
 

@@ -67,9 +67,7 @@
 
         public override void Encrypt(IRpcController controller, EncryptRequest request, Action<NoData> done)
         {
-            var data = new ServerPacket(Program.PrevService, 3, 3, 0).WriteMessage(NO_RESPONSE.CreateBuilder().Build());
-
-            client.Send(data);
+            throw new NotImplementedException();
         }
 
         public override void RequestDisconnect(IRpcController controller, DisconnectRequest request, Action<NO_RESPONSE> done)
