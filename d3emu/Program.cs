@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using bnet.protocol.exchange;
 
 namespace d3emu
 {
@@ -25,10 +26,6 @@ namespace d3emu
 
         static void Main(string[] args)
         {
-//            new Test();
-
-//            Console.ReadKey();
-//            return;
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             m_socket.Bind(new IPEndPoint(IPAddress.Any, 6666));

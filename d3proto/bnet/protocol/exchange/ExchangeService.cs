@@ -8,8 +8,15 @@ using pbd = global::Google.ProtocolBuffers.Descriptors;
 using scg = global::System.Collections.Generic;
 namespace bnet.protocol.exchange {
   
-  public static partial class Exchange {
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("ProtoGen", "2.3.0.277")]
+  public static partial class ExchangeSvc {
   
+    #region Extension registration
+    public static void RegisterAllExtensions(pb::ExtensionRegistry registry) {
+    }
+    #endregion
     #region Static variables
     internal static pbd::MessageDescriptor internal__static_bnet_protocol_exchange_CreateOrderBookRequest__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.CreateOrderBookRequest, global::bnet.protocol.exchange.CreateOrderBookRequest.Builder> internal__static_bnet_protocol_exchange_CreateOrderBookRequest__FieldAccessorTable;
@@ -84,6 +91,372 @@ namespace bnet.protocol.exchange {
     internal static pbd::MessageDescriptor internal__static_bnet_protocol_exchange_BidNotificationRequest__Descriptor;
     internal static pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.BidNotificationRequest, global::bnet.protocol.exchange.BidNotificationRequest.Builder> internal__static_bnet_protocol_exchange_BidNotificationRequest__FieldAccessorTable;
     #endregion
+    #region Descriptor
+    public static pbd::FileDescriptor Descriptor {
+      get { return descriptor; }
+    }
+    private static pbd::FileDescriptor descriptor;
+    
+    static ExchangeSvc() {
+      byte[] descriptorData = global::System.Convert.FromBase64String(
+          "Ch9zZXJ2aWNlL2V4Y2hhbmdlL2V4Y2hhbmdlLnByb3RvEhZibmV0LnByb3Rv" + 
+          "Y29sLmV4Y2hhbmdlGhFsaWIvcnBjL3JwYy5wcm90bxobbGliL3Byb3RvY29s" + 
+          "L2V4Y2hhbmdlLnByb3RvGitsaWIvcHJvdG9jb2wvZXhjaGFuZ2Vfb2JqZWN0" + 
+          "X3Byb3ZpZGVyLnByb3RvGhlsaWIvcHJvdG9jb2wvZW50aXR5LnByb3RvGiVz" + 
+          "ZXJ2aWNlL2V4Y2hhbmdlL2V4Y2hhbmdlX3R5cGVzLnByb3RvIooBChZDcmVh" + 
+          "dGVPcmRlckJvb2tSZXF1ZXN0EjkKDHBhcnRpdGlvbl9pZBgBIAIoCzIjLmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuUGFydGl0aW9uSWQSNQoKb3JkZXJfYm9v" + 
+          "axgCIAIoCzIhLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuT3JkZXJCb29rIjAK" + 
+          "F0NyZWF0ZU9yZGVyQm9va1Jlc3BvbnNlEhUKDW9yZGVyX2Jvb2tfaWQYASAB" + 
+          "KAQimAEKHFBsYWNlT2ZmZXJPbk9yZGVyQm9va1JlcXVlc3QSOQoMcGFydGl0" + 
+          "aW9uX2lkGAEgAigLMiMuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5QYXJ0aXRp" + 
+          "b25JZBI9Cg5vZmZlcl9jcmVhdGlvbhgCIAIoCzIlLmJuZXQucHJvdG9jb2wu" + 
+          "ZXhjaGFuZ2UuT2ZmZXJDcmVhdGlvbiJICh1QbGFjZU9mZmVyT25PcmRlckJv" + 
+          "b2tSZXNwb25zZRIVCg1vcmRlcl9ib29rX2lkGAEgASgEEhAKCG9mZmVyX2lk" + 
+          "GAIgASgEItsBCihQbGFjZU9mZmVyQ3JlYXRlT3JkZXJCb29rSWZOZWVkZWRS" + 
+          "ZXF1ZXN0EjkKDHBhcnRpdGlvbl9pZBgBIAIoCzIjLmJuZXQucHJvdG9jb2wu" + 
+          "ZXhjaGFuZ2UuUGFydGl0aW9uSWQSNQoKb3JkZXJfYm9vaxgCIAIoCzIhLmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuT3JkZXJCb29rEj0KDm9mZmVyX2NyZWF0" + 
+          "aW9uGAMgAigLMiUuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5PZmZlckNyZWF0" + 
+          "aW9uIlQKKVBsYWNlT2ZmZXJDcmVhdGVPcmRlckJvb2tJZk5lZWRlZFJlc3Bv" + 
+          "bnNlEhUKDW9yZGVyX2Jvb2tfaWQYASABKAQSEAoIb2ZmZXJfaWQYAiABKAQi" + 
+          "kgEKGlBsYWNlQmlkT25PcmRlckJvb2tSZXF1ZXN0EjkKDHBhcnRpdGlvbl9p" + 
+          "ZBgBIAIoCzIjLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUGFydGl0aW9uSWQS" + 
+          "OQoMYmlkX2NyZWF0aW9uGAIgAigLMiMuYm5ldC5wcm90b2NvbC5leGNoYW5n" + 
+          "ZS5CaWRDcmVhdGlvbiJEChtQbGFjZUJpZE9uT3JkZXJCb29rUmVzcG9uc2US" + 
+          "FQoNb3JkZXJfYm9va19pZBgBIAEoBBIOCgZiaWRfaWQYAiABKAQi1QEKJlBs" + 
+          "YWNlQmlkQ3JlYXRlT3JkZXJCb29rSWZOZWVkZWRSZXF1ZXN0EjkKDHBhcnRp" + 
+          "dGlvbl9pZBgBIAIoCzIjLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUGFydGl0" + 
+          "aW9uSWQSNQoKb3JkZXJfYm9vaxgCIAIoCzIhLmJuZXQucHJvdG9jb2wuZXhj" + 
+          "aGFuZ2UuT3JkZXJCb29rEjkKDGJpZF9jcmVhdGlvbhgDIAIoCzIjLmJuZXQu" + 
+          "cHJvdG9jb2wuZXhjaGFuZ2UuQmlkQ3JlYXRpb24iUAonUGxhY2VCaWRDcmVh" + 
+          "dGVPcmRlckJvb2tJZk5lZWRlZFJlc3BvbnNlEhUKDW9yZGVyX2Jvb2tfaWQY" + 
+          "ASABKAQSDgoGYmlkX2lkGAIgASgEIqgBCh1RdWVyeU9mZmVyc0J5T3JkZXJC" + 
+          "b29rUmVxdWVzdBI5CgxwYXJ0aXRpb25faWQYASACKAsyIy5ibmV0LnByb3Rv" + 
+          "Y29sLmV4Y2hhbmdlLlBhcnRpdGlvbklkEjwKBmZpbHRlchgCIAIoCzIsLmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuUXVlcnlGaWx0ZXJCeU9yZGVySWQSDgoG" + 
+          "c3RhdHVzGAMgAigFImwKHlF1ZXJ5T2ZmZXJzQnlPcmRlckJvb2tSZXNwb25z" + 
+          "ZRI1CgZvZmZlcnMYASADKAsyJS5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLk9m" + 
+          "ZmVyRXh0ZW5kZWQSEwoLdG90YWxfY291bnQYAiACKA0ipgEKG1F1ZXJ5Qmlk" + 
+          "c0J5T3JkZXJCb29rUmVxdWVzdBI5CgxwYXJ0aXRpb25faWQYASACKAsyIy5i" + 
+          "bmV0LnByb3RvY29sLmV4Y2hhbmdlLlBhcnRpdGlvbklkEjwKBmZpbHRlchgC" + 
+          "IAIoCzIsLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUXVlcnlGaWx0ZXJCeU9y" + 
+          "ZGVySWQSDgoGc3RhdHVzGAMgAigFImYKHFF1ZXJ5Qmlkc0J5T3JkZXJCb29r" + 
+          "UmVzcG9uc2USMQoEYmlkcxgBIAMoCzIjLmJuZXQucHJvdG9jb2wuZXhjaGFu" + 
+          "Z2UuQmlkRXh0ZW5kZWQSEwoLdG90YWxfY291bnQYAiACKA0i0QEKIlF1ZXJ5" + 
+          "T2ZmZXJzQnlBY2NvdW50Rm9ySXRlbVJlcXVlc3QSOgoQYWNjb3VudF9mb3Jf" + 
+          "aXRlbRgBIAIoCzIgLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuQmxvYkZyb20S" + 
+          "QAoGZmlsdGVyGAIgAigLMjAuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5RdWVy" + 
+          "eUZpbHRlckJ5Q3JlYXRlZFRpbWUSLQoMYm5ldF9hY2NvdW50GAMgASgLMhcu" + 
+          "Ym5ldC5wcm90b2NvbC5FbnRpdHlJZCJxCiNRdWVyeU9mZmVyc0J5QWNjb3Vu" + 
+          "dEZvckl0ZW1SZXNwb25zZRI1CgZvZmZlcnMYASADKAsyJS5ibmV0LnByb3Rv" + 
+          "Y29sLmV4Y2hhbmdlLk9mZmVyRXh0ZW5kZWQSEwoLdG90YWxfY291bnQYAiAC" + 
+          "KA0izwEKIFF1ZXJ5Qmlkc0J5QWNjb3VudEZvckl0ZW1SZXF1ZXN0EjoKEGFj" + 
+          "Y291bnRfZm9yX2l0ZW0YASACKAsyIC5ibmV0LnByb3RvY29sLmV4Y2hhbmdl" + 
+          "LkJsb2JGcm9tEkAKBmZpbHRlchgCIAIoCzIwLmJuZXQucHJvdG9jb2wuZXhj" + 
+          "aGFuZ2UuUXVlcnlGaWx0ZXJCeUNyZWF0ZWRUaW1lEi0KDGJuZXRfYWNjb3Vu" + 
+          "dBgDIAEoCzIXLmJuZXQucHJvdG9jb2wuRW50aXR5SWQiawohUXVlcnlCaWRz" + 
+          "QnlBY2NvdW50Rm9ySXRlbVJlc3BvbnNlEjEKBGJpZHMYASADKAsyIy5ibmV0" + 
+          "LnByb3RvY29sLmV4Y2hhbmdlLkJpZEV4dGVuZGVkEhMKC3RvdGFsX2NvdW50" + 
+          "GAIgAigNIlkKHVF1ZXJ5T3JkZXJCb29rc1N1bW1hcnlSZXF1ZXN0EjgKB2hh" + 
+          "bmRsZXMYASADKAsyJy5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLk9yZGVyQm9v" + 
+          "a0hhbmRsZSJfCh5RdWVyeU9yZGVyQm9va3NTdW1tYXJ5UmVzcG9uc2USPQoL" + 
+          "b3JkZXJfYm9va3MYASADKAsyKC5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLk9y" + 
+          "ZGVyQm9va1N1bW1hcnkinQEKIlF1ZXJ5U2V0dGxlbWVudHNCeU9yZGVyQm9v" + 
+          "a1JlcXVlc3QSOQoMcGFydGl0aW9uX2lkGAEgAigLMiMuYm5ldC5wcm90b2Nv" + 
+          "bC5leGNoYW5nZS5QYXJ0aXRpb25JZBI8CgZmaWx0ZXIYAiACKAsyLC5ibmV0" + 
+          "LnByb3RvY29sLmV4Y2hhbmdlLlF1ZXJ5RmlsdGVyQnlPcmRlcklkIl4KI1F1" + 
+          "ZXJ5U2V0dGxlbWVudHNCeU9yZGVyQm9va1Jlc3BvbnNlEjcKC3NldHRsZW1l" + 
+          "bnRzGAEgAygLMiIuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5TZXR0bGVtZW50" + 
+          "IpICCiVTdWJzY3JpYmVPcmRlckJvb2tTdGF0dXNDaGFuZ2VSZXF1ZXN0EhEK" + 
+          "CW9iamVjdF9pZBgBIAIoBBI9ChBtaW5fcGFydGl0aW9uX2lkGAIgAigLMiMu" + 
+          "Ym5ldC5wcm90b2NvbC5leGNoYW5nZS5QYXJ0aXRpb25JZBI9ChBtYXhfcGFy" + 
+          "dGl0aW9uX2lkGAMgAigLMiMuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5QYXJ0" + 
+          "aXRpb25JZBIPCgdwcm9ncmFtGAQgAigHEg4KBnN0YXR1cxgFIAIoBRIQCghj" + 
+          "dXJyZW5jeRgGIAEoCRISCgpzcGVjaWFsaXN0GAcgASgFEhEKCWJvb3RzdHJh" + 
+          "cBgIIAEoCCIpCidVbnN1YnNjcmliZU9yZGVyQm9va1N0YXR1c0NoYW5nZVJl" + 
+          "cXVlc3QiYQohU3Vic2NyaWJlT3JkZXJTdGF0dXNDaGFuZ2VSZXF1ZXN0EikK" + 
+          "CGFnZW50X2lkGAEgAigLMhcuYm5ldC5wcm90b2NvbC5FbnRpdHlJZBIRCglv" + 
+          "YmplY3RfaWQYAiACKAQiYwojVW5zdWJzY3JpYmVPcmRlclN0YXR1c0NoYW5n" + 
+          "ZVJlcXVlc3QSKQoIYWdlbnRfaWQYASACKAsyFy5ibmV0LnByb3RvY29sLkVu" + 
+          "dGl0eUlkEhEKCW9iamVjdF9pZBgCIAIoBCKKAQoMQ2xhaW1SZXF1ZXN0EjkK" + 
+          "DHBhcnRpdGlvbl9pZBgBIAIoCzIjLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2Uu" + 
+          "UGFydGl0aW9uSWQSEAoIb3JkZXJfaWQYAiACKA0SLQoMYm5ldF9hY2NvdW50" + 
+          "GAMgASgLMhcuYm5ldC5wcm90b2NvbC5FbnRpdHlJZCKbAQoNQ2FuY2VsUmVx" + 
+          "dWVzdBI5CgxwYXJ0aXRpb25faWQYASACKAsyIy5ibmV0LnByb3RvY29sLmV4" + 
+          "Y2hhbmdlLlBhcnRpdGlvbklkEhAKCG9yZGVyX2lkGAIgAigNEg4KBnJlYXNv" + 
+          "bhgDIAEoDRItCgxibmV0X2FjY291bnQYBCABKAsyFy5ibmV0LnByb3RvY29s" + 
+          "LkVudGl0eUlkIioKF0dldENvbmZpZ3VyYXRpb25SZXF1ZXN0Eg8KB3Byb2dy" + 
+          "YW0YASACKAciVQoYR2V0Q29uZmlndXJhdGlvblJlc3BvbnNlEjkKB2NvbmZp" + 
+          "Z3MYASADKAsyKC5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLlNwZWNpYWxpc3RD" + 
+          "b25maWcikgEKHEdldE9mZmVyRmVlRXN0aW1hdGlvblJlcXVlc3QSOQoMcGFy" + 
+          "dGl0aW9uX2lkGAEgAigLMiMuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5QYXJ0" + 
+          "aXRpb25JZBI3CgRkYXRhGAIgAigLMikuYm5ldC5wcm90b2NvbC5leGNoYW5n" + 
+          "ZS5GZWVFc3RpbWF0aW9uRGF0YSKQAQoaR2V0QmlkRmVlRXN0aW1hdGlvblJl" + 
+          "cXVlc3QSOQoMcGFydGl0aW9uX2lkGAEgAigLMiMuYm5ldC5wcm90b2NvbC5l" + 
+          "eGNoYW5nZS5QYXJ0aXRpb25JZBI3CgRkYXRhGAIgAigLMikuYm5ldC5wcm90" + 
+          "b2NvbC5leGNoYW5nZS5GZWVFc3RpbWF0aW9uRGF0YSIuChhHZXRGZWVFc3Rp" + 
+          "bWF0aW9uUmVzcG9uc2USEgoKZmVlX2Ftb3VudBgBIAEoBCJ9ChxPcmRlckJv" + 
+          "b2tOb3RpZmljYXRpb25SZXF1ZXN0EkQKDW5vdGlmaWNhdGlvbnMYASADKAsy" + 
+          "LS5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLk9yZGVyQm9va05vdGlmaWNhdGlv" + 
+          "bhIXCg9ib290X3N0cmFwX2xhc3QYAiABKAgiXwoYT2ZmZXJOb3RpZmljYXRp" + 
+          "b25SZXF1ZXN0EjQKBW9mZmVyGAEgAigLMiUuYm5ldC5wcm90b2NvbC5leGNo" + 
+          "YW5nZS5PZmZlckV4dGVuZGVkEg0KBWV2ZW50GAIgAigNIlkKFkJpZE5vdGlm" + 
+          "aWNhdGlvblJlcXVlc3QSMAoDYmlkGAEgAigLMiMuYm5ldC5wcm90b2NvbC5l" + 
+          "eGNoYW5nZS5CaWRFeHRlbmRlZBINCgVldmVudBgCIAIoDTLRGwoPRXhjaGFu" + 
+          "Z2VTZXJ2aWNlEngKD0NyZWF0ZU9yZGVyQm9vaxIuLmJuZXQucHJvdG9jb2wu" + 
+          "ZXhjaGFuZ2UuQ3JlYXRlT3JkZXJCb29rUmVxdWVzdBovLmJuZXQucHJvdG9j" + 
+          "b2wuZXhjaGFuZ2UuQ3JlYXRlT3JkZXJCb29rUmVzcG9uc2UiBIC1GAESigEK" + 
+          "FVBsYWNlT2ZmZXJPbk9yZGVyQm9vaxI0LmJuZXQucHJvdG9jb2wuZXhjaGFu" + 
+          "Z2UuUGxhY2VPZmZlck9uT3JkZXJCb29rUmVxdWVzdBo1LmJuZXQucHJvdG9j" + 
+          "b2wuZXhjaGFuZ2UuUGxhY2VPZmZlck9uT3JkZXJCb29rUmVzcG9uc2UiBIC1" + 
+          "GAISrgEKIVBsYWNlT2ZmZXJDcmVhdGVPcmRlckJvb2tJZk5lZWRlZBJALmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuUGxhY2VPZmZlckNyZWF0ZU9yZGVyQm9v" + 
+          "a0lmTmVlZGVkUmVxdWVzdBpBLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUGxh" + 
+          "Y2VPZmZlckNyZWF0ZU9yZGVyQm9va0lmTmVlZGVkUmVzcG9uc2UiBIC1GAMS" + 
+          "hAEKE1BsYWNlQmlkT25PcmRlckJvb2sSMi5ibmV0LnByb3RvY29sLmV4Y2hh" + 
+          "bmdlLlBsYWNlQmlkT25PcmRlckJvb2tSZXF1ZXN0GjMuYm5ldC5wcm90b2Nv" + 
+          "bC5leGNoYW5nZS5QbGFjZUJpZE9uT3JkZXJCb29rUmVzcG9uc2UiBIC1GAQS" + 
+          "qAEKH1BsYWNlQmlkQ3JlYXRlT3JkZXJCb29rSWZOZWVkZWQSPi5ibmV0LnBy" + 
+          "b3RvY29sLmV4Y2hhbmdlLlBsYWNlQmlkQ3JlYXRlT3JkZXJCb29rSWZOZWVk" + 
+          "ZWRSZXF1ZXN0Gj8uYm5ldC5wcm90b2NvbC5leGNoYW5nZS5QbGFjZUJpZENy" + 
+          "ZWF0ZU9yZGVyQm9va0lmTmVlZGVkUmVzcG9uc2UiBIC1GAUSjQEKFlF1ZXJ5" + 
+          "T2ZmZXJzQnlPcmRlckJvb2sSNS5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLlF1" + 
+          "ZXJ5T2ZmZXJzQnlPcmRlckJvb2tSZXF1ZXN0GjYuYm5ldC5wcm90b2NvbC5l" + 
+          "eGNoYW5nZS5RdWVyeU9mZmVyc0J5T3JkZXJCb29rUmVzcG9uc2UiBIC1GAYS" + 
+          "hwEKFFF1ZXJ5Qmlkc0J5T3JkZXJCb29rEjMuYm5ldC5wcm90b2NvbC5leGNo" + 
+          "YW5nZS5RdWVyeUJpZHNCeU9yZGVyQm9va1JlcXVlc3QaNC5ibmV0LnByb3Rv" + 
+          "Y29sLmV4Y2hhbmdlLlF1ZXJ5Qmlkc0J5T3JkZXJCb29rUmVzcG9uc2UiBIC1" + 
+          "GAcSnAEKG1F1ZXJ5T2ZmZXJzQnlBY2NvdW50Rm9ySXRlbRI6LmJuZXQucHJv" + 
+          "dG9jb2wuZXhjaGFuZ2UuUXVlcnlPZmZlcnNCeUFjY291bnRGb3JJdGVtUmVx" + 
+          "dWVzdBo7LmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUXVlcnlPZmZlcnNCeUFj" + 
+          "Y291bnRGb3JJdGVtUmVzcG9uc2UiBIC1GAgSlgEKGVF1ZXJ5Qmlkc0J5QWNj" + 
+          "b3VudEZvckl0ZW0SOC5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLlF1ZXJ5Qmlk" + 
+          "c0J5QWNjb3VudEZvckl0ZW1SZXF1ZXN0GjkuYm5ldC5wcm90b2NvbC5leGNo" + 
+          "YW5nZS5RdWVyeUJpZHNCeUFjY291bnRGb3JJdGVtUmVzcG9uc2UiBIC1GAkS" + 
+          "jQEKFlF1ZXJ5T3JkZXJCb29rc1N1bW1hcnkSNS5ibmV0LnByb3RvY29sLmV4" + 
+          "Y2hhbmdlLlF1ZXJ5T3JkZXJCb29rc1N1bW1hcnlSZXF1ZXN0GjYuYm5ldC5w" + 
+          "cm90b2NvbC5leGNoYW5nZS5RdWVyeU9yZGVyQm9va3NTdW1tYXJ5UmVzcG9u" + 
+          "c2UiBIC1GAsSnAEKG1F1ZXJ5U2V0dGxlbWVudHNCeU9yZGVyQm9vaxI6LmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuUXVlcnlTZXR0bGVtZW50c0J5T3JkZXJC" + 
+          "b29rUmVxdWVzdBo7LmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuUXVlcnlTZXR0" + 
+          "bGVtZW50c0J5T3JkZXJCb29rUmVzcG9uc2UiBIC1GAwSbgoPUmVwb3J0QXV0" + 
+          "aG9yaXplEj4uYm5ldC5wcm90b2NvbC5leGNoYW5nZV9vYmplY3RfcHJvdmlk" + 
+          "ZXIuUmVwb3J0QXV0aG9yaXplUmVxdWVzdBoVLmJuZXQucHJvdG9jb2wuTm9E" + 
+          "YXRhIgSAtRgNEmgKDFJlcG9ydFNldHRsZRI7LmJuZXQucHJvdG9jb2wuZXhj" + 
+          "aGFuZ2Vfb2JqZWN0X3Byb3ZpZGVyLlJlcG9ydFNldHRsZVJlcXVlc3QaFS5i" + 
+          "bmV0LnByb3RvY29sLk5vRGF0YSIEgLUYDhJoCgxSZXBvcnRDYW5jZWwSOy5i" + 
+          "bmV0LnByb3RvY29sLmV4Y2hhbmdlX29iamVjdF9wcm92aWRlci5SZXBvcnRD" + 
+          "YW5jZWxSZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5Ob0RhdGEiBIC1GA8SfAoe" + 
+          "U3Vic2NyaWJlT3JkZXJCb29rU3RhdHVzQ2hhbmdlEj0uYm5ldC5wcm90b2Nv" + 
+          "bC5leGNoYW5nZS5TdWJzY3JpYmVPcmRlckJvb2tTdGF0dXNDaGFuZ2VSZXF1" + 
+          "ZXN0GhUuYm5ldC5wcm90b2NvbC5Ob0RhdGEiBIC1GBASgAEKIFVuc3Vic2Ny" + 
+          "aWJlT3JkZXJCb29rU3RhdHVzQ2hhbmdlEj8uYm5ldC5wcm90b2NvbC5leGNo" + 
+          "YW5nZS5VbnN1YnNjcmliZU9yZGVyQm9va1N0YXR1c0NoYW5nZVJlcXVlc3Qa" + 
+          "FS5ibmV0LnByb3RvY29sLk5vRGF0YSIEgLUYERJ0ChpTdWJzY3JpYmVPcmRl" + 
+          "clN0YXR1c0NoYW5nZRI5LmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuU3Vic2Ny" + 
+          "aWJlT3JkZXJTdGF0dXNDaGFuZ2VSZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5O" + 
+          "b0RhdGEiBIC1GBISeAocVW5zdWJzY3JpYmVPcmRlclN0YXR1c0NoYW5nZRI7" + 
+          "LmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuVW5zdWJzY3JpYmVPcmRlclN0YXR1" + 
+          "c0NoYW5nZVJlcXVlc3QaFS5ibmV0LnByb3RvY29sLk5vRGF0YSIEgLUYExKe" + 
+          "AQoRR2V0UGF5bWVudE1ldGhvZHMSQC5ibmV0LnByb3RvY29sLmV4Y2hhbmdl" + 
+          "X29iamVjdF9wcm92aWRlci5HZXRQYXltZW50TWV0aG9kc1JlcXVlc3QaQS5i" + 
+          "bmV0LnByb3RvY29sLmV4Y2hhbmdlX29iamVjdF9wcm92aWRlci5HZXRQYXlt" + 
+          "ZW50TWV0aG9kc1Jlc3BvbnNlIgSAtRgUElEKDENsYWltQmlkSXRlbRIkLmJu" + 
+          "ZXQucHJvdG9jb2wuZXhjaGFuZ2UuQ2xhaW1SZXF1ZXN0GhUuYm5ldC5wcm90" + 
+          "b2NvbC5Ob0RhdGEiBIC1GBUSUgoNQ2xhaW1CaWRNb25leRIkLmJuZXQucHJv" + 
+          "dG9jb2wuZXhjaGFuZ2UuQ2xhaW1SZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5O" + 
+          "b0RhdGEiBIC1GBYSUwoOQ2xhaW1PZmZlckl0ZW0SJC5ibmV0LnByb3RvY29s" + 
+          "LmV4Y2hhbmdlLkNsYWltUmVxdWVzdBoVLmJuZXQucHJvdG9jb2wuTm9EYXRh" + 
+          "IgSAtRgXElQKD0NsYWltT2ZmZXJNb25leRIkLmJuZXQucHJvdG9jb2wuZXhj" + 
+          "aGFuZ2UuQ2xhaW1SZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5Ob0RhdGEiBIC1" + 
+          "GBgSTwoJQ2FuY2VsQmlkEiUuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5DYW5j" + 
+          "ZWxSZXF1ZXN0GhUuYm5ldC5wcm90b2NvbC5Ob0RhdGEiBIC1GBkSUQoLQ2Fu" + 
+          "Y2VsT2ZmZXISJS5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLkNhbmNlbFJlcXVl" + 
+          "c3QaFS5ibmV0LnByb3RvY29sLk5vRGF0YSIEgLUYGhJ7ChBHZXRDb25maWd1" + 
+          "cmF0aW9uEi8uYm5ldC5wcm90b2NvbC5leGNoYW5nZS5HZXRDb25maWd1cmF0" + 
+          "aW9uUmVxdWVzdBowLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuR2V0Q29uZmln" + 
+          "dXJhdGlvblJlc3BvbnNlIgSAtRgbEoEBChNHZXRCaWRGZWVFc3RpbWF0aW9u" + 
+          "EjIuYm5ldC5wcm90b2NvbC5leGNoYW5nZS5HZXRCaWRGZWVFc3RpbWF0aW9u" + 
+          "UmVxdWVzdBowLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuR2V0RmVlRXN0aW1h" + 
+          "dGlvblJlc3BvbnNlIgSAtRgcEoUBChVHZXRPZmZlckZlZUVzdGltYXRpb24S" + 
+          "NC5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLkdldE9mZmVyRmVlRXN0aW1hdGlv" + 
+          "blJlcXVlc3QaMC5ibmV0LnByb3RvY29sLmV4Y2hhbmdlLkdldEZlZUVzdGlt" + 
+          "YXRpb25SZXNwb25zZSIEgLUYHTLhAgoORXhjaGFuZ2VOb3RpZnkSdQobTm90" + 
+          "aWZ5T3JkZXJCb29rU3RhdHVzQ2hhbmdlEjQuYm5ldC5wcm90b2NvbC5leGNo" + 
+          "YW5nZS5PcmRlckJvb2tOb3RpZmljYXRpb25SZXF1ZXN0GhouYm5ldC5wcm90" + 
+          "b2NvbC5OT19SRVNQT05TRSIEgLUYARJtChdOb3RpZnlPZmZlclN0YXR1c0No" + 
+          "YW5nZRIwLmJuZXQucHJvdG9jb2wuZXhjaGFuZ2UuT2ZmZXJOb3RpZmljYXRp" + 
+          "b25SZXF1ZXN0GhouYm5ldC5wcm90b2NvbC5OT19SRVNQT05TRSIEgLUYAhJp" + 
+          "ChVOb3RpZnlCaWRTdGF0dXNDaGFuZ2USLi5ibmV0LnByb3RvY29sLmV4Y2hh" + 
+          "bmdlLkJpZE5vdGlmaWNhdGlvblJlcXVlc3QaGi5ibmV0LnByb3RvY29sLk5P" + 
+          "X1JFU1BPTlNFIgSAtRgDQgOAAQA=");
+      pbd::FileDescriptor.InternalDescriptorAssigner assigner = delegate(pbd::FileDescriptor root) {
+        descriptor = root;
+        internal__static_bnet_protocol_exchange_CreateOrderBookRequest__Descriptor = Descriptor.MessageTypes[0];
+        internal__static_bnet_protocol_exchange_CreateOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.CreateOrderBookRequest, global::bnet.protocol.exchange.CreateOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_CreateOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "OrderBook", });
+        internal__static_bnet_protocol_exchange_CreateOrderBookResponse__Descriptor = Descriptor.MessageTypes[1];
+        internal__static_bnet_protocol_exchange_CreateOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.CreateOrderBookResponse, global::bnet.protocol.exchange.CreateOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_CreateOrderBookResponse__Descriptor,
+                new string[] { "OrderBookId", });
+        internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__Descriptor = Descriptor.MessageTypes[2];
+        internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceOfferOnOrderBookRequest, global::bnet.protocol.exchange.PlaceOfferOnOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "OfferCreation", });
+        internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__Descriptor = Descriptor.MessageTypes[3];
+        internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceOfferOnOrderBookResponse, global::bnet.protocol.exchange.PlaceOfferOnOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__Descriptor,
+                new string[] { "OrderBookId", "OfferId", });
+        internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__Descriptor = Descriptor.MessageTypes[4];
+        internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceOfferCreateOrderBookIfNeededRequest, global::bnet.protocol.exchange.PlaceOfferCreateOrderBookIfNeededRequest.Builder>(internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__Descriptor,
+                new string[] { "PartitionId", "OrderBook", "OfferCreation", });
+        internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__Descriptor = Descriptor.MessageTypes[5];
+        internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceOfferCreateOrderBookIfNeededResponse, global::bnet.protocol.exchange.PlaceOfferCreateOrderBookIfNeededResponse.Builder>(internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__Descriptor,
+                new string[] { "OrderBookId", "OfferId", });
+        internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__Descriptor = Descriptor.MessageTypes[6];
+        internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceBidOnOrderBookRequest, global::bnet.protocol.exchange.PlaceBidOnOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "BidCreation", });
+        internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__Descriptor = Descriptor.MessageTypes[7];
+        internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceBidOnOrderBookResponse, global::bnet.protocol.exchange.PlaceBidOnOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__Descriptor,
+                new string[] { "OrderBookId", "BidId", });
+        internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__Descriptor = Descriptor.MessageTypes[8];
+        internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceBidCreateOrderBookIfNeededRequest, global::bnet.protocol.exchange.PlaceBidCreateOrderBookIfNeededRequest.Builder>(internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__Descriptor,
+                new string[] { "PartitionId", "OrderBook", "BidCreation", });
+        internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__Descriptor = Descriptor.MessageTypes[9];
+        internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.PlaceBidCreateOrderBookIfNeededResponse, global::bnet.protocol.exchange.PlaceBidCreateOrderBookIfNeededResponse.Builder>(internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__Descriptor,
+                new string[] { "OrderBookId", "BidId", });
+        internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__Descriptor = Descriptor.MessageTypes[10];
+        internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOffersByOrderBookRequest, global::bnet.protocol.exchange.QueryOffersByOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "Filter", "Status", });
+        internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__Descriptor = Descriptor.MessageTypes[11];
+        internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOffersByOrderBookResponse, global::bnet.protocol.exchange.QueryOffersByOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__Descriptor,
+                new string[] { "Offers", "TotalCount", });
+        internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__Descriptor = Descriptor.MessageTypes[12];
+        internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryBidsByOrderBookRequest, global::bnet.protocol.exchange.QueryBidsByOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "Filter", "Status", });
+        internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__Descriptor = Descriptor.MessageTypes[13];
+        internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryBidsByOrderBookResponse, global::bnet.protocol.exchange.QueryBidsByOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__Descriptor,
+                new string[] { "Bids", "TotalCount", });
+        internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__Descriptor = Descriptor.MessageTypes[14];
+        internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOffersByAccountForItemRequest, global::bnet.protocol.exchange.QueryOffersByAccountForItemRequest.Builder>(internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__Descriptor,
+                new string[] { "AccountForItem", "Filter", "BnetAccount", });
+        internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__Descriptor = Descriptor.MessageTypes[15];
+        internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOffersByAccountForItemResponse, global::bnet.protocol.exchange.QueryOffersByAccountForItemResponse.Builder>(internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__Descriptor,
+                new string[] { "Offers", "TotalCount", });
+        internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__Descriptor = Descriptor.MessageTypes[16];
+        internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryBidsByAccountForItemRequest, global::bnet.protocol.exchange.QueryBidsByAccountForItemRequest.Builder>(internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__Descriptor,
+                new string[] { "AccountForItem", "Filter", "BnetAccount", });
+        internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__Descriptor = Descriptor.MessageTypes[17];
+        internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryBidsByAccountForItemResponse, global::bnet.protocol.exchange.QueryBidsByAccountForItemResponse.Builder>(internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__Descriptor,
+                new string[] { "Bids", "TotalCount", });
+        internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__Descriptor = Descriptor.MessageTypes[18];
+        internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOrderBooksSummaryRequest, global::bnet.protocol.exchange.QueryOrderBooksSummaryRequest.Builder>(internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__Descriptor,
+                new string[] { "Handles", });
+        internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__Descriptor = Descriptor.MessageTypes[19];
+        internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QueryOrderBooksSummaryResponse, global::bnet.protocol.exchange.QueryOrderBooksSummaryResponse.Builder>(internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__Descriptor,
+                new string[] { "OrderBooks", });
+        internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__Descriptor = Descriptor.MessageTypes[20];
+        internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QuerySettlementsByOrderBookRequest, global::bnet.protocol.exchange.QuerySettlementsByOrderBookRequest.Builder>(internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__Descriptor,
+                new string[] { "PartitionId", "Filter", });
+        internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__Descriptor = Descriptor.MessageTypes[21];
+        internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.QuerySettlementsByOrderBookResponse, global::bnet.protocol.exchange.QuerySettlementsByOrderBookResponse.Builder>(internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__Descriptor,
+                new string[] { "Settlements", });
+        internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__Descriptor = Descriptor.MessageTypes[22];
+        internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.SubscribeOrderBookStatusChangeRequest, global::bnet.protocol.exchange.SubscribeOrderBookStatusChangeRequest.Builder>(internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__Descriptor,
+                new string[] { "ObjectId", "MinPartitionId", "MaxPartitionId", "Program", "Status", "Currency", "Specialist", "Bootstrap", });
+        internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__Descriptor = Descriptor.MessageTypes[23];
+        internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.UnsubscribeOrderBookStatusChangeRequest, global::bnet.protocol.exchange.UnsubscribeOrderBookStatusChangeRequest.Builder>(internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__Descriptor,
+                new string[] { });
+        internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__Descriptor = Descriptor.MessageTypes[24];
+        internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.SubscribeOrderStatusChangeRequest, global::bnet.protocol.exchange.SubscribeOrderStatusChangeRequest.Builder>(internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__Descriptor,
+                new string[] { "AgentId", "ObjectId", });
+        internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__Descriptor = Descriptor.MessageTypes[25];
+        internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.UnsubscribeOrderStatusChangeRequest, global::bnet.protocol.exchange.UnsubscribeOrderStatusChangeRequest.Builder>(internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__Descriptor,
+                new string[] { "AgentId", "ObjectId", });
+        internal__static_bnet_protocol_exchange_ClaimRequest__Descriptor = Descriptor.MessageTypes[26];
+        internal__static_bnet_protocol_exchange_ClaimRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.ClaimRequest, global::bnet.protocol.exchange.ClaimRequest.Builder>(internal__static_bnet_protocol_exchange_ClaimRequest__Descriptor,
+                new string[] { "PartitionId", "OrderId", "BnetAccount", });
+        internal__static_bnet_protocol_exchange_CancelRequest__Descriptor = Descriptor.MessageTypes[27];
+        internal__static_bnet_protocol_exchange_CancelRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.CancelRequest, global::bnet.protocol.exchange.CancelRequest.Builder>(internal__static_bnet_protocol_exchange_CancelRequest__Descriptor,
+                new string[] { "PartitionId", "OrderId", "Reason", "BnetAccount", });
+        internal__static_bnet_protocol_exchange_GetConfigurationRequest__Descriptor = Descriptor.MessageTypes[28];
+        internal__static_bnet_protocol_exchange_GetConfigurationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.GetConfigurationRequest, global::bnet.protocol.exchange.GetConfigurationRequest.Builder>(internal__static_bnet_protocol_exchange_GetConfigurationRequest__Descriptor,
+                new string[] { "Program", });
+        internal__static_bnet_protocol_exchange_GetConfigurationResponse__Descriptor = Descriptor.MessageTypes[29];
+        internal__static_bnet_protocol_exchange_GetConfigurationResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.GetConfigurationResponse, global::bnet.protocol.exchange.GetConfigurationResponse.Builder>(internal__static_bnet_protocol_exchange_GetConfigurationResponse__Descriptor,
+                new string[] { "Configs", });
+        internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__Descriptor = Descriptor.MessageTypes[30];
+        internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.GetOfferFeeEstimationRequest, global::bnet.protocol.exchange.GetOfferFeeEstimationRequest.Builder>(internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__Descriptor,
+                new string[] { "PartitionId", "Data", });
+        internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__Descriptor = Descriptor.MessageTypes[31];
+        internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.GetBidFeeEstimationRequest, global::bnet.protocol.exchange.GetBidFeeEstimationRequest.Builder>(internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__Descriptor,
+                new string[] { "PartitionId", "Data", });
+        internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__Descriptor = Descriptor.MessageTypes[32];
+        internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.GetFeeEstimationResponse, global::bnet.protocol.exchange.GetFeeEstimationResponse.Builder>(internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__Descriptor,
+                new string[] { "FeeAmount", });
+        internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__Descriptor = Descriptor.MessageTypes[33];
+        internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.OrderBookNotificationRequest, global::bnet.protocol.exchange.OrderBookNotificationRequest.Builder>(internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__Descriptor,
+                new string[] { "Notifications", "BootStrapLast", });
+        internal__static_bnet_protocol_exchange_OfferNotificationRequest__Descriptor = Descriptor.MessageTypes[34];
+        internal__static_bnet_protocol_exchange_OfferNotificationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.OfferNotificationRequest, global::bnet.protocol.exchange.OfferNotificationRequest.Builder>(internal__static_bnet_protocol_exchange_OfferNotificationRequest__Descriptor,
+                new string[] { "Offer", "Event", });
+        internal__static_bnet_protocol_exchange_BidNotificationRequest__Descriptor = Descriptor.MessageTypes[35];
+        internal__static_bnet_protocol_exchange_BidNotificationRequest__FieldAccessorTable = 
+            new pb::FieldAccess.FieldAccessorTable<global::bnet.protocol.exchange.BidNotificationRequest, global::bnet.protocol.exchange.BidNotificationRequest.Builder>(internal__static_bnet_protocol_exchange_BidNotificationRequest__Descriptor,
+                new string[] { "Bid", "Event", });
+        pb::ExtensionRegistry registry = pb::ExtensionRegistry.CreateInstance();
+        RegisterAllExtensions(registry);
+        global::bnet.protocol.Rpc.RegisterAllExtensions(registry);
+        global::bnet.protocol.exchange.ExchangeSvc.RegisterAllExtensions(registry);
+        global::bnet.protocol.exchange_object_provider.ExchangeObjectProvider.RegisterAllExtensions(registry);
+        global::bnet.protocol.Entity.RegisterAllExtensions(registry);
+        global::bnet.protocol.exchange.ExchangeTypes.RegisterAllExtensions(registry);
+        return registry;
+      };
+      pbd::FileDescriptor.InternalBuildGeneratedFileFrom(descriptorData,
+          new pbd::FileDescriptor[] {
+          global::bnet.protocol.Rpc.Descriptor, 
+          global::bnet.protocol.exchange.Exchange.Descriptor, 
+          global::bnet.protocol.exchange_object_provider.ExchangeObjectProvider.Descriptor, 
+          global::bnet.protocol.Entity.Descriptor, 
+          global::bnet.protocol.exchange.ExchangeTypes.Descriptor, 
+          }, assigner);
+    }
+    #endregion
+    
   }
   #region Messages
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -106,11 +479,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CreateOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CreateOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<CreateOrderBookRequest, CreateOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CreateOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CreateOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -412,7 +785,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static CreateOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -436,11 +809,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CreateOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CreateOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<CreateOrderBookResponse, CreateOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CreateOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CreateOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int OrderBookIdFieldNumber = 1;
@@ -651,7 +1024,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static CreateOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -675,11 +1048,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceOfferOnOrderBookRequest, PlaceOfferOnOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -981,7 +1354,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceOfferOnOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -1005,11 +1378,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceOfferOnOrderBookResponse, PlaceOfferOnOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferOnOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int OrderBookIdFieldNumber = 1;
@@ -1261,7 +1634,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceOfferOnOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -1285,11 +1658,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceOfferCreateOrderBookIfNeededRequest, PlaceOfferCreateOrderBookIfNeededRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -1657,7 +2030,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceOfferCreateOrderBookIfNeededRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -1681,11 +2054,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceOfferCreateOrderBookIfNeededResponse, PlaceOfferCreateOrderBookIfNeededResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceOfferCreateOrderBookIfNeededResponse__FieldAccessorTable; }
     }
     
     public const int OrderBookIdFieldNumber = 1;
@@ -1937,7 +2310,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceOfferCreateOrderBookIfNeededResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -1961,11 +2334,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceBidOnOrderBookRequest, PlaceBidOnOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -2267,7 +2640,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceBidOnOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -2291,11 +2664,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceBidOnOrderBookResponse, PlaceBidOnOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidOnOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int OrderBookIdFieldNumber = 1;
@@ -2547,7 +2920,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceBidOnOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -2571,11 +2944,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceBidCreateOrderBookIfNeededRequest, PlaceBidCreateOrderBookIfNeededRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -2943,7 +3316,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceBidCreateOrderBookIfNeededRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -2967,11 +3340,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<PlaceBidCreateOrderBookIfNeededResponse, PlaceBidCreateOrderBookIfNeededResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_PlaceBidCreateOrderBookIfNeededResponse__FieldAccessorTable; }
     }
     
     public const int OrderBookIdFieldNumber = 1;
@@ -3223,7 +3596,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static PlaceBidCreateOrderBookIfNeededResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -3247,11 +3620,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOffersByOrderBookRequest, QueryOffersByOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -3595,7 +3968,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOffersByOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -3619,11 +3992,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOffersByOrderBookResponse, QueryOffersByOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int OffersFieldNumber = 1;
@@ -3902,7 +4275,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOffersByOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -3926,11 +4299,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryBidsByOrderBookRequest, QueryBidsByOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -4274,7 +4647,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryBidsByOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -4298,11 +4671,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryBidsByOrderBookResponse, QueryBidsByOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int BidsFieldNumber = 1;
@@ -4581,7 +4954,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryBidsByOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -4605,11 +4978,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOffersByAccountForItemRequest, QueryOffersByAccountForItemRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemRequest__FieldAccessorTable; }
     }
     
     public const int AccountForItemFieldNumber = 1;
@@ -4978,7 +5351,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOffersByAccountForItemRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -5002,11 +5375,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOffersByAccountForItemResponse, QueryOffersByAccountForItemResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOffersByAccountForItemResponse__FieldAccessorTable; }
     }
     
     public const int OffersFieldNumber = 1;
@@ -5285,7 +5658,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOffersByAccountForItemResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -5309,11 +5682,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryBidsByAccountForItemRequest, QueryBidsByAccountForItemRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemRequest__FieldAccessorTable; }
     }
     
     public const int AccountForItemFieldNumber = 1;
@@ -5682,7 +6055,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryBidsByAccountForItemRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -5706,11 +6079,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryBidsByAccountForItemResponse, QueryBidsByAccountForItemResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryBidsByAccountForItemResponse__FieldAccessorTable; }
     }
     
     public const int BidsFieldNumber = 1;
@@ -5989,7 +6362,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryBidsByAccountForItemResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -6013,11 +6386,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOrderBooksSummaryRequest, QueryOrderBooksSummaryRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryRequest__FieldAccessorTable; }
     }
     
     public const int HandlesFieldNumber = 1;
@@ -6254,7 +6627,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOrderBooksSummaryRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -6278,11 +6651,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QueryOrderBooksSummaryResponse, QueryOrderBooksSummaryResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QueryOrderBooksSummaryResponse__FieldAccessorTable; }
     }
     
     public const int OrderBooksFieldNumber = 1;
@@ -6519,7 +6892,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QueryOrderBooksSummaryResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -6543,11 +6916,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QuerySettlementsByOrderBookRequest, QuerySettlementsByOrderBookRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -6849,7 +7222,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QuerySettlementsByOrderBookRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -6873,11 +7246,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<QuerySettlementsByOrderBookResponse, QuerySettlementsByOrderBookResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_QuerySettlementsByOrderBookResponse__FieldAccessorTable; }
     }
     
     public const int SettlementsFieldNumber = 1;
@@ -7114,7 +7487,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static QuerySettlementsByOrderBookResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -7138,11 +7511,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<SubscribeOrderBookStatusChangeRequest, SubscribeOrderBookStatusChangeRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_SubscribeOrderBookStatusChangeRequest__FieldAccessorTable; }
     }
     
     public const int ObjectIdFieldNumber = 1;
@@ -7694,7 +8067,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static SubscribeOrderBookStatusChangeRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -7718,11 +8091,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<UnsubscribeOrderBookStatusChangeRequest, UnsubscribeOrderBookStatusChangeRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_UnsubscribeOrderBookStatusChangeRequest__FieldAccessorTable; }
     }
     
     public override bool IsInitialized {
@@ -7892,7 +8265,7 @@ namespace bnet.protocol.exchange {
       
     }
     static UnsubscribeOrderBookStatusChangeRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -7916,11 +8289,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<SubscribeOrderStatusChangeRequest, SubscribeOrderStatusChangeRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_SubscribeOrderStatusChangeRequest__FieldAccessorTable; }
     }
     
     public const int AgentIdFieldNumber = 1;
@@ -8198,7 +8571,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static SubscribeOrderStatusChangeRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -8222,11 +8595,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<UnsubscribeOrderStatusChangeRequest, UnsubscribeOrderStatusChangeRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_UnsubscribeOrderStatusChangeRequest__FieldAccessorTable; }
     }
     
     public const int AgentIdFieldNumber = 1;
@@ -8504,7 +8877,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static UnsubscribeOrderStatusChangeRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -8528,11 +8901,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_ClaimRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_ClaimRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<ClaimRequest, ClaimRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_ClaimRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_ClaimRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -8877,7 +9250,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static ClaimRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -8901,11 +9274,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CancelRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CancelRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<CancelRequest, CancelRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_CancelRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_CancelRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -9291,7 +9664,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static CancelRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -9315,11 +9688,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetConfigurationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetConfigurationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<GetConfigurationRequest, GetConfigurationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetConfigurationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetConfigurationRequest__FieldAccessorTable; }
     }
     
     public const int ProgramFieldNumber = 1;
@@ -9531,7 +9904,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static GetConfigurationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -9555,11 +9928,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetConfigurationResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetConfigurationResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<GetConfigurationResponse, GetConfigurationResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetConfigurationResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetConfigurationResponse__FieldAccessorTable; }
     }
     
     public const int ConfigsFieldNumber = 1;
@@ -9796,7 +10169,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static GetConfigurationResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -9820,11 +10193,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<GetOfferFeeEstimationRequest, GetOfferFeeEstimationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetOfferFeeEstimationRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -10126,7 +10499,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static GetOfferFeeEstimationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -10150,11 +10523,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<GetBidFeeEstimationRequest, GetBidFeeEstimationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetBidFeeEstimationRequest__FieldAccessorTable; }
     }
     
     public const int PartitionIdFieldNumber = 1;
@@ -10456,7 +10829,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static GetBidFeeEstimationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -10480,11 +10853,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<GetFeeEstimationResponse, GetFeeEstimationResponse.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_GetFeeEstimationResponse__FieldAccessorTable; }
     }
     
     public const int FeeAmountFieldNumber = 1;
@@ -10695,7 +11068,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static GetFeeEstimationResponse() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -10719,11 +11092,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<OrderBookNotificationRequest, OrderBookNotificationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_OrderBookNotificationRequest__FieldAccessorTable; }
     }
     
     public const int NotificationsFieldNumber = 1;
@@ -11001,7 +11374,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static OrderBookNotificationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -11025,11 +11398,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_OfferNotificationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_OfferNotificationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<OfferNotificationRequest, OfferNotificationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_OfferNotificationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_OfferNotificationRequest__FieldAccessorTable; }
     }
     
     public const int OfferFieldNumber = 1;
@@ -11307,7 +11680,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static OfferNotificationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -11331,11 +11704,11 @@ namespace bnet.protocol.exchange {
     }
     
     public static pbd::MessageDescriptor Descriptor {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_BidNotificationRequest__Descriptor; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_BidNotificationRequest__Descriptor; }
     }
     
     protected override pb::FieldAccess.FieldAccessorTable<BidNotificationRequest, BidNotificationRequest.Builder> InternalFieldAccessors {
-      get { return global::bnet.protocol.exchange.Exchange.internal__static_bnet_protocol_exchange_BidNotificationRequest__FieldAccessorTable; }
+      get { return global::bnet.protocol.exchange.ExchangeSvc.internal__static_bnet_protocol_exchange_BidNotificationRequest__FieldAccessorTable; }
     }
     
     public const int BidFieldNumber = 1;
@@ -11613,7 +11986,7 @@ namespace bnet.protocol.exchange {
       }
     }
     static BidNotificationRequest() {
-      object.ReferenceEquals(global::bnet.protocol.exchange.Exchange.Descriptor, null);
+      object.ReferenceEquals(global::bnet.protocol.exchange.ExchangeSvc.Descriptor, null);
     }
   }
   
@@ -11738,7 +12111,7 @@ namespace bnet.protocol.exchange {
         global::System.Action<global::bnet.protocol.exchange.GetFeeEstimationResponse> done);
     
     public static pbd::ServiceDescriptor Descriptor {
-      get { return Exchange.Descriptor.Services[0]; }
+      get { return ExchangeSvc.Descriptor.Services[0]; }
     }
     public pbd::ServiceDescriptor DescriptorForType {
       get { return Descriptor; }
@@ -12322,7 +12695,7 @@ namespace bnet.protocol.exchange {
         global::System.Action<global::bnet.protocol.NO_RESPONSE> done);
     
     public static pbd::ServiceDescriptor Descriptor {
-      get { return Exchange.Descriptor.Services[1]; }
+      get { return ExchangeSvc.Descriptor.Services[1]; }
     }
     public pbd::ServiceDescriptor DescriptorForType {
       get { return Descriptor; }
