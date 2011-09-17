@@ -62,7 +62,15 @@ namespace d3emu.ServicesImpl
             Console.WriteLine("Hash: {0:X8}", response.ModuleHandle.Hash.ToByteArray().ToHexString());
             Console.WriteLine("Message: {0:X8}", response.Message.ToByteArray().ToHexString());
 
-            var data = new ServerPacket(3, 1, 0, 2).WriteMessage(response);
+            byte sId = 0;
+            foreach (var service in client.exportedServices)
+            {
+                if(service.Value.GetType() == typeof(AuthenticationClientImpl))
+                {
+                    sId = (byte) service.Key;
+                }
+            }
+            var data = new ServerPacket(sId, 1, 0, 2).WriteMessage(response);
 
             client.Send(data);
 

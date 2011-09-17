@@ -105,5 +105,18 @@ namespace d3emu
         {
             s.WriteRawBytes(BitConverter.GetBytes(value));
         }
+
+        public static TMessage ReadMessage<TMessage, TBuilder>(this CodedInputStream m_stream, IBuilder<TMessage, TBuilder> builder)
+            where TMessage : IMessage<TMessage, TBuilder>
+            where TBuilder : IBuilder<TMessage, TBuilder>
+        {
+            m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
+
+            if (!m_stream.IsAtEnd)
+                throw new Exception("Packet under read!");
+
+            return builder.Build();
+        }
+
     }
 }

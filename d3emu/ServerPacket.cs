@@ -3,6 +3,8 @@ using Google.ProtocolBuffers;
 
 namespace d3emu
 {
+    using System;
+
     class ServerPacket
     {
         private readonly CodedOutputStream m_stream;
@@ -17,6 +19,8 @@ namespace d3emu
             m_stream.WriteRawByte(service);
             m_stream.WriteInt32NoTag(method);
             m_stream.WriteInt16NoTag(requestId);
+
+            Console.WriteLine("OUT: service {0}, method {1}, req {2}, unk {3}", service, method, requestId, unk1);
 
             if (service != 0xFE)
                 m_stream.WriteInt64NoTag(unk1);

@@ -33,10 +33,13 @@
 
             var newResponse = BindResponse.CreateBuilder();
 
+            foreach (var hash in request.ImportedServiceHashList)
+            {
+                newResponse.AddImportedServiceId(client.LoadImportedService(hash));
+            }
             foreach (var s in request.ExportedServiceList)
             {
-                client.LoadService(s.Hash, s.Id);
-                newResponse.AddImportedServiceId(s.Id);
+                client.LoadExportedService(s.Hash, s.Id);
             }
 
             var response = newResponse.Build();

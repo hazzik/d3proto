@@ -17,7 +17,7 @@ namespace d3emu
         /// </summary>
         /// <param name="name">Service name</param>
         /// <returns>Service hash</returns>
-        static uint GetServiceHash(string name)
+        public static uint GetServiceHash(string name)
         {
             return Encoding.ASCII.GetBytes(name)
                 .Aggregate(0x811C9DC5, (current, t) => 0x1000193*(t ^ current));
@@ -25,6 +25,10 @@ namespace d3emu
 
         static void Main(string[] args)
         {
+//            new Test();
+
+//            Console.ReadKey();
+//            return;
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             m_socket.Bind(new IPEndPoint(IPAddress.Any, 6666));

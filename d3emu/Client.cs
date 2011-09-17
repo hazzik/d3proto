@@ -8,25 +8,21 @@ namespace d3emu
 
     public class Client
     {
-        private readonly IDictionary<uint, IService> loadedServices = new Dictionary<uint, IService>();
+        public readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
+        public readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
 
         public Client(Socket socket)
         {
             this.socket = socket;
-            LoadService(0, 0);
-        }
-
-        public Socket Socket
-        {
-            get { return socket; }
+            LoadImportedService(0);
         }
 
         public void Run()
         {
             while (true)
             {
-                try
+//                try
                 {
                     if (!socket.IsConnected())
                         break;
@@ -54,10 +50,10 @@ namespace d3emu
                         }
                     }
                 }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+//                catch(Exception e)
+//                {
+//                    Console.WriteLine(e);
+//                }
             }
         }
 
@@ -65,15 +61,11 @@ namespace d3emu
         {
             var packet = new ClientPacket(newBuf);
 
-            IService service = loadedServices[packet.Service];
-            Console.WriteLine(service.GetType());
+            IService service = importedServices[packet.Service];
+            importedServices[254] = service;
+
             MethodDescriptor method = service.DescriptorForType.Methods[packet.Method - 1];
-            Console.WriteLine(method.Name);
-            if(method.Name == "ModuleLoad") // WTF!?
-            {
-                service = loadedServices[0];
-                method = service.DescriptorForType.Methods[5];
-            }
+
             Action<IMessage> done =
                 response =>
                     {
@@ -91,9 +83,16 @@ namespace d3emu
             service.CallMethod(method, null, message, done);
         }
 
-        public void LoadService(uint hash, uint key)
+        public void LoadExportedService(uint hash, uint key)
         {
-            loadedServices[key] = Services.ServicesDict[hash](this);
+            exportedServices[key] = Services.ServicesDict[hash](this);
+        }
+
+        public uint LoadImportedService(uint hash)
+        {
+            var i = (uint)(importedServices.Count);
+            importedServices[i] = Services.ServicesDict[hash](this);
+            return i;
         }
 
         public  void Send(byte[] data)

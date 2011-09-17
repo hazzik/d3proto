@@ -45,6 +45,8 @@ namespace d3emu
             m_requestId = m_stream.ReadInt16();
             m_unk1 = 0;
 
+            Console.WriteLine("IN: service {0}, method {1:X}, req {2}, unk {3}", m_service, m_method, m_requestId, m_unk1);
+
             if (m_service != 0xFE)
                 m_unk1 = m_stream.ReadInt64();
         }
@@ -65,8 +67,8 @@ namespace d3emu
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
 
-            if (!m_stream.IsAtEnd)
-                throw new Exception("Packet under read!");
+//            if (!m_stream.IsAtEnd)
+//                throw new Exception("Packet under read!");
 
             return builder.WeakBuild();
         }
