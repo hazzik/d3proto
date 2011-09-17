@@ -10,7 +10,7 @@ namespace d3emu
         private readonly CodedOutputStream m_stream;
         private readonly MemoryStream m_memStream;
 
-        public ServerPacket(byte service, int method, short requestId, long unk1)
+        public ServerPacket(byte service, int method, short requestId, ulong listenerId)
         {
             m_memStream = new MemoryStream();
             m_stream = CodedOutputStream.CreateInstance(m_memStream);
@@ -20,10 +20,10 @@ namespace d3emu
             m_stream.WriteInt32NoTag(method);
             m_stream.WriteInt16NoTag(requestId);
 
-            Console.WriteLine("OUT: service {0}, method {1}, req {2}, unk {3}", service, method, requestId, unk1);
+            Console.WriteLine("OUT: service {0}, method {1}, requestId {2}, listenerId {3}", service, method, requestId, listenerId);
 
             if (service != 0xFE)
-                m_stream.WriteInt64NoTag(unk1);
+                m_stream.WriteRawVarint64(listenerId);
         }
 
         public byte[] WriteMessage(IMessageLite value)

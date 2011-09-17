@@ -68,9 +68,10 @@ namespace d3emu.ServicesImpl
                 if(service.Value.GetType() == typeof(AuthenticationClientImpl))
                 {
                     sId = (byte) service.Key;
+                    //client.importedServices[254] = service.Value;
                 }
             }
-            var data = new ServerPacket(sId, 1, 0, 2).WriteMessage(response);
+            var data = new ServerPacket(sId, 1, 0, request.ListenerId).WriteMessage(response);
 
             client.Send(data);
 

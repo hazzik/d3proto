@@ -37,6 +37,7 @@
             {
                 newResponse.AddImportedServiceId(client.LoadImportedService(hash));
             }
+
             foreach (var s in request.ExportedServiceList)
             {
                 client.LoadExportedService(s.Hash, s.Id);

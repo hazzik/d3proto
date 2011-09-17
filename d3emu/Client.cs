@@ -22,7 +22,7 @@ namespace d3emu
         {
             while (true)
             {
-//                try
+                try
                 {
                     if (!socket.IsConnected())
                         break;
@@ -50,10 +50,10 @@ namespace d3emu
                         }
                     }
                 }
-//                catch(Exception e)
-//                {
-//                    Console.WriteLine(e);
-//                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
 
@@ -63,6 +63,12 @@ namespace d3emu
 
             IService service = importedServices[packet.Service];
             importedServices[254] = service;
+
+            if (packet.Method == 0)
+            {
+                Console.WriteLine("NoData?");
+                return;
+            }
 
             MethodDescriptor method = service.DescriptorForType.Methods[packet.Method - 1];
 

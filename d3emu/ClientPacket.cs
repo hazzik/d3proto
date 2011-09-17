@@ -26,11 +26,11 @@ namespace d3emu
             get { return m_requestId; }
         }
 
-        private readonly long m_unk1;
+        private readonly ulong m_listenerId;
 
-        public long Unk1
+        public ulong ListenerId
         {
-            get { return m_unk1; }
+            get { return m_listenerId; }
         }
 
         private readonly CodedInputStream m_stream;
@@ -43,12 +43,12 @@ namespace d3emu
             m_service = m_stream.ReadRawByte();
             m_method = m_stream.ReadInt32();
             m_requestId = m_stream.ReadInt16();
-            m_unk1 = 0;
+            m_listenerId = 0;
 
-            Console.WriteLine("IN: service {0}, method {1:X}, req {2}, unk {3}", m_service, m_method, m_requestId, m_unk1);
+            Console.WriteLine("IN: service {0}, method {1:X}, requestId {2}, listenerId {3}", m_service, m_method, m_requestId, m_listenerId);
 
             if (m_service != 0xFE)
-                m_unk1 = m_stream.ReadInt64();
+                m_listenerId = m_stream.ReadInt64();
         }
 
         public TMessage ReadMessage<TMessage, TBuilder>(IBuilder<TMessage, TBuilder> builder)
@@ -67,8 +67,8 @@ namespace d3emu
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
 
-//            if (!m_stream.IsAtEnd)
-//                throw new Exception("Packet under read!");
+            if (!m_stream.IsAtEnd)
+                throw new Exception("Packet under read!");
 
             return builder.WeakBuild();
         }

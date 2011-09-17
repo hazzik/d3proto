@@ -94,11 +94,12 @@ namespace d3emu
             return ret;
         }
 
-        public static long ReadInt64(this CodedInputStream s)
+        public static ulong ReadInt64(this CodedInputStream s)
         {
-            long ret = 0;
-            s.ReadInt64(ref ret);
-            return ret;
+            //ulong ret = 0;
+            //s.ReadInt64(ref ret);
+            //return ret;
+            return s.ReadRawVarint64();
         }
 
         public static void WriteInt16NoTag(this CodedOutputStream s, short value)
