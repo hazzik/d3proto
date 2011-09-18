@@ -56,7 +56,6 @@
     <Compile Include="ServicesImpl\ChannelSubscriberImpl.cs" />
     <Compile Include="ServicesImpl\ChatServiceImpl.cs" />
     <Compile Include="ServicesImpl\ConnectionServiceImpl.cs" />
-    <Compile Include="ServicesImpl\AuthenticationClientImpl.cs" />
     <Compile Include="ClientPacket.cs" />
     <Compile Include="ServerPacket.cs" />
     <Compile Include="Extensions.cs" />

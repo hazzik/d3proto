@@ -14,6 +14,8 @@ namespace d3emu
         private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
 
+        public ulong ListenerId { get; set; }
+
         private byte GetServiceIdFor<T>() where T : IService
         {
             return exportedServices
@@ -134,7 +136,7 @@ namespace d3emu
             callbacks.Enqueue(new Callback {Action = done, Builder = responsePrototype.WeakToBuilder()});
 
             //TODO: make shure that callback executes for right request_id
-            var data = new ServerPacket(sId, method.Index + 1, 0, 0).WriteMessage(request);
+            var data = new ServerPacket(sId, method.Index + 1, 0, ListenerId).WriteMessage(request);
             Send(data);
         }
 
