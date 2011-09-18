@@ -4,21 +4,22 @@ namespace d3emu
     using System.Collections.Generic;
     using System.Net.Sockets;
     using bnet.protocol.authentication;
-    using d3emu.ServicesImpl;
+    using ServicesImpl;
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
 
     public class Client
+        : IRpcChannel
     {
         public readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
         public readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
 
-        public byte GetServiceIdFor<T>() where T: IService
+        public byte GetServiceIdFor<T>() where T : IService
         {
             foreach (var service in exportedServices)
-                if (service.Value.GetType() == typeof(T))
-                    return (byte)service.Key;
+                if (service.Value.GetType() == typeof (T))
+                    return (byte) service.Key;
 
             return 0xFF;
         }
@@ -78,13 +79,19 @@ namespace d3emu
         {
             var packet = new ClientPacket(stream);
 
+            if (packet.Service == Program.PrevService)
+            {
+                var callback = callbacks.Dequeue();
+                callback.Action(packet.ReadMessage(callback.ResponceProto.WeakToBuilder()));
+                return;
+            }
+
             IService service = importedServices[packet.Service];
-            importedServices[254] = service;
 
             // hack
             if (packet.Method == 0)
             {
-                if (importedServices[packet.Service].GetType() == typeof(AuthenticationClientImpl))
+                if (importedServices[packet.Service].GetType() == typeof (AuthenticationClientImpl))
                 {
                     var modResp = packet.ReadMessage(ModuleLoadResponse.CreateBuilder());
                     Console.WriteLine(modResp.ToString());
@@ -96,11 +103,11 @@ namespace d3emu
 
             Action<IMessage> done =
                 response =>
-                {
-                    byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
+                    {
+                        byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
 
-                    Send(data);
-                };
+                        Send(data);
+                    };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
@@ -118,18 +125,35 @@ namespace d3emu
 
         public uint LoadImportedService(uint hash)
         {
-            var i = (uint)importedServices.Count;
+            var i = (uint) importedServices.Count;
             importedServices[i] = Services.ServicesDict[hash](this);
             return i;
         }
 
-        public void Send(byte[] data)
+        private void Send(byte[] data)
         {
             Console.WriteLine("Sending data: length = {0}", data.Length);
 
             data.PrintHex();
 
             socket.Send(data);
+        }
+
+        private readonly Queue<Callback> callbacks = new Queue<Callback>();
+
+        private class Callback
+        {
+            public Action<IMessage> Action { get; set; }
+            public IMessage ResponceProto { get; set; }
+        }
+
+        public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
+        {
+            var sId = GetServiceIdFor<AuthenticationClient.Stub>();
+
+            var data = new ServerPacket(sId, 1, 0, 0).WriteMessage(responsePrototype);
+            callbacks.Enqueue(new Callback {Action = done, ResponceProto = responsePrototype});
+            Send(data);
         }
     }
 }

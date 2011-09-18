@@ -5,6 +5,7 @@ namespace d3emu
     using System;
     using Google.ProtocolBuffers;
     using ServicesImpl;
+    using bnet.protocol.authentication;
 
     public partial class Services
     {
@@ -14,7 +15,7 @@ namespace d3emu
             = new Dictionary<uint, Func<Client, IService>>
                   {
                       {0x00000000, c => new ConnectionServiceImpl(c)},
-                      {AuthenticationClient, c => new AuthenticationClientImpl()},
+                      {AuthenticationClient, c => bnet.protocol.authentication.AuthenticationClient.CreateStub(c)},
                       {0x0decfc01, c => new AuthenticationServerImpl(c)},
                       {0xb732db32, c => new ChannelImpl()},
                       {0x060ca08d, c => new ChannelOwnerImpl()},
