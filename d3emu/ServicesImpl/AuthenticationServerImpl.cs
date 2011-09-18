@@ -70,16 +70,17 @@ namespace d3emu.ServicesImpl
 
             var authenticationClient = (AuthenticationClient)(Services.ServicesDict[Services.AuthenticationClient](client));
             client.ListenerId = request.ListenerId;
-            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
-                                            r =>
-                                                {
-
-                                                });
-
-            //done(new LogonResponse.Builder
-            //         {
-            //             //Account = 
-            //         }.Build());
+//            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
+//                                            r =>
+//                                                {
+//
+//                                                });
+//
+            done(new LogonResponse.Builder
+                     {
+                         Account = new EntityId.Builder { High = 0x100000000000000, Low = 0 }.Build(),
+                         GameAccount = new EntityId.Builder { High = 0x200006200004433, Low = 0 }.Build(),
+                     }.Build());
         }
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)

@@ -1,9 +1,11 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using bnet.protocol;
-    using bnet.protocol.game_master;
     using Google.ProtocolBuffers;
+    using bnet.protocol;
+    using bnet.protocol.attribute;
+    using bnet.protocol.game_master;
+    using Attribute = bnet.protocol.attribute.Attribute;
 
     public class GameMasterImpl : GameMaster
     {
@@ -14,7 +16,29 @@ namespace d3emu.ServicesImpl
 
         public override void ListFactories(IRpcController controller, ListFactoriesRequest request, Action<ListFactoriesResponse> done)
         {
-            throw new NotImplementedException();
+            GameFactoryDescription.Builder description = GameFactoryDescription.CreateBuilder().SetId(14249086168335147635);
+
+            var atributes = new[]
+                                {
+                                    Attribute.CreateBuilder().SetName("min_players").SetValue(Variant.CreateBuilder().SetIntValue(2)).Build(),
+                                    Attribute.CreateBuilder().SetName("max_players").SetValue(Variant.CreateBuilder().SetIntValue(4)).Build(),
+                                    Attribute.CreateBuilder().SetName("num_teams").SetValue(Variant.CreateBuilder().SetIntValue(1)).Build(),
+                                    Attribute.CreateBuilder().SetName("version").SetValue(Variant.CreateBuilder().SetStringValue("0.3.0")).Build()
+                                };
+
+            description.AddRangeAttribute(atributes);
+            description.AddStatsBucket(GameStatsBucket.CreateBuilder()
+                                           .SetBucketMin(0)
+                                           .SetBucketMax(4294967296F)
+                                           .SetWaitMilliseconds(1354)
+                                           .SetGamesPerHour(0)
+                                           .SetActiveGames(1)
+                                           .SetActivePlayers(1)
+                                           .SetFormingGames(0)
+                                           .SetWaitingPlayers(0).Build());
+
+            ListFactoriesResponse response = ListFactoriesResponse.CreateBuilder().AddDescription(description).SetTotalResults(1).Build();
+            done(response);
         }
 
         public override void FindGame(IRpcController controller, FindGameRequest request, Action<FindGameResponse> done)

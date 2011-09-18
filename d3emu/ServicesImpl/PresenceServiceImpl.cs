@@ -9,7 +9,7 @@ namespace d3emu.ServicesImpl
     {
         public override void Subscribe(IRpcController controller, SubscribeRequest request, Action<NoData> done)
         {
-            throw new NotImplementedException();
+            done(new NoData.Builder().Build());
         }
 
         public override void Unsubscribe(IRpcController controller, UnsubscribeRequest request, Action<NoData> done)

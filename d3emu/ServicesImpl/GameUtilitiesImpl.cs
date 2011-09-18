@@ -10,7 +10,11 @@ namespace d3emu.ServicesImpl
     {
         public override void ProcessClientRequest(IRpcController controller, ClientRequest request, Action<ClientResponse> done)
         {
-            throw new NotImplementedException();
+            var response = new ClientResponse.Builder
+                              {
+                                   
+                              };
+            done(response.Build());
         }
 
         public override void CreateToon(IRpcController controller, CreateToonRequest request, Action<CreateToonResponse> done)
