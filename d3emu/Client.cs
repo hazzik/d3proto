@@ -8,7 +8,7 @@ namespace d3emu
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
 
-    public class Client: IRpcChannel
+    public class Client : IRpcChannel
     {
         private readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
         private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
@@ -19,8 +19,8 @@ namespace d3emu
         private byte GetServiceIdFor<T>() where T : IService
         {
             return exportedServices
-                .Where(service => service.Value.GetType() == typeof (T))
-                .Select(service => (byte) service.Key)
+                .Where(service => service.Value.GetType() == typeof(T))
+                .Select(service => (byte)service.Key)
                 .FirstOrDefault();
         }
 
@@ -93,10 +93,10 @@ namespace d3emu
 
             Action<IMessage> done =
                 response =>
-                    {
-                        byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
-                        Send(data);
-                    };
+                {
+                    byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
+                    Send(data);
+                };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
@@ -111,10 +111,10 @@ namespace d3emu
         {
             exportedServices[key] = Services.ServicesDict[hash](this);
         }
-        
+
         public uint LoadImportedService(uint hash)
         {
-            var i = (uint) importedServices.Count;
+            var i = (uint)importedServices.Count;
             importedServices[i] = Services.ServicesDict[hash](this);
             return i;
         }
@@ -133,9 +133,9 @@ namespace d3emu
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
         {
             var sId = GetServiceIdFor<AuthenticationClient.Stub>(); //hack
-            callbacks.Enqueue(new Callback {Action = done, Builder = responsePrototype.WeakToBuilder()});
+            callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder() });
 
-            //TODO: make shure that callback executes for right request_id
+            //TODO: make sure that callback executes for right request_id
             var data = new ServerPacket(sId, method.Index + 1, 0, ListenerId).WriteMessage(request);
             Send(data);
         }

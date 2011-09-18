@@ -32,17 +32,14 @@ namespace d3emu
         private readonly BigInteger I;
         private readonly BigInteger v;
         private readonly BigInteger b;
-        private readonly BigInteger B;
+        public readonly BigInteger B;
 
-        private static string Test_I = HASH.ComputeHash(Encoding.ASCII.GetBytes("TEST@TEST:PASS")).ToHexString();
-
-        // I is SHA256(account+":"+password)
-        public SRP(string _I)
+        public SRP(string userName, string password)
         {
             var sBytes = GetRandomBytes(32);
             s = sBytes.ToPosBigInteger();
 
-            var IBytes = _I.ToByteArray();
+            var IBytes = HASH.ComputeHash(Encoding.ASCII.GetBytes(userName.ToUpper() + ":" + password.ToUpper()));
             I = IBytes.ToPosBigInteger();
 
             var xBytes = HASH.ComputeHash(new byte[0]
@@ -66,9 +63,21 @@ namespace d3emu
             var k = kBytes.ToPosBigInteger();
 
             B = BigInteger.Remainder((v * k) + gMod, N); // Remainder = Mod?
+
+            Response1 = new byte[0]
+                .Concat(new byte[] { 0 }) // command == 0
+                .Concat(IBytes) // accountSalt
+                .Concat(sBytes) // passwordSalt
+                .Concat(B.ToByteArray()) // serverChallenge
+                .Concat(GetRandomBytes(128)) // secondaryChallenge
+                .ToArray();
         }
 
-        public bool Verify(byte[] ABytes, byte[] M1Bytes)
+        public byte[] Response1 { get; private set; }
+
+        public byte[] Response2 { get; private set; }
+
+        public bool Verify(byte[] ABytes, byte[] M1Bytes, byte[] seed)
         {
             var A = ABytes.ToPosBigInteger();
 
@@ -94,15 +103,20 @@ namespace d3emu
                 .Concat(KBytes)
                 .ToArray());
 
-            if (!M.CompareTo(M1Bytes))
+            if (!M.CompareTo(M1Bytes)) // fails...
                 return false;
 
-            // M2 is sent to client
             var M2 = HASH.ComputeHash(new byte[0]
                 .Concat(ABytes)
                 .Concat(M)
                 .Concat(KBytes)
                 .ToArray());
+
+            Response2 = new byte[0]
+                .Concat(new byte[] { 3 })
+                .Concat(M2)
+                .Concat(GetRandomBytes(128)) // not random?
+                .ToArray();
 
             return true;
         }

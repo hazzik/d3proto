@@ -79,9 +79,9 @@ namespace d3emu.ServicesImpl
             client.ListenerId = request.ListenerId;
             authenticationClient.ModuleLoad(controller, moduleLoadRequest,
                                             r =>
-                                                {
-
-                                                });
+                                            {
+                                                Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString());
+                                            });
 
             //done(new LogonResponse.Builder
             //         {
