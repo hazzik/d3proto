@@ -134,7 +134,7 @@ namespace d3emu
             callbacks.Enqueue(new Callback {Action = done, Builder = responsePrototype.WeakToBuilder()});
 
             //TODO: make shure that callback executes for right request_id
-            var data = new ServerPacket(sId, method.Index + 1, 0, 0).WriteMessage(responsePrototype);
+            var data = new ServerPacket(sId, method.Index + 1, 0, 0).WriteMessage(request);
             Send(data);
         }
 

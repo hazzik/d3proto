@@ -48,7 +48,7 @@ namespace d3emu.ServicesImpl
             //var response = ModuleLoadRequest.CreateBuilder().MergeFrom(hexBytes).Build();
 
             var message = new byte[0]
-                .Concat(new byte[1] { 0 }) // command = 0
+                .Concat(new byte[] { 0 }) // command = 0
                 .Concat("28 E5 1C 5E 79 1C DD 57 6C 2F F1 53 22 19 C3 30 1E 63 F3 4E 98 62 E9 74 4E B6 E2 B7 83 BF 9D C9".ToByteArray()) // accountSalt
                 .Concat("A7 90 43 D3 49 47 29 8F A9 4E 3E 85 26 38 B7 5A 6D D0 1B 8C 91 88 83 59 E0 73 FE 28 68 43 E9 44".ToByteArray()) // passwordSalt
                 .Concat("9D E7 22 9B 02 03 36 E9 9E D5 10 B9 4E F3 69 0C 5C 32 AB 71 24 9E D8 5E 14 F0 97 D4 EF 44 FC 62 63 F1 57 E7 25 CD 86 1B 3B 82 26 6A 58 56 C4 FB 71 60 84 15 27 19 01 E1 58 15 2B 09 C8 A1 5F BA CA 4B A3 63 A4 C5 CB 46 B9 86 E8 62 7B 0D B4 92 8A 2C 60 9D FD 2D 99 CC BC FC 81 EB 40 32 03 D6 4F B8 12 C5 6D 56 19 B5 8B A3 F8 72 67 82 2A 3B 91 B8 1F 48 07 AE E4 EF 34 F4 2E C1 F7 01 6D 5B".ToByteArray()) // serverChallenge
