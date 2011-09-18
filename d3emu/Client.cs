@@ -2,26 +2,24 @@ namespace d3emu
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Sockets;
     using bnet.protocol.authentication;
-    using ServicesImpl;
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
 
-    public class Client
-        : IRpcChannel
+    public class Client: IRpcChannel
     {
-        public readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
-        public readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
+        private readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
+        private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
 
-        public byte GetServiceIdFor<T>() where T : IService
+        private byte GetServiceIdFor<T>() where T : IService
         {
-            foreach (var service in exportedServices)
-                if (service.Value.GetType() == typeof (T))
-                    return (byte) service.Key;
-
-            return 0xFF;
+            return exportedServices
+                .Where(service => service.Value.GetType() == typeof (T))
+                .Select(service => (byte) service.Key)
+                .FirstOrDefault();
         }
 
         public Client(Socket socket)
@@ -81,23 +79,13 @@ namespace d3emu
 
             if (packet.Service == Program.PrevService)
             {
+                //packet.Method should be 0, if there is no errors
                 var callback = callbacks.Dequeue();
-                callback.Action(packet.ReadMessage(callback.ResponceProto.WeakToBuilder()));
+                callback.Action(packet.ReadMessage(callback.Builder));
                 return;
             }
 
             IService service = importedServices[packet.Service];
-
-            // hack
-            if (packet.Method == 0)
-            {
-                if (importedServices[packet.Service].GetType() == typeof (AuthenticationClientImpl))
-                {
-                    var modResp = packet.ReadMessage(ModuleLoadResponse.CreateBuilder());
-                    Console.WriteLine(modResp.ToString());
-                }
-                return;
-            }
 
             MethodDescriptor method = service.DescriptorForType.Methods[packet.Method - 1];
 
@@ -105,7 +93,6 @@ namespace d3emu
                 response =>
                     {
                         byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
-
                         Send(data);
                     };
 
@@ -122,7 +109,7 @@ namespace d3emu
         {
             exportedServices[key] = Services.ServicesDict[hash](this);
         }
-
+        
         public uint LoadImportedService(uint hash)
         {
             var i = (uint) importedServices.Count;
@@ -141,19 +128,21 @@ namespace d3emu
 
         private readonly Queue<Callback> callbacks = new Queue<Callback>();
 
+        public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
+        {
+            var sId = GetServiceIdFor<AuthenticationClient.Stub>(); //hack
+            callbacks.Enqueue(new Callback {Action = done, Builder = responsePrototype.WeakToBuilder()});
+
+            //TODO: make shure that callback executes for right request_id
+            var data = new ServerPacket(sId, method.Index + 1, 0, 0).WriteMessage(responsePrototype);
+            Send(data);
+        }
+
         private class Callback
         {
             public Action<IMessage> Action { get; set; }
-            public IMessage ResponceProto { get; set; }
-        }
 
-        public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
-        {
-            var sId = GetServiceIdFor<AuthenticationClient.Stub>();
-
-            var data = new ServerPacket(sId, 1, 0, 0).WriteMessage(responsePrototype);
-            callbacks.Enqueue(new Callback {Action = done, ResponceProto = responsePrototype});
-            Send(data);
+            public IBuilder Builder { get; set; }
         }
     }
 }
