@@ -69,11 +69,12 @@ namespace d3emu.ServicesImpl
             Console.WriteLine("Message: {0}", moduleLoadRequest.Message.ToByteArray().ToHexString());
 
             var authenticationClient = (AuthenticationClient)(Services.ServicesDict[Services.AuthenticationClient](client));
+            client.ListenerId = request.ListenerId;
+            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
+                                            r =>
+                                                {
 
-            authenticationClient.ModuleLoad(controller, moduleLoadRequest, r =>
-                                                                               {
-
-                                                                               });
+                                                });
 
             //done(new LogonResponse.Builder
             //         {
