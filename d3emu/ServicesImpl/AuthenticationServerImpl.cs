@@ -55,7 +55,7 @@ namespace d3emu.ServicesImpl
             var secondaryChallenge = "BF 7A 5F F0 3E 6F B6 7E 7C 4E 9A EE E4 16 4B 7A C7 3A F8 AE A8 B9 21 5D 13 D8 D9 67 93 58 20 A3 B4 08 19 4C F0 DF DB 9E 06 85 87 4C 9F BC BB C7 DD 39 0A 0A 1F F1 8F 3E 5B F4 85 EF 22 6B 19 52 9A D3 18 25 DE 17 7C C8 21 53 AF 81 69 12 45 C6 04 BE 22 F4 01 B3 08 02 FE E1 BD 79 56 FA A8 78 D8 06 90 8D 22 73 EE DD 12 9E 27 47 76 07 79 5C 81 29 04 2C 97 3C A4 70 D9 9E F4 97 85 F3 B9 56".ToByteArray();
 
             var message = new byte[0]
-                .Concat(new byte[1] { 0 }) // command = 0
+                .Concat(new byte[] { 0 }) // command = 0
                 .Concat(accountSalt)
                 .Concat(passwordSalt)
                 .Concat(serverChallenge)
