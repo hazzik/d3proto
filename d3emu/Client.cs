@@ -4,9 +4,10 @@ namespace d3emu
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Sockets;
-    using bnet.protocol.authentication;
+    using System.Text;
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
+    using bnet.protocol.connection;
 
     public class Client : IRpcChannel
     {
@@ -16,17 +17,18 @@ namespace d3emu
 
         public ulong ListenerId { get; set; }
 
-        private byte GetServiceIdFor<T>() where T : IService
+        public T GetService<T>() where T : IService
         {
             return exportedServices
-                .Where(service => service.Value.GetType() == typeof(T))
-                .Select(service => (byte)service.Key)
-                .FirstOrDefault();
+                .Where(service => typeof (T).IsAssignableFrom(service.Value.GetType()))
+                .Select(x => (T) x.Value)
+                .Single();
         }
 
         public Client(Socket socket)
         {
             this.socket = socket;
+            LoadExportedService(0, 0);
             LoadImportedService(0);
         }
 
@@ -95,8 +97,15 @@ namespace d3emu
             Action<IMessage> done =
                 response =>
                 {
-                    byte[] data = new ServerPacket(Program.PrevService, 0, packet.RequestId, 0).WriteMessage(response);
+                    byte[] data = new ServerPacket(Program.PrevService, ErrorCode, packet.RequestId, 0).WriteMessage(response);
                     Send(data);
+                    if (ErrorCode != 0)
+                    {
+                        GetService<ConnectionService>().ForceDisconnect(null, new DisconnectNotification.Builder
+                                                                                  {
+                                                                                      ErrorCode = (uint) ErrorCode,
+                                                                                  }.Build(), r => { });
+                    }
                 };
 
             IMessage requestProto = service.GetRequestPrototype(method);
@@ -108,10 +117,13 @@ namespace d3emu
             service.CallMethod(method, null, message, done);
         }
 
-        public void LoadExportedService(uint hash, uint key)
+        public void LoadExportedService(uint hash, uint id)
         {
-            exportedServices[key] = Services.ServicesDict[hash](this);
+            exportedServices[id] = ClientServices.ServicesDict[hash](this);
+            exportedServicesIds[hash] = (byte)id;
         }
+
+        private readonly IDictionary<uint, byte> exportedServicesIds = new Dictionary<uint, byte>();  
 
         public uint LoadImportedService(uint hash)
         {
@@ -133,7 +145,9 @@ namespace d3emu
 
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
         {
-            var sId = GetServiceIdFor<AuthenticationClient.Stub>(); //hack
+            var name = method.Service.FullName;
+            var hash = GetServiceHash(name);
+            var sId = exportedServicesIds[hash]; 
             callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder() });
 
             //TODO: make sure that callback executes for right request_id
@@ -141,11 +155,26 @@ namespace d3emu
             Send(data);
         }
 
+        public int ErrorCode { get; set; }
+
         private class Callback
         {
             public Action<IMessage> Action { get; set; }
 
             public IBuilder Builder { get; set; }
+        }
+
+        /// <summary>
+        /// FNV hash implementation
+        /// </summary>
+        /// <param name="name">Service name</param>
+        /// <returns>Service hash</returns>
+        private static uint GetServiceHash(string name)
+        {
+            if (name == "bnet.protocol.connection.ConnectionService")
+                return 0;
+            return Encoding.ASCII.GetBytes(name)
+                .Aggregate(0x811C9DC5, (current, t) => 0x1000193*(t ^ current));
         }
     }
 }

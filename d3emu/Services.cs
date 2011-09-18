@@ -5,36 +5,27 @@ namespace d3emu
     using System;
     using Google.ProtocolBuffers;
     using ServicesImpl;
-    using bnet.protocol.authentication;
 
-    public partial class Services
+    public static partial class Services
     {
         public const uint AuthenticationClient = 0x71240e35;
 
-        public static Dictionary<uint, System.Func<Client, IService>> ServicesDict
+        public static readonly Dictionary<uint, System.Func<Client, IService>> ServicesDict
             = new Dictionary<uint, Func<Client, IService>>
                   {
                       {0x00000000, c => new ConnectionServiceImpl(c)},
-                      {AuthenticationClient, c => bnet.protocol.authentication.AuthenticationClient.CreateStub(c)},
                       {0x0decfc01, c => new AuthenticationServerImpl(c)},
                       {0xb732db32, c => new ChannelImpl()},
                       {0x060ca08d, c => new ChannelOwnerImpl()},
-                      {0xbf8c8094, c => new ChannelSubscriberImpl()},
                       {0x83040608, c => new ChannelInvitationServiceImpl()},
-                      {0xf084fc20, c => new ChannelInvitationNotifyImpl()},
                       {0x00d89ca9, c => new ChatServiceImpl()},
                       {0xd750148b, c => new ExchangeServiceImpl()},
-                      {0x166fe4a1, c => new ExchangeNotifyImpl()},
                       {0xe5a11099, c => new FollowersServiceImpl()},
-                      {0x905cdf9f, c => new FollowersNotifyImpl()},
                       {0xa3ddb1bd, c => new FriendsServiceImpl()},
-                      {0x6f259a13, c => new FriendsNotifyImpl()},
                       {0x810cb195, c => new GameMasterImpl()},
                       {0x5772ab33, c => new GameMasterSubscriberImpl()},
-                      {0xc6f9ccc5, c => new GameFactorySubscriberImpl()},
                       {0x3fc1274d, c => new GameUtilitiesImpl()},
                       {0x0cbe3c43, c => new NotificationServiceImpl()},
-                      {0xe1cb2ea8, c => new NotificationListenerImpl()},
                       {0xf4e7fa35, c => new PartyServiceImpl()},
                       {0xfa0796ff, c => new PresenceServiceImpl()},
                       {0x0a24a291, c => new SearchServiceImpl()},
@@ -42,7 +33,6 @@ namespace d3emu
                       {0xda6e4bb9, c => new StorageServiceImpl()},
                       {0x4124c31b, c => new ToonServiceExternalImpl()},
                       {0x3e19268a, c => new UserManagerServiceImpl()},
-                      {0xbc872c22, c => new UserManagerNotifyImpl()}
                   };
 
         public static readonly IDictionary<string, IDictionary<int, string>> Methods =
