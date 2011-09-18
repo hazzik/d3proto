@@ -26,20 +26,25 @@ namespace d3emu
 
         private readonly BigInteger N = NBytes.ToPosBigInteger();
 
-        private static SHA256Managed HASH = new SHA256Managed();
+        private static readonly SHA256Managed HASH = new SHA256Managed();
 
         private readonly BigInteger s;
         private readonly BigInteger I;
         private readonly BigInteger v;
         private readonly BigInteger b;
-        public readonly BigInteger B;
+        private readonly BigInteger B;
 
-        public SRP(string userName, string password)
+        private readonly string m_accountSalt;
+
+        public SRP(string account, string password)
         {
+            // workaround...
+            m_accountSalt = HASH.ComputeHash(Encoding.ASCII.GetBytes(account)).ToHexString();
+
             var sBytes = GetRandomBytes(32);
             s = sBytes.ToPosBigInteger();
 
-            var IBytes = HASH.ComputeHash(Encoding.ASCII.GetBytes(userName.ToUpper() + ":" + password.ToUpper()));
+            var IBytes = HASH.ComputeHash(Encoding.ASCII.GetBytes(m_accountSalt.ToUpper() + ":" + password.ToUpper()));
             I = IBytes.ToPosBigInteger();
 
             var xBytes = HASH.ComputeHash(new byte[0]
@@ -66,7 +71,7 @@ namespace d3emu
 
             Response1 = new byte[0]
                 .Concat(new byte[] { 0 }) // command == 0
-                .Concat(IBytes) // accountSalt
+                .Concat(m_accountSalt.ToByteArray()) // accountSalt
                 .Concat(sBytes) // passwordSalt
                 .Concat(B.ToByteArray()) // serverChallenge
                 .Concat(GetRandomBytes(128)) // secondaryChallenge
@@ -94,16 +99,28 @@ namespace d3emu
 
             var t3Bytes = Hash_g_and_N_and_xor_them();
 
+            var t4 = HASH.ComputeHash(Encoding.ASCII.GetBytes(m_accountSalt));
+
+            var sBytes = s.ToByteArray();
+            var BBytes = B.ToByteArray();
+
+            // hack
+            if (sBytes.Length != 0x20)
+            {
+                sBytes = s.ToArray();
+                //throw new Exception("sBytes.Length != 0x20");
+            }
+
             var M = HASH.ComputeHash(new byte[0]
                 .Concat(t3Bytes)
-                .Concat(I.ToByteArray()) // ?
-                .Concat(s.ToByteArray())
+                .Concat(t4)
+                .Concat(sBytes)
                 .Concat(ABytes)
-                .Concat(B.ToByteArray())
+                .Concat(BBytes)
                 .Concat(KBytes)
                 .ToArray());
 
-            if (!M.CompareTo(M1Bytes)) // fails...
+            if (!M.CompareTo(M1Bytes)) // fails sometimes due to sBytes.Length != 0x20
                 return false;
 
             var M2 = HASH.ComputeHash(new byte[0]
@@ -129,28 +146,20 @@ namespace d3emu
             var half_S = new byte[64];
 
             for (int i = 0; i < 64; ++i)
-            {
                 half_S[i] = S[i * 2];
-            }
 
             var p1 = HASH.ComputeHash(half_S);
 
             for (int i = 0; i < 32; ++i)
-            {
                 K[i * 2] = p1[i];
-            }
 
             for (int i = 0; i < 64; ++i)
-            {
                 half_S[i] = S[i * 2 + 1];
-            }
 
             var p2 = HASH.ComputeHash(half_S);
 
             for (int i = 0; i < 32; ++i)
-            {
                 K[i * 2 + 1] = p2[i];
-            }
 
             return K;
         }
@@ -161,16 +170,14 @@ namespace d3emu
             var hash_g = HASH.ComputeHash(gBytes);
 
             for (var i = 0; i < 32; ++i)
-            {
                 hash_N[i] ^= hash_g[i];
-            }
 
             return hash_N;
         }
 
         private static byte[] GetRandomBytes(int count)
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var result = new byte[count];
             rnd.NextBytes(result);
             return result;
