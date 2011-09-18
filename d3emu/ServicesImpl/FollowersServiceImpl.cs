@@ -8,7 +8,10 @@ namespace d3emu.ServicesImpl
     {
         public override void SubscribeToFollowers(IRpcController controller, SubscribeToFollowersRequest request, Action<SubscribeToFollowersResponse> done)
         {
-            throw new NotImplementedException();
+            done(new SubscribeToFollowersResponse.Builder
+                     {
+                         
+                     }.Build());
         }
 
         public override void StartFollowing(IRpcController controller, StartFollowingRequest request, Action<StartFollowingResponse> done)

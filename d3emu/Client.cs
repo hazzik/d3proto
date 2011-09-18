@@ -32,10 +32,11 @@ namespace d3emu
 
         public void Run()
         {
-            while (true)
+            try
             {
-                try
+                while (true)
                 {
+
                     if (!socket.IsConnected())
                         break;
 
@@ -68,10 +69,10 @@ namespace d3emu
                         }
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 

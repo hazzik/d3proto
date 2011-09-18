@@ -403,7 +403,7 @@ namespace d3emu
                 .Concat(new byte[] { 0x02 })
                 .Concat(A)
                 .Concat(M1)
-                //.Concat(seed) // SC2 stuff
+                .Concat(seed) // SC2 stuff
                 .ToArray();
 
             buffers[BufferIds.Buf_0x92C4A81F] = new byte[] { 0x02 };

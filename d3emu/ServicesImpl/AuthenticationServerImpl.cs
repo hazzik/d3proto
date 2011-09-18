@@ -26,24 +26,19 @@ namespace d3emu.ServicesImpl
 
             // response.Message structure:
             //     byte command;
-            //     if (command == 0)
+            //     if (command == 0 || command == 1) // from server
             //     {
-            //         byte accountSalt[32]; // static value per account
+            //         if (command == 0)
+            //             byte accountSalt[32]; // static value per account
             //         byte passwordSalt[32]; // static value per account
             //         byte serverChallenge[128]; // changes every login
             //         byte secondaryChallenge[128]; // changes every login
             //     }
-            //     else if (command == 1)
+            //     else if (command == 2) // from server
             //     {
-            //         // unknown
+            //         // empty
             //     }
-            //     else if (command == 2) // wtf?
-            //     {
-            //         byte passwordSalt[32];
-            //         byte serverChallenge[128];
-            //         byte secondaryChallenge[128];
-            //     }
-            //     else if (command == 3)
+            //     else if (command == 3) // from server
             //     {
             //         byte M2[32];
             //         byte data2[128]; // for veryfing secondaryChallenge
@@ -77,16 +72,17 @@ namespace d3emu.ServicesImpl
 
             var authenticationClient = (AuthenticationClient)(Services.ServicesDict[Services.AuthenticationClient](client));
             client.ListenerId = request.ListenerId;
-            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
-                                            r =>
-                                            {
-                                                Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString());
-                                            });
-
-            //done(new LogonResponse.Builder
-            //         {
-            //             //Account = 
-            //         }.Build());
+//            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
+//                                            r =>
+//                                                {
+//                                                    Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString());
+//                                                });
+//
+            done(new LogonResponse.Builder
+                     {
+                         Account = new EntityId.Builder { High = 0x100000000000000, Low = 0 }.Build(),
+                         GameAccount = new EntityId.Builder { High = 0x200006200004433, Low = 0 }.Build(),
+                     }.Build());
         }
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)
@@ -96,11 +92,11 @@ namespace d3emu.ServicesImpl
             var moduleId = request.ModuleId;
             var message = request.Message.ToByteArray();
 
-            var command = message[0]; // command == 2 with data wtf
+            var command = message[0]; // command == 2
 
-            byte[] passwordSalt = message.Skip(1).Take(32).ToArray();
-            byte[] serverChallenge = message.Skip(1 + 32).Take(128).ToArray();
-            byte[] secondaryChallenge = message.Skip(1 + 32 + 128).Take(128).ToArray();
+            byte[] A = message.Skip(1).Take(32).ToArray();
+            byte[] M1 = message.Skip(1 + 32).Take(128).ToArray();
+            byte[] seed = message.Skip(1 + 32 + 128).Take(128).ToArray();
 
             done(new NoData.Builder().Build());
             //            var data = new ServerPacket(PrevService, 3, 3, 0).WriteMessage(NO_RESPONSE.CreateBuilder().Build());

@@ -8,17 +8,29 @@ namespace d3emu.ServicesImpl
     {
         public override void Execute(IRpcController controller, ExecuteRequest request, Action<ExecuteResponse> done)
         {
-            throw new NotImplementedException();
+            var response = new ExecuteResponse.Builder
+            {
+
+            };
+            done(response.Build());
         }
 
         public override void OpenTable(IRpcController controller, OpenTableRequest request, Action<OpenTableResponse> done)
         {
-            throw new NotImplementedException();
+            var response = new OpenTableResponse.Builder
+                               {
+                                   
+                               };
+            done(response.Build());
         }
 
         public override void OpenColumn(IRpcController controller, OpenColumnRequest request, Action<OpenColumnResponse> done)
         {
-            throw new NotImplementedException();
+            var response = new OpenColumnResponse.Builder
+            {
+                
+            };
+            done(response.Build());
         }
     }
 }

@@ -8,7 +8,10 @@ namespace d3emu.ServicesImpl
     {
         public override void SubscribeToUserManager(IRpcController controller, SubscribeToUserManagerRequest request, Action<SubscribeToUserManagerResponse> done)
         {
-            throw new NotImplementedException();
+            done(new SubscribeToUserManagerResponse.Builder
+                     {
+                         
+                     }.Build());
         }
 
         public override void ReportPlayer(IRpcController controller, ReportPlayerRequest request, Action<ReportPlayerResponse> done)
