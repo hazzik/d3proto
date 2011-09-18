@@ -74,6 +74,14 @@ namespace d3emu
                 .ToArray());
         }
 
+        public static byte[] ToArray(this BigInteger b)
+        {
+            var result = b.ToByteArray();
+            if (result[result.Length - 1] == 0)
+                Array.Resize(ref result, result.Length - 1);
+            return result;
+        }
+
         public static bool IsConnected(this Socket socket)
         {
             try
