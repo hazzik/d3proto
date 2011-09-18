@@ -3,6 +3,7 @@ namespace d3emu.ServicesImpl
     using System;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using bnet.protocol;
     using bnet.protocol.authentication;
     using Google.ProtocolBuffers;
@@ -14,6 +15,8 @@ namespace d3emu.ServicesImpl
         readonly byte[] ModuleHash = "8F52906A2C85B416A595702251570F96D3522F39237603115F2F1AB24962043C".ToByteArray(); // Password.dll
 
         private readonly Client client;
+        private SRP srp;
+        private readonly AutoResetEvent wait = new AutoResetEvent(false); 
 
         public AuthenticationServerImpl(Client client)
         {
@@ -44,18 +47,9 @@ namespace d3emu.ServicesImpl
             //         byte data2[128]; // for veryfing secondaryChallenge
             //     }
 
-            var accountSalt = "28 E5 1C 5E 79 1C DD 57 6C 2F F1 53 22 19 C3 30 1E 63 F3 4E 98 62 E9 74 4E B6 E2 B7 83 BF 9D C9".ToByteArray();
-            var passwordSalt = "A7 90 43 D3 49 47 29 8F A9 4E 3E 85 26 38 B7 5A 6D D0 1B 8C 91 88 83 59 E0 73 FE 28 68 43 E9 44".ToByteArray();
-            var serverChallenge = "9D E7 22 9B 02 03 36 E9 9E D5 10 B9 4E F3 69 0C 5C 32 AB 71 24 9E D8 5E 14 F0 97 D4 EF 44 FC 62 63 F1 57 E7 25 CD 86 1B 3B 82 26 6A 58 56 C4 FB 71 60 84 15 27 19 01 E1 58 15 2B 09 C8 A1 5F BA CA 4B A3 63 A4 C5 CB 46 B9 86 E8 62 7B 0D B4 92 8A 2C 60 9D FD 2D 99 CC BC FC 81 EB 40 32 03 D6 4F B8 12 C5 6D 56 19 B5 8B A3 F8 72 67 82 2A 3B 91 B8 1F 48 07 AE E4 EF 34 F4 2E C1 F7 01 6D 5B".ToByteArray();
-            var secondaryChallenge = "BF 7A 5F F0 3E 6F B6 7E 7C 4E 9A EE E4 16 4B 7A C7 3A F8 AE A8 B9 21 5D 13 D8 D9 67 93 58 20 A3 B4 08 19 4C F0 DF DB 9E 06 85 87 4C 9F BC BB C7 DD 39 0A 0A 1F F1 8F 3E 5B F4 85 EF 22 6B 19 52 9A D3 18 25 DE 17 7C C8 21 53 AF 81 69 12 45 C6 04 BE 22 F4 01 B3 08 02 FE E1 BD 79 56 FA A8 78 D8 06 90 8D 22 73 EE DD 12 9E 27 47 76 07 79 5C 81 29 04 2C 97 3C A4 70 D9 9E F4 97 85 F3 B9 56".ToByteArray();
+            srp = new SRP(request.Email, "123");
 
-            var message = new byte[0]
-                .Concat(new byte[] { 0 }) // command = 0
-                .Concat(accountSalt)
-                .Concat(passwordSalt)
-                .Concat(serverChallenge)
-                .Concat(secondaryChallenge)
-                .ToArray();
+            var message = srp.Response1;
 
             var moduleLoadRequest = ModuleLoadRequest.CreateBuilder()
                 .SetModuleHandle(ContentHandle.CreateBuilder()
@@ -72,17 +66,19 @@ namespace d3emu.ServicesImpl
 
             var authenticationClient = (AuthenticationClient)(Services.ServicesDict[Services.AuthenticationClient](client));
             client.ListenerId = request.ListenerId;
-//            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
-//                                            r =>
-//                                                {
-//                                                    Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString());
-//                                                });
-//
-            done(new LogonResponse.Builder
-                     {
-                         Account = new EntityId.Builder { High = 0x100000000000000, Low = 0 }.Build(),
-                         GameAccount = new EntityId.Builder { High = 0x200006200004433, Low = 0 }.Build(),
-                     }.Build());
+            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
+                                            r => Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString()));
+
+            new Thread(() =>
+                           {
+                               wait.WaitOne();
+                               done(new LogonResponse.Builder
+                                        {
+                                            Account = new EntityId.Builder {High = 0x100000000000000, Low = 0}.Build(),
+                                            GameAccount = new EntityId.Builder {High = 0x200006200004433, Low = 0}.Build(),
+                                        }.Build());
+                           }).Start();
+
         }
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)
@@ -90,18 +86,23 @@ namespace d3emu.ServicesImpl
             Console.WriteLine(request.ToString());
 
             var moduleId = request.ModuleId;
+            
             var message = request.Message.ToByteArray();
+            var command = message[0];
 
-            var command = message[0]; // command == 2
+            if (moduleId == 0 && command == 2)
+            {
+                byte[] A = message.Skip(1).Take(128).ToArray();
+                byte[] M1 = message.Skip(1 + 128).Take(32).ToArray();
+                byte[] seed = message.Skip(1 + 32 + 128).Take(128).ToArray();
 
-            byte[] A = message.Skip(1).Take(32).ToArray();
-            byte[] M1 = message.Skip(1 + 32).Take(128).ToArray();
-            byte[] seed = message.Skip(1 + 32 + 128).Take(128).ToArray();
+                if (srp.Verify(A, M1, seed) == false)
+                    throw new InvalidOperationException("Password is incorrect");
+
+                wait.Set();
+            }
 
             done(new NoData.Builder().Build());
-            //            var data = new ServerPacket(PrevService, 3, 3, 0).WriteMessage(NO_RESPONSE.CreateBuilder().Build());
-            //
-            //            Send(s, data);
         }
     }
 }
