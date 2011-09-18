@@ -7,6 +7,7 @@ namespace d3emu.ServicesImpl
     using bnet.protocol;
     using bnet.protocol.authentication;
     using Google.ProtocolBuffers;
+    using bnet.protocol.connection;
 
     public class AuthenticationServerImpl : AuthenticationServer
     {
@@ -64,7 +65,8 @@ namespace d3emu.ServicesImpl
             Console.WriteLine("Hash: {0}", moduleLoadRequest.ModuleHandle.Hash.ToByteArray().ToHexString());
             Console.WriteLine("Message: {0}", moduleLoadRequest.Message.ToByteArray().ToHexString());
 
-            var authenticationClient = (AuthenticationClient)(Services.ServicesDict[Services.AuthenticationClient](client));
+            var authenticationClient = client.GetService<AuthenticationClient>();
+
             client.ListenerId = request.ListenerId;
             authenticationClient.ModuleLoad(controller, moduleLoadRequest,
                                             r => Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString()));
@@ -72,11 +74,18 @@ namespace d3emu.ServicesImpl
             new Thread(() =>
                            {
                                wait.WaitOne();
-                               done(new LogonResponse.Builder
-                                        {
-                                            Account = new EntityId.Builder {High = 0x100000000000000, Low = 0}.Build(),
-                                            GameAccount = new EntityId.Builder {High = 0x200006200004433, Low = 0}.Build(),
-                                        }.Build());
+                               if (client.ErrorCode != 0)
+                               {
+                                   done(new LogonResponse.Builder
+                                            {
+                                                Account = new EntityId.Builder {High = 0x100000000000000, Low = 0}.Build(),
+                                                GameAccount = new EntityId.Builder {High = 0x200006200004433, Low = 0}.Build(),
+                                            }.Build());
+                               }
+                               else
+                               {
+                                   done(new LogonResponse());
+                               }
                            }).Start();
 
         }
@@ -90,6 +99,8 @@ namespace d3emu.ServicesImpl
             var message = request.Message.ToByteArray();
             var command = message[0];
 
+            done(new NoData.Builder().Build());
+
             if (moduleId == 0 && command == 2)
             {
                 byte[] A = message.Skip(1).Take(128).ToArray();
@@ -97,12 +108,14 @@ namespace d3emu.ServicesImpl
                 byte[] seed = message.Skip(1 + 32 + 128).Take(128).ToArray();
 
                 if (srp.Verify(A, M1, seed) == false)
-                    throw new InvalidOperationException("Password is incorrect");
+                {
+                    client.ListenerId = 0;
+                    client.ErrorCode = 3;
+                }
 
                 wait.Set();
             }
 
-            done(new NoData.Builder().Build());
         }
     }
 }

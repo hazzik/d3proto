@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="ClientServices.cs" />
     <Compile Include="ServicesImpl\AuthenticationServerImpl.cs" />
     <Compile Include="ServicesImpl\ChannelImpl.cs" />
     <Compile Include="ServicesImpl\ChannelInvitationNotifyImpl.cs" />

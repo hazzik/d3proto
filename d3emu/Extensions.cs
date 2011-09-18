@@ -70,7 +70,7 @@ namespace d3emu
         {
             var dst = new byte[src.Length + 1];
             Array.Copy(src, dst, src.Length);
-            return new BigInteger(src);
+            return new BigInteger(dst);
         }
 
         public static byte[] ToArray(this BigInteger b)
