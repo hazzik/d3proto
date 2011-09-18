@@ -34,10 +34,18 @@ namespace d3emu
         private readonly BigInteger b;
         private readonly BigInteger B;
 
+        private readonly string m_account;
         private readonly string m_accountSalt;
+
+        // Secondary challenge
+        private readonly BigInteger m_secondChallengeServer1;
+        private BigInteger m_secondChallengeServer2;
+        private BigInteger m_secondChallengeClient;
 
         public SRP(string account, string password)
         {
+            m_account = account;
+
             // workaround...
             m_accountSalt = HASH.ComputeHash(Encoding.ASCII.GetBytes(account)).ToHexString();
 
@@ -69,12 +77,15 @@ namespace d3emu
 
             B = BigInteger.Remainder((v * k) + gMod, N); // Remainder = Mod?
 
+            var secondChallengeBytes1 = GetRandomBytes(128);
+            m_secondChallengeServer1 = Extensions.ToPosBigInteger(secondChallengeBytes1);
+
             Response1 = new byte[0]
                 .Concat(new byte[] { 0 }) // command == 0
                 .Concat(m_accountSalt.ToByteArray()) // accountSalt
                 .Concat(sBytes) // passwordSalt
                 .Concat(B.ToByteArray()) // serverChallenge
-                .Concat(GetRandomBytes(128)) // secondaryChallenge
+                .Concat(secondChallengeBytes1) // secondaryChallenge
                 .ToArray();
         }
 
@@ -84,6 +95,8 @@ namespace d3emu
 
         public bool Verify(byte[] ABytes, byte[] M1Bytes, byte[] seed)
         {
+            m_secondChallengeClient = Extensions.ToPosBigInteger(seed);
+
             var A = ABytes.ToPosBigInteger();
 
             var uBytes = HASH.ComputeHash(new byte[0]
@@ -129,10 +142,13 @@ namespace d3emu
                 .Concat(KBytes)
                 .ToArray());
 
+            var secondChallengeServer2Bytes = GetRandomBytes(128);
+            m_secondChallengeServer2 = Extensions.ToPosBigInteger(secondChallengeServer2Bytes);
+
             Response2 = new byte[0]
                 .Concat(new byte[] { 3 })
                 .Concat(M2)
-                .Concat(GetRandomBytes(128)) // not random?
+                .Concat(secondChallengeServer2Bytes) // not random?
                 .ToArray();
 
             return true;

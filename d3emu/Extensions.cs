@@ -68,10 +68,9 @@ namespace d3emu
 
         public static BigInteger ToPosBigInteger(this byte[] src)
         {
-            return new BigInteger(new byte[0]
-                .Concat(src)
-                .Concat(new byte[] { 0 })
-                .ToArray());
+            var dst = new byte[src.Length + 1];
+            Array.Copy(src, dst, src.Length);
+            return new BigInteger(src);
         }
 
         public static byte[] ToArray(this BigInteger b)

@@ -346,6 +346,7 @@ namespace d3emu
             var m_HMAC = HMAC.ToPosBigInteger();
 
             //var m_g2 = m_g.ModPow(m_UNKN, m_N);
+            //var m_g2 = BigInteger.ModPow(m_g, m_UNKN, m_N);
             var m_g2 = BigInteger.ModPow(m_g, m_UNKN, m_N);
 
             //var m_Unknown2 = m_Unknown.ModPow(m_HMAC, m_N);
