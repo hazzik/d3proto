@@ -84,6 +84,7 @@
     <Compile Include="ServicesImpl\ToonServiceExternalImpl.cs" />
     <Compile Include="ServicesImpl\UserManagerNotifyImpl.cs" />
     <Compile Include="ServicesImpl\UserManagerServiceImpl.cs" />
+    <Compile Include="SRP.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\d3proto\d3proto.csproj">

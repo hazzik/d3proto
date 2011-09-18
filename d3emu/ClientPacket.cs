@@ -55,9 +55,6 @@ namespace d3emu
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
 
-            //if (!m_stream.IsAtEnd)
-            //    throw new Exception("Packet under read!");
-
             return builder.WeakBuild();
         }
     }

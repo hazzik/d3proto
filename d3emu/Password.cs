@@ -329,11 +329,11 @@ namespace d3emu
 
             var g = new byte[] { 0x04 };
 
-            var m_N = Extensions.BigIntFromArray(N);
-            var m_Unknown = Extensions.BigIntFromArray(Unknown);
-            var m_g = Extensions.BigIntFromArray(g);
-            var m_UNKN = Extensions.BigIntFromArray(data2);
-            var m_B = Extensions.BigIntFromArray(secondChallenge);
+            var m_N = N.ToPosBigInteger();
+            var m_Unknown = Unknown.ToPosBigInteger();
+            var m_g = g.ToPosBigInteger();
+            var m_UNKN = data2.ToPosBigInteger();
+            var m_B = secondChallenge.ToPosBigInteger();
 
             // check secondChallenge
             var m_Ndiv2 = m_N / 2;
@@ -343,7 +343,7 @@ namespace d3emu
             var hmac = new HMACSHA512(accountNameBytes);
             var HMAC = hmac.ComputeHash(seed);
 
-            var m_HMAC = Extensions.BigIntFromArray(HMAC);
+            var m_HMAC = HMAC.ToPosBigInteger();
 
             //var m_g2 = m_g.ModPow(m_UNKN, m_N);
             var m_g2 = BigInteger.ModPow(m_g, m_UNKN, m_N);
@@ -412,15 +412,15 @@ namespace d3emu
         // .text:389614F0 SRP6__CalculateM1
         private void SRP6_CalcM1(byte[] U, byte[] p, byte[] s, byte[] B, out byte[] A, out byte[] M1, out byte[] K)
         {
-            var bn_g = Extensions.BigIntFromArray(g);
+            var bn_g = g.ToPosBigInteger();
 
-            var bn_N = Extensions.BigIntFromArray(N);
+            var bn_N = N.ToPosBigInteger();
 
-            var bn_B = Extensions.BigIntFromArray(B);
+            var bn_B = B.ToPosBigInteger();
 
             var bn_k = Calc_k();
 
-            var bn_a = Extensions.BigIntFromArray(GetRandomBytes(128));
+            var bn_a = GetRandomBytes(128).ToPosBigInteger();
 
             Console.WriteLine("a: {0}{1}", Environment.NewLine, bn_a.ToByteArray().ToHexDump());
 
@@ -502,7 +502,7 @@ namespace d3emu
 
             var u = SHA256Managed.Create().ComputeHash(AB);
             Console.WriteLine("u: {0}{1}", Environment.NewLine, u.ToHexDump());
-            return Extensions.BigIntFromArray(u);
+            return u.ToPosBigInteger();
         }
 
         private byte[] Calc_K(byte[] S)
@@ -558,7 +558,7 @@ namespace d3emu
 
             var x = SHA256Managed.Create().ComputeHash(x_Bytes);
             Console.WriteLine("x: {0}{1}", Environment.NewLine, x.ToHexDump());
-            return Extensions.BigIntFromArray(x);
+            return x.ToPosBigInteger();
         }
 
         private byte[] Hash_g_and_N_and_xor_them()
@@ -583,7 +583,7 @@ namespace d3emu
 
             var k = SHA256Managed.Create().ComputeHash(N_g_bytes);
             Console.WriteLine("k: {0}{1}", Environment.NewLine, k.ToHexDump());
-            return Extensions.BigIntFromArray(k);
+            return k.ToPosBigInteger();
         }
     }
 }

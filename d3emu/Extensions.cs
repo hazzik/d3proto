@@ -66,7 +66,7 @@ namespace d3emu
             return !byteArray.Where((t, i) => second[i] != t).Any();
         }
 
-        public static BigInteger BigIntFromArray(byte[] src)
+        public static BigInteger ToPosBigInteger(this byte[] src)
         {
             return new BigInteger(new byte[0]
                 .Concat(src)
