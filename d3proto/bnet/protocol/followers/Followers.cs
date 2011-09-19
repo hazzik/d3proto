@@ -3337,7 +3337,7 @@ namespace bnet.protocol.followers {
               pb::RpcUtil.SpecializeCallback<global::bnet.protocol.followers.StopFollowingResponse>(
               done));
           return;
-        case 7:
+        case 3:
           this.UpdateFollowerState(controller, (global::bnet.protocol.followers.UpdateFollowerStateRequest) request,
               pb::RpcUtil.SpecializeCallback<global::bnet.protocol.followers.UpdateFollowerStateResponse>(
               done));
@@ -3359,7 +3359,7 @@ namespace bnet.protocol.followers {
           return global::bnet.protocol.followers.StartFollowingRequest.DefaultInstance;
         case 2:
           return global::bnet.protocol.followers.StopFollowingRequest.DefaultInstance;
-        case 7:
+        case 3:
           return global::bnet.protocol.followers.UpdateFollowerStateRequest.DefaultInstance;
         default:
           throw new global::System.InvalidOperationException("Can't get here.");
@@ -3378,7 +3378,7 @@ namespace bnet.protocol.followers {
           return global::bnet.protocol.followers.StartFollowingResponse.DefaultInstance;
         case 2:
           return global::bnet.protocol.followers.StopFollowingResponse.DefaultInstance;
-        case 7:
+        case 3:
           return global::bnet.protocol.followers.UpdateFollowerStateResponse.DefaultInstance;
         default:
           throw new global::System.InvalidOperationException("Can't get here.");
@@ -3434,7 +3434,7 @@ namespace bnet.protocol.followers {
           pb::IRpcController controller,
           global::bnet.protocol.followers.UpdateFollowerStateRequest request,
           global::System.Action<global::bnet.protocol.followers.UpdateFollowerStateResponse> done) {
-        channel.CallMethod(Descriptor.Methods[7],
+        channel.CallMethod(Descriptor.Methods[3],
             controller, request, global::bnet.protocol.followers.UpdateFollowerStateResponse.DefaultInstance,
             pb::RpcUtil.GeneralizeCallback<global::bnet.protocol.followers.UpdateFollowerStateResponse, global::bnet.protocol.followers.UpdateFollowerStateResponse.Builder>(done, global::bnet.protocol.followers.UpdateFollowerStateResponse.DefaultInstance));
       }

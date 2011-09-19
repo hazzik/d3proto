@@ -4752,7 +4752,7 @@ namespace bnet.protocol.friends {
               pb::RpcUtil.SpecializeCallback<global::bnet.protocol.friends.UpdateFriendStateResponse>(
               done));
           return;
-        case 11:
+        case 9:
           this.UnsubscribeToFriends(controller, (global::bnet.protocol.friends.UnsubscribeToFriendsRequest) request,
               pb::RpcUtil.SpecializeCallback<global::bnet.protocol.NoData>(
               done));
@@ -4786,7 +4786,7 @@ namespace bnet.protocol.friends {
           return global::bnet.protocol.friends.ViewFriendsRequest.DefaultInstance;
         case 8:
           return global::bnet.protocol.friends.UpdateFriendStateRequest.DefaultInstance;
-        case 11:
+        case 9:
           return global::bnet.protocol.friends.UnsubscribeToFriendsRequest.DefaultInstance;
         default:
           throw new global::System.InvalidOperationException("Can't get here.");
@@ -4817,7 +4817,7 @@ namespace bnet.protocol.friends {
           return global::bnet.protocol.friends.ViewFriendsResponse.DefaultInstance;
         case 8:
           return global::bnet.protocol.friends.UpdateFriendStateResponse.DefaultInstance;
-        case 11:
+        case 9:
           return global::bnet.protocol.NoData.DefaultInstance;
         default:
           throw new global::System.InvalidOperationException("Can't get here.");
@@ -4927,7 +4927,7 @@ namespace bnet.protocol.friends {
           pb::IRpcController controller,
           global::bnet.protocol.friends.UnsubscribeToFriendsRequest request,
           global::System.Action<global::bnet.protocol.NoData> done) {
-        channel.CallMethod(Descriptor.Methods[11],
+        channel.CallMethod(Descriptor.Methods[9],
             controller, request, global::bnet.protocol.NoData.DefaultInstance,
             pb::RpcUtil.GeneralizeCallback<global::bnet.protocol.NoData, global::bnet.protocol.NoData.Builder>(done, global::bnet.protocol.NoData.DefaultInstance));
       }
