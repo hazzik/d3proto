@@ -16,7 +16,7 @@ namespace d3emu.ServicesImpl
 
         public override void ListFactories(IRpcController controller, ListFactoriesRequest request, Action<ListFactoriesResponse> done)
         {
-            GameFactoryDescription.Builder description = GameFactoryDescription.CreateBuilder().SetId(14249086168335147635);
+            GameFactoryDescription.Builder description = GameFactoryDescription.CreateBuilder().SetId(0xc5beec600d8c6273);
 
             var atributes = new[]
                                 {
@@ -35,7 +35,8 @@ namespace d3emu.ServicesImpl
                                            .SetActiveGames(1)
                                            .SetActivePlayers(1)
                                            .SetFormingGames(0)
-                                           .SetWaitingPlayers(0).Build());
+                                           .SetWaitingPlayers(0)
+                                           .Build());
 
             ListFactoriesResponse response = ListFactoriesResponse.CreateBuilder().AddDescription(description).SetTotalResults(1).Build();
             done(response);
@@ -103,7 +104,22 @@ namespace d3emu.ServicesImpl
 
         public override void GetGameStats(IRpcController controller, GetGameStatsRequest request, Action<GetGameStatsResponse> done)
         {
-            throw new NotImplementedException();
+            var builder = new GetGameStatsResponse.Builder
+                              {
+                        
+                              };
+            builder.AddStatsBucket(new GameStatsBucket.Builder
+                                       {
+                                           ActiveGames = 1,
+                                           BucketMax = 100,
+                                           BucketMin = 0,
+                                           ActivePlayers = 1,
+                                           FormingGames = 1,
+                                           GamesPerHour = 100,
+                                           WaitMilliseconds = 20,
+                                           WaitingPlayers = 0,
+                                       });
+            done(builder.Build());
         }
     }
 }

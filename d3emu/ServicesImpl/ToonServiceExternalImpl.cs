@@ -19,7 +19,10 @@ namespace d3emu.ServicesImpl
 
         public override void SelectToon(IRpcController controller, SelectToonRequest request, Action<SelectToonResponse> done)
         {
-            throw new NotImplementedException();
+            done(new SelectToonResponse.Builder
+                     {
+                         
+                     }.Build());
         }
 
         public override void CreateToon(IRpcController controller, CreateToonRequest request, Action<CreateToonResponse> done)
