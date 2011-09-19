@@ -9,6 +9,13 @@ namespace d3emu.ServicesImpl
 
     public class GameMasterImpl : GameMaster
     {
+        private readonly Client clinet;
+
+        public GameMasterImpl(Client clinet)
+        {
+            this.clinet = clinet;
+        }
+
         public override void JoinGame(IRpcController controller, JoinGameRequest request, Action<JoinGameResponse> done)
         {
             throw new NotImplementedException();
@@ -44,7 +51,42 @@ namespace d3emu.ServicesImpl
 
         public override void FindGame(IRpcController controller, FindGameRequest request, Action<FindGameResponse> done)
         {
-            throw new NotImplementedException();
+            FindGameResponse.Builder findGameResponse = FindGameResponse.CreateBuilder();
+            findGameResponse.SetRequestId(12526585062881647236);
+
+            done(findGameResponse.Build());
+
+            clinet.ListenerId = request.ObjectId;
+            
+            GameFoundNotification.Builder gameFoundNotification = GameFoundNotification.CreateBuilder();
+
+            GameHandle.Builder gameHandle = GameHandle.CreateBuilder();
+            gameHandle.SetFactoryId(request.FactoryId);
+            gameHandle.SetGameId(EntityId.CreateBuilder().SetHigh(433661094641971304).SetLow(11017467167309309688).Build());
+
+            ConnectInfo.Builder connectInfo = ConnectInfo.CreateBuilder();
+            connectInfo.SetToonId(new EntityId.Builder
+                                      {
+                                          High = HighId.Toon,
+                                          Low = 2
+                                      }.Build());
+            connectInfo.SetHost("127.0.0.1");
+            connectInfo.SetPort(6666);
+            connectInfo.SetToken(ByteString.CopyFrom(new byte[] {0x07, 0x34, 0x02, 0x60, 0x91, 0x93, 0x76, 0x46, 0x28, 0x84}));
+            connectInfo.AddAttribute(Attribute
+                                         .CreateBuilder()
+                                         .SetName("SGameId")
+                                         .SetValue(Variant
+                                                       .CreateBuilder()
+                                                       .SetIntValue(2014314530)
+                                                       .Build())
+                                         .Build());
+
+            gameFoundNotification.SetRequestId(12526585062881647236);
+            gameFoundNotification.SetGameHandle(gameHandle.Build());
+            gameFoundNotification.AddConnectInfo(connectInfo.Build());
+
+            GameFactorySubscriber.CreateStub(clinet).NotifyGameFound(controller, gameFoundNotification.Build(), r => { });
         }
 
         public override void CancelFindGame(IRpcController controller, CancelFindGameRequest request, Action<NoData> done)
@@ -106,7 +148,6 @@ namespace d3emu.ServicesImpl
         {
             var builder = new GetGameStatsResponse.Builder
                               {
-                        
                               };
             builder.AddStatsBucket(new GameStatsBucket.Builder
                                        {

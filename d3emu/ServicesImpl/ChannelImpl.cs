@@ -24,7 +24,7 @@ namespace d3emu.ServicesImpl
 
         public override void UpdateChannelState(IRpcController controller, UpdateChannelStateRequest request, Action<NoData> done)
         {
-            throw new NotImplementedException();
+            done(new NoData.Builder().Build());
         }
 
         public override void UpdateMemberState(IRpcController controller, UpdateMemberStateRequest request, Action<NoData> done)

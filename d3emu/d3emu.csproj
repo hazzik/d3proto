@@ -68,6 +68,7 @@
     <Compile Include="ServicesImpl\GameMasterImpl.cs" />
     <Compile Include="ServicesImpl\GameMasterSubscriberImpl.cs" />
     <Compile Include="ServicesImpl\GameUtilitiesImpl.cs" />
+    <Compile Include="HighId.cs" />
     <Compile Include="ServicesImpl\NotificationServiceImpl.cs" />
     <Compile Include="ServicesImpl\PartyServiceImpl.cs" />
     <Compile Include="ServicesImpl\PresenceServiceImpl.cs" />

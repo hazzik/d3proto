@@ -18,7 +18,7 @@ namespace d3emu.ServicesImpl
 
         public override void JoinChannel(IRpcController controller, JoinChannelRequest request, Action<JoinChannelResponse> done)
         {
-            throw new NotImplementedException();
+            done(new JoinChannelResponse.Builder().Build());
         }
 
         public override void FindChannel(IRpcController controller, FindChannelRequest request, Action<FindChannelResponse> done)
