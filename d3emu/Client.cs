@@ -108,10 +108,8 @@ namespace d3emu
                     Send(data);
                     if (ErrorCode != AuthError.None)
                     {
-                        GetService<ConnectionService>().ForceDisconnect(null, new DisconnectNotification.Builder
-                                                                                  {
-                                                                                      ErrorCode = (uint)ErrorCode,
-                                                                                  }.Build(), r => { });
+                        var dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
+                        GetService<ConnectionService>().ForceDisconnect(null, dcNotify, r => { });
                     }
                 };
 

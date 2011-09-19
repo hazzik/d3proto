@@ -36,10 +36,9 @@ namespace d3emu.ServicesImpl
                 .SetMessage(ByteString.CopyFrom(message))
                 .Build();
 
-            var authenticationClient = client.GetService<AuthenticationClient>();
-
             client.ListenerId = request.ListenerId;
-            authenticationClient.ModuleLoad(controller, moduleLoadRequest, r => ClientServiceCallback(r));
+
+            client.GetService<AuthenticationClient>().ModuleLoad(controller, moduleLoadRequest, r => ClientServiceCallback(r));
 
             new Thread(() =>
                            {
@@ -82,16 +81,12 @@ namespace d3emu.ServicesImpl
                 }
                 else
                 {
-                    var message2 = srp.Response2;
-
                     var moduleMessagedRequest = ModuleMessageRequest.CreateBuilder()
                         .SetModuleId(moduleId)
-                        .SetMessage(ByteString.CopyFrom(message2))
+                        .SetMessage(ByteString.CopyFrom(srp.Response2))
                         .Build();
 
-                    var authenticationClient = client.GetService<AuthenticationClient>();
-
-                    authenticationClient.ModuleMessage(controller, moduleMessagedRequest, r => ClientServiceCallback(r));
+                    client.GetService<AuthenticationClient>().ModuleMessage(controller, moduleMessagedRequest, r => ClientServiceCallback(r));
                 }
 
                 wait.Set();
