@@ -99,7 +99,7 @@ namespace d3emu
 
             IService service = importedServices[packet.Service];
 
-            MethodDescriptor method = service.DescriptorForType.Methods[packet.Method - 1];
+            MethodDescriptor method = service.DescriptorForType.Methods.Single(m => GetMethodId(m) == packet.Method);
 
             Action<IMessage> done =
                 response =>
@@ -171,9 +171,14 @@ namespace d3emu
             callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder() });
 
             //TODO: make sure that callback executes for right request_id
-            var data = new ServerPacket(sId, method.Index + 1, reqCounter, ListenerId).WriteMessage(request);
+            var data = new ServerPacket(sId, GetMethodId(method), reqCounter, ListenerId).WriteMessage(request);
             reqCounter++;
             Send(data);
+        }
+
+        private static int GetMethodId(MethodDescriptor method)
+        {
+            return (int) method.Options[bnet.protocol.Rpc.MethodId.Descriptor];
         }
 
         public AuthError ErrorCode { get; set; }
