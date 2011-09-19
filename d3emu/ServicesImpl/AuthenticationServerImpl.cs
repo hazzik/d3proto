@@ -81,6 +81,21 @@ namespace d3emu.ServicesImpl
                     client.ListenerId = 0;
                     client.ErrorCode = 3;
                 }
+                else
+                {
+                    //var message2 = srp.Response2;
+
+                    //var moduleMessagedRequest = ModuleMessageRequest.CreateBuilder()
+                    //    .SetModuleId(moduleId)
+                    //    .SetMessage(ByteString.CopyFrom(message2))
+                    //    .Build();
+
+                    //var authenticationClient = client.GetService<AuthenticationClient>();
+
+                    ////client.ListenerId = request.ListenerId;
+                    //authenticationClient.ModuleMessage(controller, moduleMessagedRequest,
+                    //    r => Console.WriteLine("{0}\r\n{1}", r.DescriptorForType.FullName, r.ToString()));
+                }
 
                 wait.Set();
             }
