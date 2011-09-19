@@ -39,8 +39,7 @@ namespace d3emu.ServicesImpl
             var authenticationClient = client.GetService<AuthenticationClient>();
 
             client.ListenerId = request.ListenerId;
-            authenticationClient.ModuleLoad(controller, moduleLoadRequest,
-                                            r => Console.WriteLine("{0}\r\n{1}", r.DescriptorForType.FullName, r.ToString()));
+            authenticationClient.ModuleLoad(controller, moduleLoadRequest, r => ClientServiceCallback(r));
 
             new Thread(() =>
                            {
@@ -83,22 +82,27 @@ namespace d3emu.ServicesImpl
                 }
                 else
                 {
-                    //var message2 = srp.Response2;
+                    var message2 = srp.Response2;
 
-                    //var moduleMessagedRequest = ModuleMessageRequest.CreateBuilder()
-                    //    .SetModuleId(moduleId)
-                    //    .SetMessage(ByteString.CopyFrom(message2))
-                    //    .Build();
+                    var moduleMessagedRequest = ModuleMessageRequest.CreateBuilder()
+                        .SetModuleId(moduleId)
+                        .SetMessage(ByteString.CopyFrom(message2))
+                        .Build();
 
-                    //var authenticationClient = client.GetService<AuthenticationClient>();
+                    var authenticationClient = client.GetService<AuthenticationClient>();
 
-                    ////client.ListenerId = request.ListenerId;
-                    //authenticationClient.ModuleMessage(controller, moduleMessagedRequest,
-                    //    r => Console.WriteLine("{0}\r\n{1}", r.DescriptorForType.FullName, r.ToString()));
+                    authenticationClient.ModuleMessage(controller, moduleMessagedRequest, r => ClientServiceCallback(r));
                 }
 
                 wait.Set();
             }
+        }
+
+        // just for logging purposes
+        private void ClientServiceCallback(IMessage msg)
+        {
+            Console.WriteLine("{0}", msg.DescriptorForType.FullName);
+            Console.WriteLine("{0}", msg.ToString());
         }
     }
 }

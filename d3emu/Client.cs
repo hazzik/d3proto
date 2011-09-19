@@ -155,6 +155,9 @@ namespace d3emu
 
         private readonly Queue<Callback> callbacks = new Queue<Callback>();
 
+        // need better solution for request counter...
+        private short reqCounter = 0;
+
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
         {
             var name = method.Service.FullName;
@@ -163,7 +166,8 @@ namespace d3emu
             callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder() });
 
             //TODO: make sure that callback executes for right request_id
-            var data = new ServerPacket(sId, method.Index + 1, 0, ListenerId).WriteMessage(request);
+            var data = new ServerPacket(sId, method.Index + 1, reqCounter, ListenerId).WriteMessage(request);
+            reqCounter++;
             Send(data);
         }
 
