@@ -44,7 +44,7 @@ namespace d3emu.ServicesImpl
             new Thread(() =>
                            {
                                wait.WaitOne();
-                               if (client.ErrorCode == 0)
+                               if (client.ErrorCode == AuthError.None)
                                {
                                    done(new LogonResponse.Builder
                                             {
@@ -78,7 +78,7 @@ namespace d3emu.ServicesImpl
                 if (srp.Verify(A, M1, seed) == false)
                 {
                     client.ListenerId = 0;
-                    client.ErrorCode = 3;
+                    client.ErrorCode = AuthError.InvalidCredentials;
                 }
                 else
                 {

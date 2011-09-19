@@ -9,6 +9,13 @@ namespace d3emu
     using Google.ProtocolBuffers;
     using Google.ProtocolBuffers.Descriptors;
 
+    public enum AuthError
+    {
+        None = 0,
+        InvalidCredentials = 3,
+        NoLicense = 12,
+    }
+
     public class Client : IRpcChannel
     {
         private readonly IDictionary<uint, IService> exportedServices = new Dictionary<uint, IService>();
@@ -97,9 +104,9 @@ namespace d3emu
             Action<IMessage> done =
                 response =>
                 {
-                    var data = new ServerPacket(Program.PrevService, ErrorCode, packet.RequestId, 0).WriteMessage(response);
+                    var data = new ServerPacket(Program.PrevService, (int)ErrorCode, packet.RequestId, 0).WriteMessage(response);
                     Send(data);
-                    if (ErrorCode != 0)
+                    if (ErrorCode != AuthError.None)
                     {
                         GetService<ConnectionService>().ForceDisconnect(null, new DisconnectNotification.Builder
                                                                                   {
@@ -171,7 +178,7 @@ namespace d3emu
             Send(data);
         }
 
-        public int ErrorCode { get; set; }
+        public AuthError ErrorCode { get; set; }
 
         private class Callback
         {
