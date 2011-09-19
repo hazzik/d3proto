@@ -74,7 +74,7 @@ namespace d3emu.ServicesImpl
             new Thread(() =>
                            {
                                wait.WaitOne();
-                               if (client.ErrorCode != 0)
+                               if (client.ErrorCode == 0)
                                {
                                    done(new LogonResponse.Builder
                                             {
