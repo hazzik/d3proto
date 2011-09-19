@@ -33,7 +33,7 @@ namespace d3emu
         }
 
         public ulong ListenerId { get; set; }
-        
+
         public AuthError ErrorCode { get; set; }
 
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
@@ -45,7 +45,7 @@ namespace d3emu
             var requestId = externalService.GetNextRequestId();
             callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder(), RequestId = requestId });
 
-            ServerPacket data = new ServerPacket(externalService.Id, (int) GetMethodId(method), requestId, ListenerId).WriteMessage(request);
+            ServerPacket data = new ServerPacket(externalService.Id, (int)GetMethodId(method), requestId, ListenerId).WriteMessage(request);
             Send(data);
         }
 
@@ -53,8 +53,8 @@ namespace d3emu
         public T GetService<T>() where T : IService
         {
             return exportedServices
-                .Where(service => typeof (T).IsAssignableFrom(service.GetType()))
-                .Select(x => (T) x)
+                .Where(service => typeof(T).IsAssignableFrom(service.GetType()))
+                .Select(x => (T)x)
                 .Single();
         }
 
@@ -123,15 +123,15 @@ namespace d3emu
 
             Action<IMessage> done =
                 response =>
+                {
+                    ServerPacket data = new ServerPacket(Program.PrevService, (int)ErrorCode, packet.RequestId, 0).WriteMessage(response);
+                    Send(data);
+                    if (ErrorCode != AuthError.None)
                     {
-                        ServerPacket data = new ServerPacket(Program.PrevService, (int) ErrorCode, packet.RequestId, 0).WriteMessage(response);
-                        Send(data);
-                        if (ErrorCode != AuthError.None)
-                        {
-                            DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint) ErrorCode).Build();
-                            GetService<ConnectionService>().ForceDisconnect(null, dcNotify, r => { });
-                        }
-                    };
+                        DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
+                        GetService<ConnectionService>().ForceDisconnect(null, dcNotify, r => { });
+                    }
+                };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
@@ -160,13 +160,13 @@ namespace d3emu
             exportedServicesIds[hash] = new ExternalService
                                             {
                                                 Hash = hash,
-                                                Id = (byte) id,
+                                                Id = (byte)id,
                                             };
         }
 
         public uint LoadImportedService(uint hash)
         {
-            var i = (uint) importedServices.Count;
+            var i = (uint)importedServices.Count;
             importedServices[i] = Services.ServicesDict[hash](this);
             return i;
         }
@@ -191,7 +191,7 @@ namespace d3emu
 
         private static uint GetMethodId(MethodDescriptor method)
         {
-            return (uint) method.Options[Rpc.MethodId.Descriptor];
+            return (uint)method.Options[Rpc.MethodId.Descriptor];
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace d3emu
             if (name == "bnet.protocol.connection.ConnectionService")
                 return 0;
             return Encoding.ASCII.GetBytes(name)
-                .Aggregate(0x811C9DC5, (current, t) => 0x1000193*(t ^ current));
+                .Aggregate(0x811C9DC5, (current, t) => 0x1000193 * (t ^ current));
         }
 
         private class Callback

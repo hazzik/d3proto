@@ -19,7 +19,7 @@ namespace d3emu
             m_socket.Listen(10);
 
             while (true)
-            {  
+            {
                 Console.WriteLine("Waiting for connections...");
                 new Client(m_socket.Accept()).Run();
             }
