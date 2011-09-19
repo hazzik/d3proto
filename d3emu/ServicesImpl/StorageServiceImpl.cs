@@ -35,10 +35,6 @@ namespace d3emu.ServicesImpl
 
         public override void Execute(IRpcController controller, ExecuteRequest request, Action<ExecuteResponse> done)
         {
-            ConsoleColor foregroundColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(request);
-            Console.ForegroundColor = foregroundColor;
             ExecuteResponse.Builder response;
             switch (request.QueryName)
             {
@@ -62,8 +58,6 @@ namespace d3emu.ServicesImpl
         {
             var results = new List<OperationResult>();
 
-            
-
             foreach (Operation operation in request.OperationsList)
             {
                 //var toonDigest = ToonHandle.ParseFrom(operation.RowId.Hash.ToByteArray().Skip(2).ToArray());
@@ -75,12 +69,12 @@ namespace d3emu.ServicesImpl
                         .SetRowId(operation.RowId)
                         .SetVersion(1)
                         .SetData(D3.Hero.Digest.CreateBuilder().SetVersion(891)
-//                                     .SetHeroId(this.D3EntityID)
-//                                     .SetHeroName(this.Name)
-//                                     .SetGbidClass((int) this.ClassID)
-//                                     .SetPlayerFlags(this.GenderID)
-//                                     .SetLevel(this.Level)
-//                                     .SetVisualEquipment(this.Equipment)
+                    //                                     .SetHeroId(this.D3EntityID)
+                    //                                     .SetHeroName(this.Name)
+                    //                                     .SetGbidClass((int) this.ClassID)
+                    //                                     .SetPlayerFlags(this.GenderID)
+                    //                                     .SetLevel(this.Level)
+                    //                                     .SetVisualEquipment(this.Equipment)
                                      .SetLastPlayedAct(0)
                                      .SetHighestUnlockedAct(0)
                                      .SetLastPlayedDifficulty(0)

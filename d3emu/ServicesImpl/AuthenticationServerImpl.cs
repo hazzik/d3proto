@@ -2,12 +2,10 @@ namespace d3emu.ServicesImpl
 {
     using System;
     using System.Linq;
-    using System.Text;
     using System.Threading;
     using bnet.protocol;
     using bnet.protocol.authentication;
     using Google.ProtocolBuffers;
-    using bnet.protocol.connection;
 
     public class AuthenticationServerImpl : AuthenticationServer
     {
@@ -17,7 +15,7 @@ namespace d3emu.ServicesImpl
 
         private readonly Client client;
         private SRP srp;
-        private readonly AutoResetEvent wait = new AutoResetEvent(false); 
+        private readonly AutoResetEvent wait = new AutoResetEvent(false);
 
         public AuthenticationServerImpl(Client client)
         {
@@ -26,28 +24,6 @@ namespace d3emu.ServicesImpl
 
         public override void Logon(IRpcController controller, LogonRequest request, Action<LogonResponse> done)
         {
-            Console.WriteLine(request.ToString());
-
-            // response.Message structure:
-            //     byte command;
-            //     if (command == 0 || command == 1) // from server
-            //     {
-            //         if (command == 0)
-            //             byte accountSalt[32]; // static value per account
-            //         byte passwordSalt[32]; // static value per account
-            //         byte serverChallenge[128]; // changes every login
-            //         byte secondaryChallenge[128]; // changes every login
-            //     }
-            //     else if (command == 2) // from server
-            //     {
-            //         // empty
-            //     }
-            //     else if (command == 3) // from server
-            //     {
-            //         byte M2[32];
-            //         byte data2[128]; // for veryfing secondaryChallenge
-            //     }
-
             srp = new SRP(request.Email, "123");
 
             var message = srp.Response1;
@@ -60,16 +36,11 @@ namespace d3emu.ServicesImpl
                 .SetMessage(ByteString.CopyFrom(message))
                 .Build();
 
-            Console.WriteLine("Region: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(moduleLoadRequest.ModuleHandle.Region).Reverse().ToArray()));
-            Console.WriteLine("Usage: {0}", Encoding.ASCII.GetString(BitConverter.GetBytes(moduleLoadRequest.ModuleHandle.Usage).Reverse().ToArray()));
-            Console.WriteLine("Hash: {0}", moduleLoadRequest.ModuleHandle.Hash.ToByteArray().ToHexString());
-            Console.WriteLine("Message: {0}", moduleLoadRequest.Message.ToByteArray().ToHexString());
-
             var authenticationClient = client.GetService<AuthenticationClient>();
 
             client.ListenerId = request.ListenerId;
             authenticationClient.ModuleLoad(controller, moduleLoadRequest,
-                                            r => Console.WriteLine("{0}\r\n{1}", r.GetType().Name, r.ToString()));
+                                            r => Console.WriteLine("{0}\r\n{1}", r.DescriptorForType.FullName, r.ToString()));
 
             new Thread(() =>
                            {
@@ -78,8 +49,8 @@ namespace d3emu.ServicesImpl
                                {
                                    done(new LogonResponse.Builder
                                             {
-                                                Account = new EntityId.Builder {High = 0x100000000000000, Low = 0}.Build(),
-                                                GameAccount = new EntityId.Builder {High = 0x200006200004433, Low = 0}.Build(),
+                                                Account = new EntityId.Builder { High = 0x100000000000000, Low = 0 }.Build(),
+                                                GameAccount = new EntityId.Builder { High = 0x200006200004433, Low = 0 }.Build(),
                                             }.Build());
                                }
                                else
@@ -92,10 +63,8 @@ namespace d3emu.ServicesImpl
 
         public override void ModuleMessage(IRpcController controller, ModuleMessageRequest request, Action<NoData> done)
         {
-            Console.WriteLine(request.ToString());
-
             var moduleId = request.ModuleId;
-            
+
             var message = request.Message.ToByteArray();
             var command = message[0];
 
@@ -115,7 +84,6 @@ namespace d3emu.ServicesImpl
 
                 wait.Set();
             }
-
         }
     }
 }

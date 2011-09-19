@@ -8,8 +8,6 @@ namespace d3emu
 
     public static partial class Services
     {
-        public const uint AuthenticationClient = 0x71240e35;
-
         public static readonly Dictionary<uint, System.Func<Client, IService>> ServicesDict
             = new Dictionary<uint, Func<Client, IService>>
                   {

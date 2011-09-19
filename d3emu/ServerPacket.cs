@@ -10,6 +10,18 @@ namespace d3emu
         private readonly CodedOutputStream m_stream;
         private readonly MemoryStream m_memStream;
 
+        public byte[] Data
+        {
+            get { return m_memStream.ToArray(); }
+        }
+
+        private IMessage m_message;
+
+        public IMessage Message
+        {
+            get { return m_message; }
+        }
+
         public ServerPacket(byte service, int method, short requestId, ulong listenerId)
         {
             m_memStream = new MemoryStream();
@@ -26,12 +38,14 @@ namespace d3emu
                 m_stream.WriteRawVarint64(listenerId);
         }
 
-        public byte[] WriteMessage(IMessageLite value)
+        public ServerPacket WriteMessage(IMessage value)
         {
+            m_message = value;
+
             m_stream.WriteMessageNoTag(value);
             m_stream.Flush();
 
-            return m_memStream.ToArray();
+            return this;
         }
     }
 }

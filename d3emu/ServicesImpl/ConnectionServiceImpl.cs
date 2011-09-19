@@ -16,21 +16,16 @@
 
         public override void Connect(IRpcController controller, ConnectRequest request, Action<ConnectResponse> done)
         {
-            Console.WriteLine(request.ToString()); // empty
-
             var response = ConnectResponse.CreateBuilder()
                 .SetServerId(ProcessId.CreateBuilder().SetLabel(0xDEADBABE).SetEpoch(DateTime.Now.ToUnixTime()))
-                .SetClientId(ProcessId.CreateBuilder().SetLabel(0xDEADBEEF).SetEpoch(DateTime.Now.ToUnixTime())).Build();
-
-            Console.WriteLine(response.ToString());
+                .SetClientId(ProcessId.CreateBuilder().SetLabel(0xDEADBEEF).SetEpoch(DateTime.Now.ToUnixTime()))
+                .Build();
 
             done(response);
         }
 
         public override void Bind(IRpcController controller, BindRequest request, Action<BindResponse> done)
         {
-            Console.WriteLine(request.ToString());
-
             var newResponse = BindResponse.CreateBuilder();
 
             foreach (var hash in request.ImportedServiceHashList)
@@ -44,8 +39,6 @@
             }
 
             var response = newResponse.Build();
-
-            Console.WriteLine(response.ToString());
 
             done(response);
         }

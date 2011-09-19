@@ -89,6 +89,25 @@ namespace d3emu
                 .ToArray();
         }
 
+        // Response structure:
+        //     byte command;
+        //     if (command == 0 || command == 1) // from server
+        //     {
+        //         if (command == 0)
+        //             byte accountSalt[32]; // static value per account
+        //         byte passwordSalt[32]; // static value per account
+        //         byte serverChallenge[128]; // changes every login
+        //         byte secondaryChallenge[128]; // changes every login
+        //     }
+        //     else if (command == 2) // from server
+        //     {
+        //         // empty
+        //     }
+        //     else if (command == 3) // from server
+        //     {
+        //         byte M2[32];
+        //         byte data2[128]; // for veryfing secondaryChallenge
+        //     }
         public byte[] Response1 { get; private set; }
 
         public byte[] Response2 { get; private set; }
