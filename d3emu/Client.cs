@@ -32,7 +32,7 @@ namespace d3emu
         }
 
         public ulong ListenerId { get; set; }
-
+        
         public AuthError ErrorCode { get; set; }
 
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
@@ -44,7 +44,7 @@ namespace d3emu
             var requestId = externalService.GetNextRequestId();
             callbacks.Enqueue(new Callback { Action = done, Builder = responsePrototype.WeakToBuilder(), RequestId = requestId });
 
-            ServerPacket data = new ServerPacket(externalService.Id, (int)GetMethodId(method), requestId, ListenerId).WriteMessage(request);
+            ServerPacket data = new ServerPacket(externalService.Id, (int) GetMethodId(method), requestId, ListenerId).WriteMessage(request);
             Send(data);
         }
 
@@ -86,35 +86,26 @@ namespace d3emu
 
             Action<IMessage> done =
                 response =>
-                {
-                    ServerPacket data = new ServerPacket(Program.PrevService, (int)ErrorCode, packet.RequestId, 0).WriteMessage(response);
-                    Send(data);
-                    if (ErrorCode != AuthError.None)
                     {
-                        DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
-                        ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
-                    }
-                };
+                        ServerPacket data = new ServerPacket(Program.PrevService, (int) ErrorCode, packet.RequestId, 0).WriteMessage(response);
+                        Send(data);
+                        if (ErrorCode != AuthError.None)
+                        {
+                            DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint) ErrorCode).Build();
+                            ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
+                        }
+                    };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
-            try
-            {
-                IMessage message = packet.ReadMessage(requestProto.WeakToBuilder());
-                // Logging
-                Console.WriteLine(requestProto.GetType());
-                Console.WriteLine("Text View:");
-                Console.WriteLine(message.ToString());
+            IMessage message = packet.ReadMessage(requestProto.WeakToBuilder());
 
-                service.CallMethod(method, null, message, done);
-            }
-            catch (UninitializedMessageException exc)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Exception in message: {0}", requestProto.DescriptorForType.FullName);
-                Console.WriteLine(exc.Message);
-                Console.ResetColor();
-            }
+            // Logging
+            Console.WriteLine(requestProto.GetType());
+            Console.WriteLine("Text View:");
+            Console.WriteLine(message.ToString());
+
+            service.CallMethod(method, null, message, done);
         }
 
         public void LoadExportedService(uint hash, uint id)
@@ -122,13 +113,13 @@ namespace d3emu
             exportedServicesIds[hash] = new ExternalService
                                             {
                                                 Hash = hash,
-                                                Id = (byte)id,
+                                                Id = (byte) id,
                                             };
         }
 
         public uint LoadImportedService(uint hash)
         {
-            var i = (uint)importedServices.Count;
+            var i = (uint) importedServices.Count;
             importedServices[i] = Services.ServicesDict[hash](this);
             return i;
         }
@@ -153,7 +144,7 @@ namespace d3emu
 
         private static uint GetMethodId(MethodDescriptor method)
         {
-            return (uint)method.Options[Rpc.MethodId.Descriptor];
+            return (uint) method.Options[Rpc.MethodId.Descriptor];
         }
 
         /// <summary>
@@ -166,7 +157,7 @@ namespace d3emu
             if (name == "bnet.protocol.connection.ConnectionService")
                 return 0;
             return Encoding.ASCII.GetBytes(name)
-                .Aggregate(0x811C9DC5, (current, t) => 0x1000193 * (t ^ current));
+                .Aggregate(0x811C9DC5, (current, t) => 0x1000193*(t ^ current));
         }
 
         private class Callback
