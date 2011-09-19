@@ -115,14 +115,23 @@ namespace d3emu
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
-            IMessage message = packet.ReadMessage(requestProto.WeakToBuilder());
+            try
+            {
+                IMessage message = packet.ReadMessage(requestProto.WeakToBuilder());
+                // Logging
+                Console.WriteLine(requestProto.GetType());
+                Console.WriteLine("Text View:");
+                Console.WriteLine(message.ToString());
 
-            // Logging
-            Console.WriteLine(requestProto.GetType());
-            Console.WriteLine("Text View:");
-            Console.WriteLine(message.ToString());
-
-            service.CallMethod(method, null, message, done);
+                service.CallMethod(method, null, message, done);
+            }
+            catch (UninitializedMessageException exc)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Exception in message: {0}", requestProto.DescriptorForType.FullName);
+                Console.WriteLine(exc.Message);
+                Console.ResetColor();
+            }
         }
 
         public void LoadExportedService(uint hash, uint id)
