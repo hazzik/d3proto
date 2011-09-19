@@ -91,14 +91,10 @@ namespace d3emu
                     Send(data);
                     if (ErrorCode != AuthError.None)
                     {
-                        ServerPacket data = new ServerPacket(Program.PrevService, (int) ErrorCode, packet.RequestId, 0).WriteMessage(response);
-                        Send(data);
-                        if (ErrorCode != AuthError.None)
-                        {
-                            DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint) ErrorCode).Build();
-                            ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
-                        }
-                    };
+                        DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
+                        ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
+                    }
+                };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
