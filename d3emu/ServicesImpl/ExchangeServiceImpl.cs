@@ -90,7 +90,7 @@ namespace d3emu.ServicesImpl
 
         public override void SubscribeOrderStatusChange(IRpcController controller, SubscribeOrderStatusChangeRequest request, Action<NoData> done)
         {
-            throw new NotImplementedException();
+            done(new NoData());
         }
 
         public override void UnsubscribeOrderStatusChange(IRpcController controller, UnsubscribeOrderStatusChangeRequest request, Action<NoData> done)
@@ -135,7 +135,7 @@ namespace d3emu.ServicesImpl
 
         public override void GetConfiguration(IRpcController controller, GetConfigurationRequest request, Action<GetConfigurationResponse> done)
         {
-            throw new NotImplementedException();
+            done(new GetConfigurationResponse.Builder().Build());
         }
 
         public override void GetBidFeeEstimation(IRpcController controller, GetBidFeeEstimationRequest request, Action<GetFeeEstimationResponse> done)

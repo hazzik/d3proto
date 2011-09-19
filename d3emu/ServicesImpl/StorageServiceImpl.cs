@@ -4,10 +4,12 @@ namespace d3emu.ServicesImpl
     using System.Collections.Generic;
     using System.Linq;
     using D3.Account;
+    using D3.Hero;
     using D3.OnlineService;
     using Google.ProtocolBuffers;
     using bnet.protocol.storage;
     using bnet.protocol.toon;
+    using Digest = D3.Account.Digest;
 
     public class StorageServiceImpl : StorageService
     {
@@ -63,18 +65,24 @@ namespace d3emu.ServicesImpl
                 //var toonDigest = ToonHandle.ParseFrom(operation.RowId.Hash.ToByteArray().Skip(2).ToArray());
 
                 OperationResult.Builder operationResult = OperationResult.CreateBuilder().SetTableId(operation.TableId);
+                var value = new EntityId.Builder
+                                          {
+                                              
+                                              IdHigh = 0x300016200004433,
+                                              IdLow = 2
+                                          };
                 operationResult.AddData(
                     Cell.CreateBuilder()
                         .SetColumnId(operation.ColumnId)
                         .SetRowId(operation.RowId)
                         .SetVersion(1)
                         .SetData(D3.Hero.Digest.CreateBuilder().SetVersion(891)
-                    //                                     .SetHeroId(this.D3EntityID)
-                    //                                     .SetHeroName(this.Name)
-                    //                                     .SetGbidClass((int) this.ClassID)
-                    //                                     .SetPlayerFlags(this.GenderID)
-                    //                                     .SetLevel(this.Level)
-                    //                                     .SetVisualEquipment(this.Equipment)
+                                     .SetHeroId(value)
+                                     .SetHeroName("hazzik")
+                                     .SetGbidClass(0)
+                                     .SetPlayerFlags(0)
+                                     .SetLevel(1)
+                                     .SetVisualEquipment(new VisualEquipment.Builder().Build())
                                      .SetLastPlayedAct(0)
                                      .SetHighestUnlockedAct(0)
                                      .SetLastPlayedDifficulty(0)
