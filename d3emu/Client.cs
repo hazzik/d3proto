@@ -62,40 +62,13 @@ namespace d3emu
         {
             try
             {
-                while (true)
+                CodedInputStream stream = CodedInputStream.CreateInstance(new NetworkStream(socket));
+
+                while (!stream.IsAtEnd)
                 {
-                    if (!socket.IsConnected())
-                        break;
-
-                    if (socket.Available > 0)
-                    {
-                        var buffer = new byte[socket.Available];
-
-                        int len = socket.Receive(buffer);
-
-                        if (len > 0)
-                        {
-                            Console.WriteLine("Received data: length = {0}", len);
-
-                            var newBuf = new byte[len];
-                            Array.Copy(buffer, newBuf, newBuf.Length);
-
-                            newBuf.PrintHex();
-
-                            CodedInputStream stream = CodedInputStream.CreateInstance(newBuf);
-
-                            while (!stream.IsAtEnd)
-                            {
-                                Handle(stream);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Disconnected!");
-                            break;
-                        }
-                    }
+                    Handle(stream);
                 }
+                Console.WriteLine("Disconnected!");
             }
             catch (Exception e)
             {
