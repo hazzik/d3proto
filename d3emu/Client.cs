@@ -187,7 +187,7 @@ namespace d3emu
 
         private static int GetMethodId(MethodDescriptor method)
         {
-            return (int) method.Options[bnet.protocol.Rpc.MethodId.Descriptor];
+            return (int)(uint)method.Options[bnet.protocol.Rpc.MethodId.Descriptor];
         }
 
         public AuthError ErrorCode { get; set; }
