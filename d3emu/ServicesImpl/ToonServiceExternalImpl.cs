@@ -11,7 +11,7 @@ namespace d3emu.ServicesImpl
         {
             var builder = new ToonListResponse.Builder
                               {
-                         
+
                               };
             //builder.AddToons(EntityId.CreateBuilder().SetHigh(216174302532224051).SetLow(1).Build());
             done(builder.Build());
@@ -21,7 +21,7 @@ namespace d3emu.ServicesImpl
         {
             done(new SelectToonResponse.Builder
                      {
-                         
+
                      }.Build());
         }
 

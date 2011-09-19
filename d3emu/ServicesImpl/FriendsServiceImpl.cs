@@ -11,10 +11,10 @@ namespace d3emu.ServicesImpl
     {
         public override void SubscribeToFriends(IRpcController controller, SubscribeToFriendsRequest request, Action<SubscribeToFriendsResponse> done)
         {
-           done(new SubscribeToFriendsResponse.Builder
-                    {
-                        
-                    }.Build());
+            done(new SubscribeToFriendsResponse.Builder
+                     {
+
+                     }.Build());
         }
 
         public override void SendInvitation(IRpcController controller, SendInvitationRequest request, Action<SendInvitationResponse> done)

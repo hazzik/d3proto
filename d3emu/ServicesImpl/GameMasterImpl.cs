@@ -1,10 +1,10 @@
 namespace d3emu.ServicesImpl
 {
     using System;
-    using Google.ProtocolBuffers;
     using bnet.protocol;
     using bnet.protocol.attribute;
     using bnet.protocol.game_master;
+    using Google.ProtocolBuffers;
     using Attribute = bnet.protocol.attribute.Attribute;
 
     public class GameMasterImpl : GameMaster
@@ -57,7 +57,7 @@ namespace d3emu.ServicesImpl
             done(findGameResponse.Build());
 
             clinet.ListenerId = request.ObjectId;
-            
+
             GameFoundNotification.Builder gameFoundNotification = GameFoundNotification.CreateBuilder();
 
             GameHandle.Builder gameHandle = GameHandle.CreateBuilder();
@@ -72,7 +72,7 @@ namespace d3emu.ServicesImpl
                                       }.Build());
             connectInfo.SetHost("127.0.0.1");
             connectInfo.SetPort(6666);
-            connectInfo.SetToken(ByteString.CopyFrom(new byte[] {0x07, 0x34, 0x02, 0x60, 0x91, 0x93, 0x76, 0x46, 0x28, 0x84}));
+            connectInfo.SetToken(ByteString.CopyFrom(new byte[] { 0x07, 0x34, 0x02, 0x60, 0x91, 0x93, 0x76, 0x46, 0x28, 0x84 }));
             connectInfo.AddAttribute(Attribute
                                          .CreateBuilder()
                                          .SetName("SGameId")

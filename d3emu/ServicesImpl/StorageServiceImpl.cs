@@ -3,12 +3,11 @@ namespace d3emu.ServicesImpl
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using bnet.protocol.storage;
     using D3.Account;
     using D3.Hero;
     using D3.OnlineService;
     using Google.ProtocolBuffers;
-    using bnet.protocol.storage;
-    using bnet.protocol.toon;
     using Digest = D3.Account.Digest;
 
     public class StorageServiceImpl : StorageService
@@ -67,7 +66,7 @@ namespace d3emu.ServicesImpl
                 OperationResult.Builder operationResult = OperationResult.CreateBuilder().SetTableId(operation.TableId);
                 var value = new EntityId.Builder
                                           {
-                                              
+
                                               IdHigh = 0x300016200004433,
                                               IdLow = 2
                                           };

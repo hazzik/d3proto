@@ -22,7 +22,7 @@ namespace d3emu.ServicesImpl
                          ChannelId = request.ChannelId.ToBuilder().SetHigh(0x604ac77c9aa0d7d).SetLow(0x9be5ecbd0000279f).Build(),
                          ObjectId = 67093
                      }.Build());
-            
+
             client.ListenerId = request.ObjectId;
 
             var notification = new AddNotification.Builder
@@ -47,13 +47,13 @@ namespace d3emu.ServicesImpl
                                                                                           Low = 2,
                                                                                       }.Build()
                                                                      }.Build(),
-                                                                     State = new MemberState.Builder
-                                                                                 {
-                                                                                     Privileges = 64511,
-                                                                                 }.AddRole(2).Build(),
-                                                                                
+                                                      State = new MemberState.Builder
+                                                                  {
+                                                                      Privileges = 64511,
+                                                                  }.AddRole(2).Build(),
+
                                                   }.Build(),
-                                                 
+
                                        ChannelState = new ChannelState.Builder
                                                           {
                                                               MaxMembers = 8,
@@ -75,8 +75,8 @@ namespace d3emu.ServicesImpl
                                        {
                                            Privileges = 64511,
                                        }.AddRole(2).Build(),
-
                                    }.Build());
+
             ChannelSubscriber.CreateStub(client).NotifyAdd(controller, notification.Build(), r => { });
         }
 

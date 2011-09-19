@@ -2,7 +2,6 @@ namespace d3emu
 {
     using System;
     using System.Collections.Generic;
-    using Google.ProtocolBuffers;
     using bnet.protocol.authentication;
     using bnet.protocol.channel;
     using bnet.protocol.channel_invitation;
@@ -13,6 +12,7 @@ namespace d3emu
     using bnet.protocol.game_master;
     using bnet.protocol.notification;
     using bnet.protocol.user_manager;
+    using Google.ProtocolBuffers;
 
     public static class ClientServices
     {

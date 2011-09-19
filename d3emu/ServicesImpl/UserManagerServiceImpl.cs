@@ -10,7 +10,7 @@ namespace d3emu.ServicesImpl
         {
             done(new SubscribeToUserManagerResponse.Builder
                      {
-                         
+
                      }.Build());
         }
 

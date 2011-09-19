@@ -12,7 +12,7 @@ namespace d3emu.ServicesImpl
         {
             var response = new ClientResponse.Builder
                               {
-                                   
+
                               };
             done(response.Build());
         }
