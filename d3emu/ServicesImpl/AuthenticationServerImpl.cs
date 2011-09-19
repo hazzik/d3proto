@@ -38,7 +38,7 @@ namespace d3emu.ServicesImpl
 
             client.ListenerId = request.ListenerId;
 
-            client.GetService<AuthenticationClient>().ModuleLoad(controller, moduleLoadRequest, r => ClientServiceCallback(r));
+            AuthenticationClient.CreateStub(client).ModuleLoad(controller, moduleLoadRequest, ClientServiceCallback);
 
             new Thread(() =>
                            {
@@ -47,8 +47,8 @@ namespace d3emu.ServicesImpl
                                {
                                    done(new LogonResponse.Builder
                                             {
-                                                Account = new EntityId.Builder { High = 0x100000000000000, Low = 0 }.Build(),
-                                                GameAccount = new EntityId.Builder { High = 0x200006200004433, Low = 0 }.Build(),
+                                                Account = new EntityId.Builder { High = HighId.Account, Low = 0 }.Build(),
+                                                GameAccount = new EntityId.Builder { High = HighId.GameAccount, Low = 0 }.Build(),
                                             }.Build());
                                }
                                else
@@ -86,7 +86,7 @@ namespace d3emu.ServicesImpl
                         .SetMessage(ByteString.CopyFrom(srp.Response2))
                         .Build();
 
-                    client.GetService<AuthenticationClient>().ModuleMessage(controller, moduleMessagedRequest, r => ClientServiceCallback(r));
+                    AuthenticationClient.CreateStub(client).ModuleMessage(controller, moduleMessagedRequest, ClientServiceCallback);
                 }
 
                 wait.Set();
@@ -94,7 +94,7 @@ namespace d3emu.ServicesImpl
         }
 
         // just for logging purposes
-        private void ClientServiceCallback(IMessage msg)
+        private static void ClientServiceCallback(IMessage msg)
         {
             Console.WriteLine("{0}", msg.DescriptorForType.FullName);
             Console.WriteLine("{0}", msg.ToString());

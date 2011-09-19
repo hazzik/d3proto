@@ -4,6 +4,8 @@ using System.Net.Sockets;
 
 namespace d3emu
 {
+    using System.Threading;
+
     static class Program
     {
         private static Socket m_socket;
@@ -21,7 +23,8 @@ namespace d3emu
             while (true)
             {
                 Console.WriteLine("Waiting for connections...");
-                new Client(m_socket.Accept()).Run();
+                var client = m_socket.Accept();
+                new Thread(() => new Client(client).Run()).Start();
             }
         }
     }

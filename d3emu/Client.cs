@@ -20,7 +20,6 @@ namespace d3emu
     public class Client : IRpcChannel
     {
         private readonly Queue<Callback> callbacks = new Queue<Callback>();
-        private readonly ICollection<IService> exportedServices = new List<IService>();
         private readonly IDictionary<uint, ExternalService> exportedServicesIds = new Dictionary<uint, ExternalService>();
         private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
         private readonly Socket socket;
@@ -47,15 +46,6 @@ namespace d3emu
 
             ServerPacket data = new ServerPacket(externalService.Id, (int)GetMethodId(method), requestId, ListenerId).WriteMessage(request);
             Send(data);
-        }
-
-        //are we need to store external service?
-        public T GetService<T>() where T : IService
-        {
-            return exportedServices
-                .Where(service => typeof(T).IsAssignableFrom(service.GetType()))
-                .Select(x => (T)x)
-                .Single();
         }
 
         public void Run()
@@ -101,10 +91,14 @@ namespace d3emu
                     Send(data);
                     if (ErrorCode != AuthError.None)
                     {
-                        DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
-                        GetService<ConnectionService>().ForceDisconnect(null, dcNotify, r => { });
-                    }
-                };
+                        ServerPacket data = new ServerPacket(Program.PrevService, (int) ErrorCode, packet.RequestId, 0).WriteMessage(response);
+                        Send(data);
+                        if (ErrorCode != AuthError.None)
+                        {
+                            DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint) ErrorCode).Build();
+                            ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
+                        }
+                    };
 
             IMessage requestProto = service.GetRequestPrototype(method);
 
@@ -129,7 +123,6 @@ namespace d3emu
 
         public void LoadExportedService(uint hash, uint id)
         {
-            exportedServices.Add(ClientServices.ServicesDict[hash](this)); // WTF?
             exportedServicesIds[hash] = new ExternalService
                                             {
                                                 Hash = hash,

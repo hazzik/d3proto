@@ -31,7 +31,7 @@ namespace d3emu.ServicesImpl
                      {
                          Toon = new EntityId.Builder
                                     {
-                                        High = 0x300016200004433,
+                                        High = HighId.Toon,
                                         Low = 2
                                     }.Build()
                      }.Build());

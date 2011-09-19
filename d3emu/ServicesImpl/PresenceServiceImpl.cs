@@ -7,6 +7,13 @@ namespace d3emu.ServicesImpl
 
     public class PresenceServiceImpl : PresenceService
     {
+        private readonly Client client;
+
+        public PresenceServiceImpl(Client client)
+        {
+            this.client = client;
+        }
+
         public override void Subscribe(IRpcController controller, SubscribeRequest request, Action<NoData> done)
         {
             done(new NoData.Builder().Build());
@@ -19,7 +26,7 @@ namespace d3emu.ServicesImpl
 
         public override void Update(IRpcController controller, UpdateRequest request, Action<NoData> done)
         {
-            throw new NotImplementedException();
+            done(new NoData.Builder().Build());
         }
 
         public override void Query(IRpcController controller, QueryRequest request, Action<QueryResponse> done)
