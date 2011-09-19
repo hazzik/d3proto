@@ -24,7 +24,14 @@ namespace d3emu.ServicesImpl
 
         public override void CreateToon(IRpcController controller, CreateToonRequest request, Action<CreateToonResponse> done)
         {
-            throw new NotImplementedException();
+            done(new CreateToonResponse.Builder
+                     {
+                         Toon = new EntityId.Builder
+                                    {
+                                        High = 0x300016200004433,
+                                        Low = 2
+                                    }.Build()
+                     }.Build());
         }
 
         public override void DeleteToon(IRpcController controller, DeleteToonRequest request, Action<DeleteToonResponse> done)
