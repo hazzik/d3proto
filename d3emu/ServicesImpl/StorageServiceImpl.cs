@@ -1,15 +1,17 @@
 namespace d3emu.ServicesImpl
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using D3.Account;
     using D3.OnlineService;
     using Google.ProtocolBuffers;
     using bnet.protocol.storage;
+    using bnet.protocol.toon;
 
     public class StorageServiceImpl : StorageService
     {
-        private static Digest Digest
+        private static Digest AccountDigest
         {
             get
             {
@@ -46,6 +48,9 @@ namespace d3emu.ServicesImpl
                 case "LoadAccountDigest":
                     response = LoadAccountDigest(request);
                     break;
+                case "GetHeroDigests":
+                    response = GetHeroDigest(request);
+                    break;
                 default:
                     response = new ExecuteResponse.Builder();
                     break;
@@ -53,10 +58,55 @@ namespace d3emu.ServicesImpl
             done(response.Build());
         }
 
-        private ExecuteResponse.Builder LoadAccountDigest(ExecuteRequest request)
+        private static ExecuteResponse.Builder GetHeroDigest(ExecuteRequest request)
+        {
+            var results = new List<OperationResult>();
+
+            
+
+            foreach (Operation operation in request.OperationsList)
+            {
+                //var toonDigest = ToonHandle.ParseFrom(operation.RowId.Hash.ToByteArray().Skip(2).ToArray());
+
+                OperationResult.Builder operationResult = OperationResult.CreateBuilder().SetTableId(operation.TableId);
+                operationResult.AddData(
+                    Cell.CreateBuilder()
+                        .SetColumnId(operation.ColumnId)
+                        .SetRowId(operation.RowId)
+                        .SetVersion(1)
+                        .SetData(D3.Hero.Digest.CreateBuilder().SetVersion(891)
+//                                     .SetHeroId(this.D3EntityID)
+//                                     .SetHeroName(this.Name)
+//                                     .SetGbidClass((int) this.ClassID)
+//                                     .SetPlayerFlags(this.GenderID)
+//                                     .SetLevel(this.Level)
+//                                     .SetVisualEquipment(this.Equipment)
+                                     .SetLastPlayedAct(0)
+                                     .SetHighestUnlockedAct(0)
+                                     .SetLastPlayedDifficulty(0)
+                                     .SetHighestUnlockedDifficulty(0)
+                                     .SetLastPlayedQuest(-1)
+                                     .SetLastPlayedQuestStep(-1)
+                                     .SetTimePlayed(0)
+                                     .Build()
+                                     .ToByteString())
+                        .Build()
+                    );
+                results.Add(operationResult.Build());
+            }
+
+            ExecuteResponse.Builder builder = ExecuteResponse.CreateBuilder();
+            foreach (OperationResult result in results)
+            {
+                builder.AddResults(result);
+            }
+            return builder;
+        }
+
+        private static ExecuteResponse.Builder LoadAccountDigest(ExecuteRequest request)
         {
             ExecuteResponse.Builder builder = ExecuteResponse.CreateBuilder();
-            foreach (OperationResult result in request.OperationsList.Select(operation => CreateOperationResult(operation, 1, Digest.ToByteString())))
+            foreach (OperationResult result in request.OperationsList.Select(operation => CreateOperationResult(operation, 1, AccountDigest.ToByteString())))
             {
                 builder.AddResults(result);
             }
@@ -83,7 +133,7 @@ namespace d3emu.ServicesImpl
         private ExecuteResponse.Builder GetAccountDigest(ExecuteRequest request)
         {
             ExecuteResponse.Builder builder = ExecuteResponse.CreateBuilder();
-            foreach (OperationResult result in request.OperationsList.Select(operation => CreateOperationResult(operation, 1, Digest.ToByteString())))
+            foreach (OperationResult result in request.OperationsList.Select(operation => CreateOperationResult(operation, 1, AccountDigest.ToByteString())))
             {
                 builder.AddResults(result);
             }
