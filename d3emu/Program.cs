@@ -75,7 +75,7 @@ namespace d3emu
 
                 using (BinaryReader br = new BinaryReader(new MemoryStream(data)))
                 {
-                    var size = br.ReadInt32Reversed(); // inclides size of this field as well
+                    var size = br.ReadInt32Reversed(); // includes size of this field as well
 
                     var opcode = br.ReadUInt16(); // ?
 
