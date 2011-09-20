@@ -4,6 +4,7 @@ using System.Net.Sockets;
 
 namespace d3emu
 {
+    using System.IO;
     using System.Threading;
 
     static class Program
@@ -66,28 +67,34 @@ namespace d3emu
                 Console.WriteLine("Received GS Packet {0} bytes:", received);
                 data.PrintHex();
 
-                //if (data[4] == 0x3C)
-                //{
-                //    using (BinaryReader br = new BinaryReader(new MemoryStream(data)))
-                //    {
-                //        var size = br.ReadInt32();
-                //        var opcode = br.ReadByte();
-
-                //        var unk = br.ReadBytes(11);
-
-                //        var x = br.ReadSingle();
-                //        var y = br.ReadSingle();
-                //        var z = br.ReadSingle();
-                //        var o = br.ReadSingle();
-
-                //        Console.WriteLine("Move: {0} {1} {2} {3}", x, y, z, o);
-                //    }
-                //}
-
                 if (first) // send hardcoded packets after first client packet
                 {
                     first = false;
                     new HardcodedGsPackets(m_gameStream);
+                }
+
+                using (BinaryReader br = new BinaryReader(new MemoryStream(data)))
+                {
+                    var size = br.ReadInt32Reversed(); // inclides size of this field as well
+
+                    var opcode = br.ReadUInt16(); // ?
+
+                    Console.WriteLine("Size {0}, opcode? {1:X4}", size, opcode);
+
+                    if (opcode == 0x783C) // movement
+                    {
+                        // can't seems figure this out yet
+                        //var unk4 = br.ReadUInt16();
+                        //var unk1 = br.ReadSingle();
+                        //var unk3 = br.ReadSingle();
+                        //var unk2 = br.ReadSingle();
+                        //var x = br.ReadSingle();
+                        //var y = br.ReadSingle();
+                        //var z = br.ReadSingle();
+                        //var o = br.ReadSingle();
+
+                        //Console.WriteLine("Move: {0} {1} {2} {3} {4} {5} {6} {7}", x, y, z, o, unk1, unk2, unk3, unk4);
+                    }
                 }
 
                 BeginRead();

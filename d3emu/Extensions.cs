@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Numerics;
@@ -108,6 +109,11 @@ namespace d3emu
         public static void WriteInt16NoTag(this CodedOutputStream s, short value)
         {
             s.WriteRawBytes(BitConverter.GetBytes(value));
+        }
+
+        public static int ReadInt32Reversed(this BinaryReader reader)
+        {
+            return BitConverter.ToInt32(reader.ReadBytes(4).Reverse().ToArray(), 0);
         }
     }
 }
