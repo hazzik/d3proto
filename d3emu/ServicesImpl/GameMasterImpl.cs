@@ -9,11 +9,11 @@ namespace d3emu.ServicesImpl
 
     public class GameMasterImpl : GameMaster
     {
-        private readonly Client clinet;
+        private readonly Client client;
 
         public GameMasterImpl(Client clinet)
         {
-            this.clinet = clinet;
+            this.client = clinet;
         }
 
         public override void JoinGame(IRpcController controller, JoinGameRequest request, Action<JoinGameResponse> done)
@@ -56,7 +56,7 @@ namespace d3emu.ServicesImpl
 
             done(findGameResponse.Build());
 
-            clinet.ListenerId = request.ObjectId;
+            client.ListenerId = request.ObjectId;
 
             GameFoundNotification.Builder gameFoundNotification = GameFoundNotification.CreateBuilder();
 
@@ -71,7 +71,7 @@ namespace d3emu.ServicesImpl
                                           Low = 2
                                       }.Build());
             connectInfo.SetHost("127.0.0.1");
-            connectInfo.SetPort(6666);
+            connectInfo.SetPort(6665);
             connectInfo.SetToken(ByteString.CopyFrom(new byte[] { 0x07, 0x34, 0x02, 0x60, 0x91, 0x93, 0x76, 0x46, 0x28, 0x84 }));
             connectInfo.AddAttribute(Attribute
                                          .CreateBuilder()
@@ -86,7 +86,7 @@ namespace d3emu.ServicesImpl
             gameFoundNotification.SetGameHandle(gameHandle.Build());
             gameFoundNotification.AddConnectInfo(connectInfo.Build());
 
-            GameFactorySubscriber.CreateStub(clinet).NotifyGameFound(controller, gameFoundNotification.Build(), r => { });
+            GameFactorySubscriber.CreateStub(client).NotifyGameFound(controller, gameFoundNotification.Build(), r => { });
         }
 
         public override void CancelFindGame(IRpcController controller, CancelFindGameRequest request, Action<NoData> done)
