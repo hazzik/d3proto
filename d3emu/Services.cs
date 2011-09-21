@@ -8,8 +8,8 @@ namespace d3emu
 
     public static partial class Services
     {
-        public static readonly Dictionary<uint, System.Func<Client, IService>> ServicesDict
-            = new Dictionary<uint, Func<Client, IService>>
+        public static readonly Dictionary<uint, System.Func<BnetClient, IService>> ServicesDict
+            = new Dictionary<uint, Func<BnetClient, IService>>
                   {
                       {0x00000000, c => new ConnectionServiceImpl(c)},
                       {0x0decfc01, c => new AuthenticationServerImpl(c)},

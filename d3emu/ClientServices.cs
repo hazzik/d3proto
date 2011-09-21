@@ -16,8 +16,8 @@ namespace d3emu
 
     public static class ClientServices
     {
-        public static readonly Dictionary<uint, Func<Client, IService>> ServicesDict
-            = new Dictionary<uint, Func<Client, IService>>
+        public static readonly Dictionary<uint, Func<BnetClient, IService>> ServicesDict
+            = new Dictionary<uint, Func<BnetClient, IService>>
                   {
                       {0x00000000, c => ConnectionService.CreateStub(c)},
                       {0x71240e35, c => AuthenticationClient.CreateStub(c)},

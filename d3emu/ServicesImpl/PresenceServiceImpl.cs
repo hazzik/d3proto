@@ -7,9 +7,9 @@ namespace d3emu.ServicesImpl
 
     public class PresenceServiceImpl : PresenceService
     {
-        private readonly Client client;
+        private readonly BnetClient client;
 
-        public PresenceServiceImpl(Client client)
+        public PresenceServiceImpl(BnetClient client)
         {
             this.client = client;
         }

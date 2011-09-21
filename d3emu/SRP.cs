@@ -75,7 +75,7 @@ namespace d3emu
 
             var k = kBytes.ToPosBigInteger();
 
-            B = BigInteger.Remainder((v * k) + gMod, N); // Remainder = Mod?
+            B = BigInteger.Remainder((v * k) + gMod, N);
 
             var secondChallengeBytes1 = GetRandomBytes(128);
             m_secondChallengeServer1 = Extensions.ToPosBigInteger(secondChallengeBytes1);
@@ -84,7 +84,7 @@ namespace d3emu
                 .Concat(new byte[] { 0 }) // command == 0
                 .Concat(m_accountSalt.ToByteArray()) // accountSalt
                 .Concat(sBytes) // passwordSalt
-                .Concat(B.ToByteArray()) // serverChallenge
+                .Concat(B.ToArray()) // serverChallenge
                 .Concat(secondChallengeBytes1) // secondaryChallenge
                 .ToArray();
         }
@@ -120,28 +120,28 @@ namespace d3emu
 
             var uBytes = HASH.ComputeHash(new byte[0]
                 .Concat(ABytes)
-                .Concat(B.ToByteArray())
+                .Concat(B.ToArray())
                 .ToArray());
 
             var u = uBytes.ToPosBigInteger();
 
             var S = BigInteger.ModPow(A * BigInteger.ModPow(v, u, N), b, N);
 
-            var KBytes = Calc_K(S.ToByteArray());
+            var KBytes = Calc_K(S.ToArray());
 
             var t3Bytes = Hash_g_and_N_and_xor_them();
 
             var t4 = HASH.ComputeHash(Encoding.ASCII.GetBytes(m_accountSalt));
 
-            var sBytes = s.ToByteArray();
-            var BBytes = B.ToByteArray();
+            var sBytes = s.ToArray();
+            var BBytes = B.ToArray();
 
-            // hack
-            if (sBytes.Length != 0x20)
-            {
-                sBytes = s.ToArray();
-                //throw new Exception("sBytes.Length != 0x20");
-            }
+            //// hack
+            //if (sBytes.Length != 0x20)
+            //{
+            //    sBytes = s.ToArray();
+            //    //throw new Exception("sBytes.Length != 0x20");
+            //}
 
             var M = HASH.ComputeHash(new byte[0]
                 .Concat(t3Bytes)

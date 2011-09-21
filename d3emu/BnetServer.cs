@@ -6,11 +6,11 @@ namespace d3emu
 {
     using System.Threading;
 
-    class GameServer
+    class BnetServer
     {
         private Socket m_socket;
 
-        public GameServer(int port)
+        public BnetServer(int port)
         {
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -23,19 +23,19 @@ namespace d3emu
 
         private void BeginAccept()
         {
-            Console.WriteLine("GS: Waiting for connections...");
+            Console.WriteLine("BN: Waiting for connections...");
             m_socket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
         private void AcceptCallback(IAsyncResult result)
         {
-            Console.WriteLine("GS: Client connected...");
+            Console.WriteLine("BN: Client connected...");
 
             Socket client = m_socket.EndAccept(result);
 
             NetworkStream stream = new NetworkStream(client);
 
-            new Thread(() => new GameClient(stream).Run()).Start();
+            new Thread(() => new BnetClient(stream).Run()).Start();
         }
     }
 }

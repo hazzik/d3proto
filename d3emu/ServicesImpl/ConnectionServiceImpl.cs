@@ -7,9 +7,9 @@
 
     class ConnectionServiceImpl : ConnectionService
     {
-        private readonly Client client;
+        private readonly BnetClient client;
 
-        public ConnectionServiceImpl(Client client)
+        public ConnectionServiceImpl(BnetClient client)
         {
             this.client = client;
         }

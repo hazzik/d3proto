@@ -423,11 +423,11 @@ namespace d3emu
 
             var bn_a = GetRandomBytes(128).ToPosBigInteger();
 
-            Console.WriteLine("a: {0}{1}", Environment.NewLine, bn_a.ToByteArray().ToHexDump());
+            Console.WriteLine("a: {0}{1}", Environment.NewLine, bn_a.ToArray().ToHexDump());
 
             var bn_A = Calc_A(bn_g, bn_N, bn_a);
 
-            A = bn_A.ToByteArray();
+            A = bn_A.ToArray();
 
             var I = Calc_I(U);
 
@@ -437,7 +437,7 @@ namespace d3emu
 
             var bn_S = Calc_S(bn_g, bn_N, bn_B, bn_k, bn_a, bn_x, bn_u);
 
-            K = Calc_K(bn_S.ToByteArray());
+            K = Calc_K(bn_S.ToArray());
 
             M1 = Calc_M1(s, B, A, K, I);
         }
@@ -490,7 +490,7 @@ namespace d3emu
         {
             //var bn_A = g.ModPow(a, N);
             var bn_A = BigInteger.ModPow(g, a, N);
-            Console.WriteLine("A: {0}{1}", Environment.NewLine, bn_A.ToByteArray().ToHexDump());
+            Console.WriteLine("A: {0}{1}", Environment.NewLine, bn_A.ToArray().ToHexDump());
             return bn_A;
         }
 

@@ -17,16 +17,16 @@ namespace d3emu
         NoLicense = 12,
     }
 
-    public class Client : IRpcChannel
+    public class BnetClient : IRpcChannel
     {
         private readonly Queue<Callback> callbacks = new Queue<Callback>();
         private readonly IDictionary<uint, ExternalService> exportedServicesIds = new Dictionary<uint, ExternalService>();
         private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
-        private readonly Socket socket;
+        private readonly NetworkStream stream;
 
-        public Client(Socket socket)
+        public BnetClient(NetworkStream stream)
         {
-            this.socket = socket;
+            this.stream = stream;
             LoadExportedService(0, 0);
             LoadImportedService(0);
         }
@@ -52,13 +52,13 @@ namespace d3emu
         {
             try
             {
-                CodedInputStream stream = CodedInputStream.CreateInstance(new NetworkStream(socket));
+                CodedInputStream stream = CodedInputStream.CreateInstance(this.stream);
 
                 while (!stream.IsAtEnd)
                 {
                     Handle(stream);
                 }
-                Console.WriteLine("Disconnected!");
+                Console.WriteLine("BN: Disconnected!");
             }
             catch (Exception e)
             {
@@ -130,7 +130,7 @@ namespace d3emu
             IMessage msg = packet.Message;
 
             // Logging
-            Console.WriteLine("Sending data: length = {0}", data.Length);
+            Console.WriteLine("BN: Sending data: length = {0}", data.Length);
             Console.WriteLine(msg.DescriptorForType.FullName);
 
             Console.WriteLine("HEX View:");
@@ -139,7 +139,7 @@ namespace d3emu
             Console.WriteLine("Text View:");
             Console.WriteLine(msg.ToString());
 
-            socket.Send(data);
+            this.stream.Write(data, 0, data.Length);
         }
 
         private static uint GetMethodId(MethodDescriptor method)

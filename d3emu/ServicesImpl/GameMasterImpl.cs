@@ -9,9 +9,9 @@ namespace d3emu.ServicesImpl
 
     public class GameMasterImpl : GameMaster
     {
-        private readonly Client client;
+        private readonly BnetClient client;
 
-        public GameMasterImpl(Client clinet)
+        public GameMasterImpl(BnetClient clinet)
         {
             this.client = clinet;
         }

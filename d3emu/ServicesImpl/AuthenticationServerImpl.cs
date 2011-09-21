@@ -13,11 +13,11 @@ namespace d3emu.ServicesImpl
         const uint Usage = 0x61757468; // auth
         readonly byte[] ModuleHash = "8F52906A2C85B416A595702251570F96D3522F39237603115F2F1AB24962043C".ToByteArray(); // Password.dll
 
-        private readonly Client client;
+        private readonly BnetClient client;
         private SRP srp;
         private readonly AutoResetEvent wait = new AutoResetEvent(false);
 
-        public AuthenticationServerImpl(Client client)
+        public AuthenticationServerImpl(BnetClient client)
         {
             this.client = client;
         }

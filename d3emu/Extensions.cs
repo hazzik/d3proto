@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Numerics;
 using Google.ProtocolBuffers;
 
@@ -77,21 +75,9 @@ namespace d3emu
         public static byte[] ToArray(this BigInteger b)
         {
             var result = b.ToByteArray();
-            if (result[result.Length - 1] == 0)
+            if (result[result.Length - 1] == 0 && (result.Length % 0x10) != 0)
                 Array.Resize(ref result, result.Length - 1);
             return result;
-        }
-
-        public static bool IsConnected(this Socket socket)
-        {
-            try
-            {
-                return !(socket.Poll(1, SelectMode.SelectRead) && socket.Available == 0);
-            }
-            catch (SocketException)
-            {
-                return false;
-            }
         }
 
         public static short ReadInt16(this CodedInputStream s)
@@ -111,9 +97,9 @@ namespace d3emu
             s.WriteRawBytes(BitConverter.GetBytes(value));
         }
 
-        public static int ReadInt32Reversed(this BinaryReader reader)
+        public static int ReadInt32Reversed(this CodedInputStream s)
         {
-            return BitConverter.ToInt32(reader.ReadBytes(4).Reverse().ToArray(), 0);
+            return BitConverter.ToInt32(s.ReadRawBytes(4).Reverse().ToArray(), 0);
         }
     }
 }

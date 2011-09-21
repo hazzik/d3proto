@@ -47,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="BnetServer.cs" />
+    <Compile Include="BnetClient.cs" />
     <Compile Include="ClientServices.cs" />
+    <Compile Include="GameClient.cs" />
     <Compile Include="GameServer.cs" />
     <Compile Include="HardcodedGsPackets.cs" />
     <Compile Include="ServicesImpl\AuthenticationServerImpl.cs" />

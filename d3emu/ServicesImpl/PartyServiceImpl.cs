@@ -8,9 +8,9 @@ namespace d3emu.ServicesImpl
 
     public class PartyServiceImpl : PartyService
     {
-        private readonly Client client;
+        private readonly BnetClient client;
 
-        public PartyServiceImpl(Client client)
+        public PartyServiceImpl(BnetClient client)
         {
             this.client = client;
         }
