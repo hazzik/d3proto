@@ -4,7 +4,6 @@ namespace d3emu
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Sockets;
-    using System.Text;
     using bnet.protocol;
     using bnet.protocol.connection;
     using Google.ProtocolBuffers;
@@ -14,19 +13,26 @@ namespace d3emu
     {
         None = 0,
         InvalidCredentials = 3,
-        NoLicense = 12,
+        NoToonSelected = 11,
+        NoGameAccount = 12,
     }
 
     public class BnetClient : IRpcChannel
     {
+        public const byte PrevService = 0xFE;
+
         private readonly Queue<Callback> callbacks = new Queue<Callback>();
         private readonly IDictionary<uint, ExternalService> exportedServicesIds = new Dictionary<uint, ExternalService>();
         private readonly IDictionary<uint, IService> importedServices = new Dictionary<uint, IService>();
+
+        private readonly Socket socket;
         private readonly NetworkStream stream;
 
-        public BnetClient(NetworkStream stream)
+        public BnetClient(Socket socket)
         {
-            this.stream = stream;
+            this.socket = socket;
+            this.stream = new NetworkStream(socket);
+
             LoadExportedService(0, 0);
             LoadImportedService(0);
         }
@@ -37,8 +43,7 @@ namespace d3emu
 
         public void CallMethod(MethodDescriptor method, IRpcController controller, IMessage request, IMessage responsePrototype, Action<IMessage> done)
         {
-            string name = method.Service.FullName;
-            uint hash = GetServiceHash(name);
+            uint hash = method.Service.GetHash();
             ExternalService externalService = exportedServicesIds[hash];
 
             var requestId = externalService.GetNextRequestId();
@@ -48,6 +53,28 @@ namespace d3emu
             Send(data);
         }
 
+        public void LoadExportedService(uint hash, uint id)
+        {
+            exportedServicesIds[hash] = new ExternalService
+                                            {
+                                                Hash = hash,
+                                                Id = (byte)id,
+                                            };
+        }
+
+        public uint LoadImportedService(uint hash)
+        {
+            var i = (uint)importedServices.Count;
+            importedServices[i] = Services.ServicesDict[hash](this);
+            return i;
+        }
+
+        private static uint GetMethodId(MethodDescriptor method)
+        {
+            return (uint)method.Options[Rpc.MethodId.Descriptor];
+        }
+
+        #region Network
         public void Run()
         {
             try
@@ -66,11 +93,16 @@ namespace d3emu
             }
         }
 
+        public void Disconnect()
+        {
+            socket.Disconnect(false);
+        }
+
         private void Handle(CodedInputStream stream)
         {
             var packet = new ClientPacket(stream);
 
-            if (packet.Service == Program.PrevService)
+            if (packet.Service == PrevService)
             {
                 //packet.Method should be 0, if there is no errors
                 Callback callback = callbacks.Dequeue();
@@ -87,12 +119,13 @@ namespace d3emu
             Action<IMessage> done =
                 response =>
                 {
-                    ServerPacket data = new ServerPacket(Program.PrevService, (int)ErrorCode, packet.RequestId, 0).WriteMessage(response);
+                    ServerPacket data = new ServerPacket(PrevService, (int)ErrorCode, packet.RequestId, 0).WriteMessage(response);
                     Send(data);
                     if (ErrorCode != AuthError.None)
                     {
                         DisconnectNotification dcNotify = DisconnectNotification.CreateBuilder().SetErrorCode((uint)ErrorCode).Build();
                         ConnectionService.CreateStub(this).ForceDisconnect(null, dcNotify, r => { });
+                        Disconnect();
                     }
                 };
 
@@ -106,22 +139,6 @@ namespace d3emu
             Console.WriteLine(message.ToString());
 
             service.CallMethod(method, null, message, done);
-        }
-
-        public void LoadExportedService(uint hash, uint id)
-        {
-            exportedServicesIds[hash] = new ExternalService
-                                            {
-                                                Hash = hash,
-                                                Id = (byte)id,
-                                            };
-        }
-
-        public uint LoadImportedService(uint hash)
-        {
-            var i = (uint)importedServices.Count;
-            importedServices[i] = Services.ServicesDict[hash](this);
-            return i;
         }
 
         private void Send(ServerPacket packet)
@@ -141,24 +158,7 @@ namespace d3emu
 
             this.stream.Write(data, 0, data.Length);
         }
-
-        private static uint GetMethodId(MethodDescriptor method)
-        {
-            return (uint)method.Options[Rpc.MethodId.Descriptor];
-        }
-
-        /// <summary>
-        /// FNV hash implementation
-        /// </summary>
-        /// <param name="name">Service name</param>
-        /// <returns>Service hash</returns>
-        private static uint GetServiceHash(string name)
-        {
-            if (name == "bnet.protocol.connection.ConnectionService")
-                return 0;
-            return Encoding.ASCII.GetBytes(name)
-                .Aggregate(0x811C9DC5, (current, t) => 0x1000193 * (t ^ current));
-        }
+        #endregion
 
         private class Callback
         {

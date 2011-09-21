@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace d3emu
 {
-    using System.Threading;
-
     class GameServer
     {
         private Socket m_socket;
+        private List<GameClient> Clients = new List<GameClient>();
 
         public GameServer(int port)
         {
@@ -31,11 +32,23 @@ namespace d3emu
         {
             Console.WriteLine("GS: Client connected...");
 
-            Socket client = m_socket.EndAccept(result);
+            Socket clientSocket = m_socket.EndAccept(result);
 
-            NetworkStream stream = new NetworkStream(client);
+            GameClient client = new GameClient(clientSocket);
 
-            new Thread(() => new GameClient(stream).Run()).Start();
+            Clients.Add(client);
+
+            new Thread(() => client.Run()).Start();
+
+            BeginAccept();
+        }
+
+        public void Shutdown()
+        {
+            foreach (var client in Clients)
+            {
+                client.Disconnect();
+            }
         }
     }
 }

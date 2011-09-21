@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using Google.ProtocolBuffers;
+using Google.ProtocolBuffers.Descriptors;
 
 namespace d3emu
 {
@@ -100,6 +102,22 @@ namespace d3emu
         public static int ReadInt32Reversed(this CodedInputStream s)
         {
             return BitConverter.ToInt32(s.ReadRawBytes(4).Reverse().ToArray(), 0);
+        }
+
+        /// <summary>
+        /// FNV hash implementation
+        /// </summary>
+        /// <param name="descriptor">Service descriptor</param>
+        /// <returns>Service hash</returns>
+        public static uint GetHash(this ServiceDescriptor descriptor)
+        {
+            var name = descriptor.FullName;
+
+            if (name == "bnet.protocol.connection.ConnectionService")
+                return 0;
+
+            return Encoding.ASCII.GetBytes(name)
+                .Aggregate(0x811C9DC5, (current, t) => 0x1000193 * (t ^ current));
         }
     }
 }

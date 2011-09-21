@@ -7,13 +7,16 @@ namespace d3emu
     class GameClient
     {
         private bool first = true;
+        private readonly Socket socket;
         private readonly NetworkStream stream;
 
-        public GameClient(NetworkStream stream)
+        public GameClient(Socket socket)
         {
-            this.stream = stream;
+            this.socket = socket;
+            this.stream = new NetworkStream(socket);
         }
 
+        #region Network
         public void Run()
         {
             try
@@ -32,6 +35,11 @@ namespace d3emu
             }
         }
 
+        public void Disconnect()
+        {
+            socket.Disconnect(false);
+        }
+
         private void Handle(CodedInputStream stream)
         {
             if (first)
@@ -40,14 +48,15 @@ namespace d3emu
                 new HardcodedGsPackets(this.stream);
             }
 
-            var size = (int)stream.ReadInt32Reversed(); // includes size of size
+            var size = stream.ReadInt32Reversed(); // includes size of size
 
             var payLoad = stream.ReadRawBytes(size - 4);
             payLoad.PrintHex();
 
             var opcode = payLoad[0]; // assume that opcode is 1 byte for now
 
-            Console.WriteLine("GS: Opcode {0:X2}, size {1}", opcode, size);
+            Console.WriteLine("GS: Opcode {0:X2}, payload size {1}", opcode, size - 4);
         }
+        #endregion
     }
 }

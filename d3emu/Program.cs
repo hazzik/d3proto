@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System;
 
 namespace d3emu
 {
@@ -7,8 +7,6 @@ namespace d3emu
         private static BnetServer m_bnetServer;
         private static GameServer m_gameServer;
 
-        public const byte PrevService = 0xFE;
-
         static void Main(string[] args)
         {
             m_bnetServer = new BnetServer(6666);
@@ -16,8 +14,13 @@ namespace d3emu
 
             while (true)
             {
-                Thread.Sleep(10);
+                string input = Console.ReadLine();
+                if (input.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                    break;
             }
+
+            m_bnetServer.Shutdown();
+            m_gameServer.Shutdown();
         }
     }
 }

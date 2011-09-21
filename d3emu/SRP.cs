@@ -80,7 +80,7 @@ namespace d3emu
             var secondChallengeBytes1 = GetRandomBytes(128);
             m_secondChallengeServer1 = Extensions.ToPosBigInteger(secondChallengeBytes1);
 
-            Response1 = new byte[0]
+            LogonChallenge = new byte[0]
                 .Concat(new byte[] { 0 }) // command == 0
                 .Concat(m_accountSalt.ToByteArray()) // accountSalt
                 .Concat(sBytes) // passwordSalt
@@ -89,28 +89,21 @@ namespace d3emu
                 .ToArray();
         }
 
-        // Response structure:
-        //     byte command;
-        //     if (command == 0 || command == 1) // from server
-        //     {
-        //         if (command == 0)
-        //             byte accountSalt[32]; // static value per account
-        //         byte passwordSalt[32]; // static value per account
-        //         byte serverChallenge[128]; // changes every login
-        //         byte secondaryChallenge[128]; // changes every login
-        //     }
-        //     else if (command == 2) // from server
-        //     {
-        //         // empty
-        //     }
-        //     else if (command == 3) // from server
-        //     {
-        //         byte M2[32];
-        //         byte data2[128]; // for veryfing secondaryChallenge
-        //     }
-        public byte[] Response1 { get; private set; }
+        /// <summary>
+        /// command == 0
+        /// byte accountSalt[32]; - static value per account (skipped when command == 1)
+        /// byte passwordSalt[32]; - static value per account
+        /// byte serverChallenge[128]; - changes every login
+        /// byte secondaryChallenge[128]; - changes every login
+        /// </summary>
+        public byte[] LogonChallenge { get; private set; }
 
-        public byte[] Response2 { get; private set; }
+        /// <summary>
+        /// command == 3
+        /// byte M2[32];
+        /// byte data2[128]; // for veryfing secondaryChallenge
+        /// </summary>
+        public byte[] LogonProof { get; private set; }
 
         public bool Verify(byte[] ABytes, byte[] M1Bytes, byte[] seed)
         {
@@ -136,13 +129,6 @@ namespace d3emu
             var sBytes = s.ToArray();
             var BBytes = B.ToArray();
 
-            //// hack
-            //if (sBytes.Length != 0x20)
-            //{
-            //    sBytes = s.ToArray();
-            //    //throw new Exception("sBytes.Length != 0x20");
-            //}
-
             var M = HASH.ComputeHash(new byte[0]
                 .Concat(t3Bytes)
                 .Concat(t4)
@@ -152,7 +138,7 @@ namespace d3emu
                 .Concat(KBytes)
                 .ToArray());
 
-            if (!M.CompareTo(M1Bytes)) // fails sometimes due to sBytes.Length != 0x20
+            if (!M.CompareTo(M1Bytes))
                 return false;
 
             var M2 = HASH.ComputeHash(new byte[0]
@@ -164,9 +150,9 @@ namespace d3emu
             var secondChallengeServer2Bytes = GetRandomBytes(128);
             m_secondChallengeServer2 = Extensions.ToPosBigInteger(secondChallengeServer2Bytes);
 
-            Response2 = new byte[0]
-                .Concat(new byte[] { 3 })
-                .Concat(M2)
+            LogonProof = new byte[0]
+                .Concat(new byte[] { 3 }) // command == 3
+                .Concat(M2) // M2
                 .Concat(secondChallengeServer2Bytes) // not random?
                 .ToArray();
 

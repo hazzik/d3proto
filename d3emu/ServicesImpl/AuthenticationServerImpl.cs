@@ -26,7 +26,7 @@ namespace d3emu.ServicesImpl
         {
             srp = new SRP(request.Email, "123");
 
-            var message = srp.Response1;
+            var message = srp.LogonChallenge;
 
             var moduleLoadRequest = ModuleLoadRequest.CreateBuilder()
                 .SetModuleHandle(ContentHandle.CreateBuilder()
@@ -74,19 +74,20 @@ namespace d3emu.ServicesImpl
                 byte[] M1 = message.Skip(1 + 128).Take(32).ToArray();
                 byte[] seed = message.Skip(1 + 32 + 128).Take(128).ToArray();
 
-                if (srp.Verify(A, M1, seed) == false)
+                if (srp.Verify(A, M1, seed))
                 {
-                    client.ListenerId = 0;
-                    client.ErrorCode = AuthError.InvalidCredentials;
+                    var moduleMessagedRequest = new ModuleMessageRequest.Builder
+                    {
+                        ModuleId = moduleId,
+                        Message = ByteString.CopyFrom(srp.LogonProof)
+                    }.Build();
+
+                    AuthenticationClient.CreateStub(client).ModuleMessage(controller, moduleMessagedRequest, ClientServiceCallback);
                 }
                 else
                 {
-                    var moduleMessagedRequest = ModuleMessageRequest.CreateBuilder()
-                        .SetModuleId(moduleId)
-                        .SetMessage(ByteString.CopyFrom(srp.Response2))
-                        .Build();
-
-                    AuthenticationClient.CreateStub(client).ModuleMessage(controller, moduleMessagedRequest, ClientServiceCallback);
+                    client.ListenerId = 0;
+                    client.ErrorCode = AuthError.InvalidCredentials;
                 }
 
                 wait.Set();

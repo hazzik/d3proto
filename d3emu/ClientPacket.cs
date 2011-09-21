@@ -54,7 +54,6 @@ namespace d3emu
         public IMessage ReadMessage(IBuilder builder)
         {
             m_stream.ReadMessage(builder, ExtensionRegistry.Empty);
-
             return builder.WeakBuild();
         }
     }
