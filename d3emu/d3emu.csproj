@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientServices.cs" />
+    <Compile Include="GameServer.cs" />
     <Compile Include="HardcodedGsPackets.cs" />
     <Compile Include="ServicesImpl\AuthenticationServerImpl.cs" />
     <Compile Include="ServicesImpl\ChannelImpl.cs" />
